@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anatomy & Physiology · Self-Evaluation Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0e1a;
+  --surface: #141828;
+  --card: #1c2235;
+  --border: #2a3050;
+  --gold: #f5c842;
+  --teal: #38d9c0;
+  --red: #ff6b6b;
+  --green: #4ddd80;
+  --blue: #5b9cf6;
+  --text: #e8ecf8;
+  --muted: #7a82a0;
+  --tag: #1e2640;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === HERO === */
+.hero {
+  background: linear-gradient(135deg, #0b0e1a 0%, #141828 40%, #0e1525 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 20px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(245,200,66,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+.hero p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* === SCOREBOARD === */
+.scoreboard {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.score-box {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 20px;
+  text-align: center;
+  min-width: 100px;
+  transition: transform 0.2s;
+}
+.score-box:hover { transform: translateY(-2px); }
+.score-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.score-val.gold { color: var(--gold); }
+.score-val.green { color: var(--green); }
+.score-val.red { color: var(--red); }
+.score-val.blue { color: var(--blue); }
+.score-label { font-size: 0.7rem; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.grade-badge {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  padding: 8px 24px;
+  border-radius: 50px;
+  border: 2px solid;
+  margin: 8px 0;
+  transition: all 0.4s;
+}
+
+/* === CONTROLS === */
+.controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0 20px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding-top: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.tab {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.83rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab.active { background: var(--gold); border-color: var(--gold); color: #0b0e1a; }
+.tab:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
+
+.search-wrap { position: relative; width: 100%; max-width: 340px; }
+.search {
+  width: 100%;
+  padding: 8px 14px 8px 36px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border 0.2s;
+}
+.search:focus { border-color: var(--gold); }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.85rem; pointer-events: none; }
+
+.btn-reset {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--red);
+  background: transparent;
+  color: var(--red);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.btn-reset:hover { background: var(--red); color: white; }
+
+/* === MAIN CONTENT === */
+.main { padding: 20px; max-width: 1200px; margin: 0 auto; }
+
+.section-header {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--teal);
+  border-left: 4px solid var(--teal);
+  padding-left: 10px;
+  margin: 24px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-count { font-size: 0.72rem; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+
+/* === FILL IN BLANK CARDS === */
+.fill-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+.fill-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fill-card.correct { border-color: var(--green); background: #1c2d24; }
+.fill-card.incorrect { border-color: var(--red); background: #2d1c1c; }
+.fill-card.skipped { border-color: var(--blue); background: #1c2235; opacity: 0.7; }
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+.q-text { font-weight: 500; font-size: 0.9rem; color: var(--text); flex: 1; line-height: 1.5; }
+.freq { background: var(--tag); color: var(--gold); font-size: 0.68rem; font-weight: 700; padding: 3px 8px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; border: 1px solid #f5c84220; }
+
+.answer-area { margin-top: 8px; }
+.ans-input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.88rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border 0.2s;
+}
+.ans-input:focus { border-color: var(--gold); }
+.ans-input:disabled { opacity: 0.6; }
+
+.btn-check {
+  margin-top: 8px;
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: none;
+  background: var(--gold);
+  color: #0b0e1a;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.btn-check:hover { background: #e6b830; }
+.btn-check:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-skip {
+  margin-top: 8px;
+  margin-left: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.btn-skip:hover { border-color: var(--blue); color: var(--blue); }
+
+.result-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.result-ans { font-size: 0.88rem; font-weight: 600; }
+.result-ans.ok { color: var(--green); }
+.result-ans.bad { color: var(--red); }
+.correct-ans { font-size: 0.82rem; color: var(--teal); margin-top: 4px; }
+.mnemonic { font-size: 0.78rem; color: var(--muted); font-style: italic; background: #1e2640; border-radius: 6px; padding: 6px 10px; border-left: 3px solid var(--gold); margin-top: 6px; line-height: 1.5; }
+
+/* === T/F CARDS === */
+.tf-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  transition: all 0.25s;
+}
+.tf-card:hover { border-color: var(--gold); box-shadow: var(--shadow); }
+.tf-card.correct { border-color: var(--green); background: #1c2d24; }
+.tf-card.incorrect { border-color: var(--red); background: #2d1c1c; }
+
+.tf-q { font-size: 0.9rem; font-weight: 500; margin-bottom: 10px; line-height: 1.5; }
+.tf-buttons { display: flex; gap: 8px; margin-bottom: 6px; }
+.tf-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.tf-btn.true-btn:hover { border-color: var(--green); color: var(--green); }
+.tf-btn.false-btn:hover { border-color: var(--red); color: var(--red); }
+.tf-btn.selected-true { background: #1a3d2b; border-color: var(--green); color: var(--green); }
+.tf-btn.selected-false { background: #3d1a1a; border-color: var(--red); color: var(--red); }
+.tf-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.tf-result { font-size: 0.82rem; margin-top: 6px; }
+.tf-tip { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-top: 5px; background: #1e2640; border-radius: 6px; padding: 5px 9px; border-left: 3px solid var(--teal); }
+.tf-freq { font-size: 0.68rem; color: var(--gold); font-weight: 700; margin-top: 5px; }
+
+/* === MEANINGS CARDS === */
+.def-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+.def-card:hover { border-color: var(--teal); transform: translateY(-2px); box-shadow: var(--shadow); }
+.def-term { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--gold); margin-bottom: 6px; }
+.def-text { font-size: 0.85rem; color: var(--text); margin-bottom: 8px; line-height: 1.6; }
+.def-mem { font-size: 0.78rem; color: var(--muted); font-style: italic; background: #1e2640; border-radius: 6px; padding: 6px 10px; border-left: 3px solid var(--teal); line-height: 1.5; }
+.def-freq { font-size: 0.68rem; color: var(--gold); font-weight: 700; margin-top: 6px; }
+
+/* === RESULTS PANEL === */
+.results-panel {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: center;
+}
+.results-panel h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold); margin-bottom: 16px; }
+.grade-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 16px 0; }
+.progress-bar-wrap { background: var(--bg); border-radius: 8px; height: 12px; overflow: hidden; margin: 12px 0; }
+.progress-bar { height: 100%; border-radius: 8px; transition: width 1s ease; background: linear-gradient(90deg, var(--gold), var(--teal)); }
+
+.count-line { text-align: center; color: var(--muted); font-size: 0.8rem; margin-bottom: 10px; }
+.no-results { text-align: center; color: var(--muted); padding: 50px; font-size: 1rem; }
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr; }
+  .controls { gap: 6px; }
+  .hero h1 { font-size: 1.5rem; }
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.fill-card, .tf-card, .def-card { animation: fadeIn 0.3s ease both; }
+
+@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.pop { animation: pop 0.3s ease; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🏥 Anatomy & Physiology</h1>
+  <p>Bioscience · Repeated Exam Questions · Self-Evaluation Study Guide</p>
+
+  <div class="scoreboard" id="scoreboard">
+    <div class="score-box">
+      <div class="score-val gold" id="sc-total">0</div>
+      <div class="score-label">Attempted</div>
+    </div>
+    <div class="score-box">
+      <div class="score-val green" id="sc-correct">0</div>
+      <div class="score-label">Correct</div>
+    </div>
+    <div class="score-box">
+      <div class="score-val red" id="sc-wrong">0</div>
+      <div class="score-label">Wrong</div>
+    </div>
+    <div class="score-box">
+      <div class="score-val blue" id="sc-pct">—</div>
+      <div class="score-label">Score %</div>
+    </div>
+    <div class="score-box">
+      <div class="grade-badge" id="sc-grade" style="font-size:1.2rem;padding:6px 16px;">—</div>
+      <div class="score-label">Grade</div>
+    </div>
+  </div>
+
+  <div style="max-width:400px;margin:0 auto;">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="tab active" onclick="switchTab('fill')">📝 Fill in Blank</button>
+  <button class="tab" onclick="switchTab('tf')">✅ True / False</button>
+  <button class="tab" onclick="switchTab('meanings')">📖 Meanings</button>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search" type="text" id="searchBox" placeholder="Search topics, answers..." oninput="renderAll()">
+  </div>
+  <button class="btn-reset" onclick="resetAll()">↺ Reset All</button>
+</div>
+
+<div class="main">
+  <p class="count-line" id="countLine"></p>
+  <div id="content"></div>
+</div>
+
+<script>
+// ===================== DATA =====================
+const fillData = [
+  { section:"General Anatomy, Cell & Tissues", q:"_______ is called as the power house of the cell.", ans:"Mitochondria", alts:["mitochondrion"], mem:"Mighty-chondria = Mighty power! Mitochondria produce ATP energy.", freq:"2× (Aug 2014, Aug 2015)" },
+  { section:"General Anatomy, Cell & Tissues", q:"The smallest functional unit of the body is _______.", ans:"Cell", alts:[], mem:"Cell = Foundation block. All life starts here!", freq:"1× (Aug 2011)" },
+  { section:"General Anatomy, Cell & Tissues", q:"Cell was discovered by _______.", ans:"Robert Hooke", alts:["hooke"], mem:"Robert Hooke hooked onto tiny cells through his microscope!", freq:"1× (Feb 2011)" },
+  { section:"General Anatomy, Cell & Tissues", q:"The blood is a _______ tissue.", ans:"Connective (fluid)", alts:["connective","fluid connective"], mem:"Blood CONNECTs the whole body — it's CONNECTive tissue!", freq:"2× (Aug 2012, Feb 2018)" },
+  { section:"General Anatomy, Cell & Tissues", q:"The largest organ in the body is _______.", ans:"Skin", alts:[], mem:"Skin wraps your WHOLE body — of course it's the largest!", freq:"1× (Jan 2022)" },
+  { section:"General Anatomy, Cell & Tissues", q:"_______ is the structural and functional unit of human body.", ans:"Cell", alts:[], mem:"Cell = foundation. All structure & function starts here!", freq:"1× (July 2025)" },
+  { section:"Skeletal & Muscular System", q:"Adult human body consists of _______ number of bones.", ans:"206", alts:[], mem:"206 bones. '2-0-6: Two-Zero-Six!' Count them if you can!", freq:"2× (Aug 2018, July 2024)" },
+  { section:"Skeletal & Muscular System", q:"The longest and strongest bone in the human body is _______.", ans:"Femur", alts:[], mem:"FEMur = FEMendous thigh bone. Longest bone in your leg!", freq:"2× (May 2023, Jan 2024)" },
+  { section:"Skeletal & Muscular System", q:"The smallest bone in human body is _______.", ans:"Stapes", alts:[], mem:"Stapes = Stirrup-shaped ear bone. So tiny it fits inside your ear!", freq:"3× (Feb 2011, Aug 2012, Aug 2016)" },
+  { section:"Skeletal & Muscular System", q:"The bones are connected to bones by _______.", ans:"Ligaments", alts:[], mem:"Ligaments Link bones. L-L: Ligament = Link!", freq:"1× (Feb 2019)" },
+  { section:"Skeletal & Muscular System", q:"_______ is the covering membrane of the bone.", ans:"Periosteum", alts:[], mem:"PERI = around, osteum = bone. PERIOsteum surrounds the bone.", freq:"1× (Feb 2016)" },
+  { section:"Skeletal & Muscular System", q:"The bat shaped bone is _______.", ans:"Sphenoid", alts:[], mem:"Sphenoid looks like a bat with wings spread — SPooky bat = SPhenoid!", freq:"2× (June 2013, Jan 2022)" },
+  { section:"Skeletal & Muscular System", q:"The largest bone of the foot is _______.", ans:"Calcaneus", alts:["calcaneum"], mem:"Calcaneus = Heel bone. CALCulate your steps from the heel!", freq:"1× (June 2013)" },
+  { section:"Skeletal & Muscular System", q:"The bone of the lower jaw is called _______.", ans:"Mandible", alts:[], mem:"MANDible = MANDatory chewing bone. You MUST chew with it!", freq:"1× (Aug 2014)" },
+  { section:"Skeletal & Muscular System", q:"Zygomatic bone is known as _______.", ans:"Cheek bone", alts:["cheekbone"], mem:"Zygomatic = Cheekbone. Z for the zig-zag of your cheek!", freq:"1× (Feb 2012)" },
+  { section:"Skeletal & Muscular System", q:"_______ is second cervical vertebra.", ans:"Axis", alts:[], mem:"Axis = 2nd vertebra. Your head ROTATEs on the AXIS — like Earth!", freq:"1× (Feb 2014)" },
+  { section:"Skeletal & Muscular System", q:"Buccinator is _______ in cheek.", ans:"Muscle", alts:[], mem:"Buccinator = Bugle muscle. Trumpeters blow their cheeks with it!", freq:"1× (Feb 2014)" },
+  { section:"Skeletal & Muscular System", q:"Muscle cells are specialized from _______.", ans:"Mesoderm", alts:[], mem:"MESOderm = Middle germ layer. MESo = Middle. Muscles from the middle!", freq:"1× (Feb 2014)" },
+  { section:"Nervous System & Sense Organs", q:"_______ is covering membrane of the Brain and spinal cord.", ans:"Meninges", alts:[], mem:"MENINGes = MENINGitis target. When it inflames = meningitis!", freq:"2× (Aug 2014, Feb 2025)" },
+  { section:"Nervous System & Sense Organs", q:"The largest part of the brain is _______.", ans:"Cerebrum", alts:[], mem:"CEREBRum = CEREBRAL thinking. The big thinker = biggest part!", freq:"1× (Feb 2017)" },
+  { section:"Nervous System & Sense Organs", q:"_______ nerve is the first cranial nerve of our body.", ans:"Olfactory", alts:[], mem:"Olfactory = SMELL. 1st thing you do entering a room — smell it!", freq:"2× (Feb 2015, May 2023)" },
+  { section:"Nervous System & Sense Organs", q:"_______ is the covering membrane of the nerve.", ans:"Epineurium", alts:[], mem:"EPI = upon/over. Epineurium = outer coat OF the nerve.", freq:"1× (Feb 2014)" },
+  { section:"Nervous System & Sense Organs", q:"Respiratory centre is situated in the _______.", ans:"Medulla Oblongata", alts:["medulla"], mem:"Medulla = life control. Controls breathing + heartbeat — SURVIVAL centre!", freq:"1× (Aug 2011)" },
+  { section:"Nervous System & Sense Organs", q:"Specific gravity of C.S.F. is _______.", ans:"1.005 – 1.007", alts:["1.005","1.006","1.007"], mem:"CSF ≈ water (1.000). Brain fluid is almost pure water!", freq:"1× (Aug 2011)" },
+  { section:"Nervous System & Sense Organs", q:"Tail of the spinal cord is called as _______.", ans:"Cauda Equina", alts:["cauda equina"], mem:"Cauda Equina = Horse's tail in Latin. Nerve roots hang like a horse tail!", freq:"1× (Sep 2013)" },
+  { section:"Nervous System & Sense Organs", q:"The retina is a _______ layer of eye.", ans:"Nervous / Innermost", alts:["nervous","innermost"], mem:"Retina is a NERVOUS layer — full of photoreceptor NERVE cells!", freq:"1× (Feb 2018)" },
+  { section:"Nervous System & Sense Organs", q:"Taste buds contain _______ receptors.", ans:"Gustatory", alts:[], mem:"GUSTatory = taste. GUSTo means flavor in Italian!", freq:"1× (Feb 2018)" },
+  { section:"Nervous System & Sense Organs", q:"Receptors for bright light and colour vision is _______.", ans:"Cones", alts:[], mem:"Cones = Color & bright light. C-C: Cones = Color!", freq:"1× (Sep 2013)" },
+  { section:"Nervous System & Sense Organs", q:"Myopia is caused by _______.", ans:"Elongation of eyeball", alts:["elongation"], mem:"Myopia = short-sight. ELONGated eye = image falls SHORT of retina!", freq:"1× (Feb 2012)" },
+  { section:"Nervous System & Sense Organs", q:"_______ is the third cranial nerve.", ans:"Oculomotor", alts:[], mem:"OCULOmotor = eye mover. CN III moves your eye muscles!", freq:"1× (July 2025)" },
+  { section:"Cardiovascular System & Blood", q:"_______ is the pacemaker of the heart.", ans:"SA Node (Sinoatrial Node)", alts:["sa node","sinoatrial node","sinoatrial"], mem:"SA = Starts All heartbeats. Like a conductor of the heart orchestra!", freq:"2× (Aug 2018, July 2024)" },
+  { section:"Cardiovascular System & Blood", q:"The Middle layer of heart is called as _______.", ans:"Myocardium", alts:[], mem:"MYO = muscle, CARDIUM = heart. Heart MUSCLE layer!", freq:"3× (June 2013, Aug 2016, Jan 2024)" },
+  { section:"Cardiovascular System & Blood", q:"The inner layer of the heart is called as _______.", ans:"Endocardium", alts:[], mem:"ENDO = within. Endocardium = INside lining of the heart.", freq:"1× (Jan 2022)" },
+  { section:"Cardiovascular System & Blood", q:"The heart is situated in the _______ cavity.", ans:"Mediastinum", alts:[], mem:"Mediastinum = middle chest space. Heart sits in the MIDDLE!", freq:"1× (Feb 2019)" },
+  { section:"Cardiovascular System & Blood", q:"Left atrio-ventricular valve is also known as _______ valve.", ans:"Mitral", alts:[], mem:"My-tral is on MY left! Left = Mitral valve.", freq:"1× (Feb 2017)" },
+  { section:"Cardiovascular System & Blood", q:"Bicuspid valve is also known as _______.", ans:"Mitral valve", alts:["mitral"], mem:"Bicuspid = 2 cusps = Mitral. Same left heart valve, two names!", freq:"1× (Feb 2012)" },
+  { section:"Cardiovascular System & Blood", q:"Blood vessels which carry blood AWAY from heart are called _______.", ans:"Arteries", alts:[], mem:"Arteries = Away. A-A: Arteries go Away from heart!", freq:"1× (Feb 2015)" },
+  { section:"Cardiovascular System & Blood", q:"Blood vessels which carry blood TOWARDS heart are called _______.", ans:"Veins", alts:[], mem:"Veins = Visit the heart. V-V: Veins Visit the heart!", freq:"1× (Aug 2014)" },
+  { section:"Cardiovascular System & Blood", q:"The main artery in the human body is _______.", ans:"Aorta", alts:[], mem:"AORTA = the BIGGEST artery. 'A-ORTA be the biggest!'", freq:"1× (Feb 2015)" },
+  { section:"Cardiovascular System & Blood", q:"Life span of RBC is _______ days.", ans:"120 days", alts:["120"], mem:"RBC has a 4-month contract! 4 months × 30 = 120 days!", freq:"3× (Aug 2015, Feb 2019, July 2024)" },
+  { section:"Cardiovascular System & Blood", q:"Normal clotting time is _______.", ans:"3 to 8 minutes", alts:["3-8","3 to 8"], mem:"3-8 mins. Blood stops in a few minutes or you're in trouble!", freq:"1× (Aug 2012)" },
+  { section:"Cardiovascular System & Blood", q:"The blood group that is universal recipient is _______.", ans:"AB Positive", alts:["ab+","ab positive"], mem:"AB+ = Accepts Blood from anyone. AB = All Blood welcome!", freq:"1× (Feb 2011)" },
+  { section:"Cardiovascular System & Blood", q:"_______ is largest lymphatic organ.", ans:"Spleen", alts:[], mem:"S for Spleen, S for Super-sized lymph organ!", freq:"1× (Aug 2016)" },
+  { section:"Cardiovascular System & Blood", q:"Enlargement of spleen is called as _______.", ans:"Splenomegaly", alts:[], mem:"MEGA spleen = splenomEGAly! Spleno + megaly = big spleen.", freq:"1× (Aug 2018)" },
+  { section:"Respiratory System", q:"The space between lungs is called _______.", ans:"Mediastinum", alts:[], mem:"Mediastinum = Middle. Space BETWEEN = MIDDLE space!", freq:"3× (Sep 2013, Feb 2016, Feb 2018)" },
+  { section:"Respiratory System", q:"_______ is called as the voice box of human body.", ans:"Larynx", alts:[], mem:"LARynx = your built-in singing box! Lyre is a musical instrument!", freq:"1× (Feb 2015)" },
+  { section:"Respiratory System", q:"Laryngeal prominence is called _______.", ans:"Adam's Apple", alts:["adams apple"], mem:"Visible bump in the throat = Adam's Apple!", freq:"1× (Feb 2011)" },
+  { section:"Respiratory System", q:"_______ is the respiratory organ.", ans:"Lungs", alts:[], mem:"Lungs = Life. No trick needed!", freq:"1× (Feb 2014)" },
+  { section:"Respiratory System", q:"The process of exchange of gases is called _______.", ans:"Respiration / Diffusion", alts:["respiration","diffusion"], mem:"O2 in, CO2 out — Respiration at organ level, Diffusion at cell level!", freq:"1× (July 2025)" },
+  { section:"Digestive & Excretory System", q:"_______ is the largest gland in Human body.", ans:"Liver", alts:[], mem:"LIVER = LIVEs large in abdomen. Biggest gland that LIVEs in you!", freq:"1× (Aug 2014)" },
+  { section:"Digestive & Excretory System", q:"The end part of small intestine is _______.", ans:"Ileum", alts:[], mem:"I'll End yoUr intestine Man = ILEUM!", freq:"1× (Aug 2017)" },
+  { section:"Digestive & Excretory System", q:"Daily secretion of saliva is _______.", ans:"1000 to 1500 ml", alts:["1000-1500","1 to 1.5 litres","1000ml","1500ml"], mem:"1-1.5 litres daily! Your mouth is a tiny saliva FACTORY!", freq:"1× (Feb 2012)" },
+  { section:"Digestive & Excretory System", q:"Appendix is a _______ organ.", ans:"Vestigial", alts:[], mem:"Vestigial = VESTige of evolution. Appendix = useless leftover!", freq:"1× (Aug 2012)" },
+  { section:"Digestive & Excretory System", q:"_______ is the functional unit of the kidney.", ans:"Nephron", alts:[], mem:"NEPHRon = kidney unit. NEPHro = kidney (nephrologist = kidney doctor)!", freq:"3× (Feb 2014, Aug 2018, Feb 2025)" },
+  { section:"Digestive & Excretory System", q:"Weight of kidney is _______.", ans:"150 grams", alts:["150g","150"], mem:"Kidney = 150g. About the weight of a medium onion!", freq:"1× (Aug 2011)" },
+  { section:"Digestive & Excretory System", q:"Capacity of urinary bladder is _______.", ans:"400 – 600 ml", alts:["400-600","400 to 600"], mem:"400-600ml = about 2 cups before you MUST go!", freq:"1× (Feb 2012)" },
+  { section:"Endocrine & Reproductive System", q:"_______ is known as Master Gland.", ans:"Pituitary", alts:["pituitary gland"], mem:"Pituitary = THE BOSS gland. Controls ALL other glands!", freq:"1× (Jan 2024)" },
+  { section:"Endocrine & Reproductive System", q:"Suprarenal gland is otherwise known as _______.", ans:"Adrenal gland", alts:["adrenal"], mem:"SUPRA = above RENAL = kidney. Suprarenal = ADRENAL = above kidney!", freq:"5× (Feb 2016, Feb 2017, Aug 2017, Feb 2019, July 2024)" },
+  { section:"Endocrine & Reproductive System", q:"Insulin is secreted by _______ cells of pancreas.", ans:"Beta", alts:["β","b"], mem:"Beta cells = Blood sugar lowering! B-B: Beta = Blood sugar!", freq:"2× (Feb 2016, Feb 2025)" },
+  { section:"Endocrine & Reproductive System", q:"_______ is the hormone secreted by Thymus gland.", ans:"Thymosin", alts:[], mem:"THYMus → THYMosin. Same root word!", freq:"1× (Aug 2015)" },
+  { section:"Endocrine & Reproductive System", q:"Exocrine gland secret _______.", ans:"Enzymes", alts:[], mem:"EXOcrine = secretes OUT through duct → Enzymes!", freq:"1× (Sep 2013)" },
+  { section:"Endocrine & Reproductive System", q:"Hyperthyroidism with toxic effects is called _______.", ans:"Thyrotoxicosis / Graves' Disease", alts:["thyrotoxicosis","graves disease","graves"], mem:"THYRO-TOXIcosis = Thyroid TOXIC overload. Graves = grave consequences!", freq:"1× (Feb 2012)" },
+  { section:"Endocrine & Reproductive System", q:"_______ is the innermost layer of the uterus.", ans:"Endometrium", alts:[], mem:"ENDO = inner. Endometrium = INner uterus lining. Sheds during periods!", freq:"2× (Feb 2014, Feb 2025)" },
+  { section:"Endocrine & Reproductive System", q:"The outer layer of the uterus is called as _______.", ans:"Perimetrium", alts:[], mem:"PERI = around/outer. Perimetrium = OUTER uterine coat.", freq:"1× (May 2023)" },
+  { section:"Endocrine & Reproductive System", q:"Prolactin is secreted by _______ gland.", ans:"Anterior Pituitary", alts:["anterior pituitary gland","anterior"], mem:"Prolactin = milk hormone from the FRONT (anterior) pituitary!", freq:"1× (July 2025)" },
+  { section:"Microbiology & Infection Control", q:"_______ is the best method of sterilization.", ans:"Autoclaving", alts:["autoclave"], mem:"AUTO-CLAVE = HIGH pressure steam kills EVERYTHING!", freq:"2× (Feb 2017, Jan 2024)" },
+  { section:"Microbiology & Infection Control", q:"_______ is the organ of locomotion of bacteria.", ans:"Flagella", alts:["flagellum"], mem:"FLAGella = FLAGs that wave to move the bacteria!", freq:"2× (Aug 2017, Jan 2022)" },
+  { section:"Microbiology & Infection Control", q:"Hospital acquired infection is called _______.", ans:"Nosocomial infection", alts:["nosocomial"], mem:"NOSOcomial = Nasty hospital bug! NOSO = disease in Greek.", freq:"1× (May 2023)" },
+  { section:"Microbiology & Infection Control", q:"The presence of viruses in the blood is called _______.", ans:"Viremia", alts:[], mem:"VIRU + EMIA = virus in blood. Like bacteremia but for viruses!", freq:"2× (Feb 2011, Feb 2012)" },
+  { section:"Microbiology & Infection Control", q:"Tuberculosis is caused by _______.", ans:"Mycobacterium tuberculosis", alts:["mycobacterium tuberculosis","mycobacterium"], mem:"MYCO = fungus-like bacteria. TB = Terrible Bug!", freq:"2× (Aug 2014, Aug 2017)" },
+  { section:"Microbiology & Infection Control", q:"Leprosy is caused by _______.", ans:"Mycobacterium leprae", alts:["mycobacterium leprae"], mem:"LEP-RAE causes Leprosy. Same family as TB!", freq:"2× (Aug 2014, Feb 2017)" },
+  { section:"Microbiology & Infection Control", q:"Cholera is caused by _______.", ans:"Vibrio cholerae", alts:["vibrio"], mem:"VIBRio = vibrating comma-shaped bacteria. Contaminated water!", freq:"1× (Aug 2016)" },
+  { section:"Microbiology & Infection Control", q:"Typhoid is caused by _______.", ans:"Salmonella typhi", alts:["salmonella"], mem:"SALMOnella = contaminated SALMON/food. TYPHI = typhoid!", freq:"1× (Aug 2015)" },
+  { section:"Microbiology & Infection Control", q:"Malaria is caused by _______.", ans:"Plasmodium", alts:[], mem:"PLASMOdium = MO-squito carries it. PlasMO = MOsquito!", freq:"1× (Feb 2012)" },
+  { section:"Microbiology & Infection Control", q:"The mode of transmission of viral hepatitis A is _______.", ans:"Fecal-oral route", alts:["fecal oral","fecal-oral","oral fecal"], mem:"Hep A = dirty hands → mouth. FECAL-ORAL = food contamination!", freq:"1× (Feb 2012)" },
+  { section:"Microbiology & Infection Control", q:"Ziehl Nielsen staining is used for _______.", ans:"Acid Fast Bacilli (Mycobacteria)", alts:["acid fast bacilli","mycobacteria","afb"], mem:"ZN stain = 'Zebra-Nailing' TB bacteria. Stains acid-fast organisms red!", freq:"1× (Aug 2011)" },
+];
+
+const tfData = [
+  { section:"Microbiology & Infection Control", q:"Tetanus is caused by Clostridium tetani.", ans:true, tip:"Clostridium tetani produces tetanospasmin toxin causing muscle spasms.", freq:"5× (Feb 2015, June 2013, Aug 2016, Feb 2018, Feb 2025)" },
+  { section:"Microbiology & Infection Control", q:"Autoclaving is a method of disinfection.", ans:false, tip:"Autoclaving = STERILIZATION (kills all including spores), not just disinfection.", freq:"3× (Aug 2016, May 2023, Jan 2024)" },
+  { section:"Microbiology & Infection Control", q:"Rabies is a zoonotic disease.", ans:true, tip:"Zoonotic = animal to human. Rabies comes from infected animal bites.", freq:"3× (Feb 2016, Aug 2016, Feb 2018)" },
+  { section:"Microbiology & Infection Control", q:"Sources of infection within the body are called exogenous.", ans:false, tip:"Within body = ENDOgenous. EXOgenous = from outside the body.", freq:"2× (June 2013, Feb 2025)" },
+  { section:"Microbiology & Infection Control", q:"Leprosy is caused by Mycobacterium leprae.", ans:true, tip:"Same Mycobacterium family as TB but causes leprosy/Hansen's disease.", freq:"1× (July 2024)" },
+  { section:"Microbiology & Infection Control", q:"Gas Gangrene is caused by Clostridium welchii.", ans:true, tip:"Clostridium welchii (perfringens) produces gas in tissues = gas gangrene.", freq:"1× (Sep 2013)" },
+  { section:"Microbiology & Infection Control", q:"Malaria is transmitted by the bite of mosquitoes.", ans:true, tip:"Female Anopheles mosquito transmits Plasmodium parasite.", freq:"1× (Aug 2014)" },
+  { section:"Microbiology & Infection Control", q:"Disinfectants inhibit the growth of Microbes.", ans:true, tip:"Disinfectants kill or inhibit microbes on inanimate surfaces.", freq:"1× (Feb 2012)" },
+  { section:"Microbiology & Infection Control", q:"Mid-Stream urine is best sample for Urine culture.", ans:true, tip:"Mid-stream avoids contamination from urethral flora.", freq:"1× (Aug 2011)" },
+  { section:"Nervous System & Senses", q:"Vagus nerve is the ninth cranial nerve.", ans:false, tip:"Vagus = CN X (10th). CN IX = Glossopharyngeal nerve.", freq:"2× (Aug 2017, Feb 2025)" },
+  { section:"Nervous System & Senses", q:"Optic nerve is the first cranial nerve.", ans:false, tip:"Optic = CN II (2nd). CN I = Olfactory nerve (smell).", freq:"1× (July 2024)" },
+  { section:"Nervous System & Senses", q:"Optic nerve is the second cranial nerve in our body.", ans:true, tip:"Optic nerve (vision) = CN II. Olfactory=1, Optic=2.", freq:"1× (Aug 2015)" },
+  { section:"Nervous System & Senses", q:"Optic nerve is the third cranial nerve.", ans:false, tip:"Optic = CN II. CN III = Oculomotor (eye movement).", freq:"1× (Jan 2022)" },
+  { section:"Nervous System & Senses", q:"Olfactory nerve is the second cranial nerve.", ans:false, tip:"Olfactory = CN I (first). It's the FIRST nerve — for smell!", freq:"1× (Apr 2021)" },
+  { section:"Nervous System & Senses", q:"The first cranial nerve is olfactory nerve.", ans:true, tip:"CN I = Olfactory = smell. First thing you do entering a room!", freq:"1× (Feb 2011)" },
+  { section:"Nervous System & Senses", q:"The optic nerve transmits nerve impulses of smell.", ans:false, tip:"Optic = VISION. Olfactory nerve transmits smell impulses.", freq:"1× (Aug 2014)" },
+  { section:"Nervous System & Senses", q:"The largest part of Human brain is Cerebrum.", ans:true, tip:"Cerebrum = 85% of brain weight. Controls thinking, memory, movement.", freq:"1× (Aug 2014)" },
+  { section:"Nervous System & Senses", q:"Cerebellum is the largest part of human brain.", ans:false, tip:"Cerebellum = 2nd largest (balance). Cerebrum is largest.", freq:"1× (Apr 2021)" },
+  { section:"Nervous System & Senses", q:"Outer layer of Meninges is dura mater.", ans:true, tip:"Dura = tough outer layer. 3 layers outside→in: Dura → Arachnoid → Pia.", freq:"1× (Aug 2018)" },
+  { section:"Nervous System & Senses", q:"The Spinal cord lies outside the Vertebral column.", ans:false, tip:"Spinal cord runs INSIDE the vertebral canal — protected by bones!", freq:"1× (Jan 2024)" },
+  { section:"Nervous System & Senses", q:"The nerve cell does not generate impulses.", ans:false, tip:"Neurons DO generate and transmit electrical impulses — that's their job!", freq:"1× (June 2013)" },
+  { section:"Nervous System & Senses", q:"Rods and cones are photoreceptors of the eye.", ans:true, tip:"Rods = dim light. Cones = color/bright light.", freq:"2× (Feb 2016, July 2025)" },
+  { section:"Nervous System & Senses", q:"Fluid present in the inner Ear is CSF.", ans:false, tip:"Inner ear fluid = Endolymph/Perilymph. CSF is in brain/spinal cord.", freq:"1× (Sep 2013)" },
+  { section:"Nervous System & Senses", q:"Sound waves travel at a speed of 332m/sec.", ans:true, tip:"Speed of sound in air ≈ 332 m/s at 0°C.", freq:"1× (Aug 2012)" },
+  { section:"Nervous System & Senses", q:"Nose is the organ of taste.", ans:false, tip:"Nose = organ of SMELL. Tongue = organ of taste.", freq:"1× (Jan 2022)" },
+  { section:"Cardiovascular System & Blood", q:"Veins carry oxygenated blood away from the heart.", ans:false, tip:"Veins carry blood TOWARD the heart (usually deoxygenated).", freq:"3× (Feb 2012, Feb 2014, Feb 2017)" },
+  { section:"Cardiovascular System & Blood", q:"Pulmonary veins carry deoxygenated blood to the heart.", ans:false, tip:"Pulmonary VEINS carry OXYGENATED blood from lungs to heart — exception!", freq:"1× (Jan 2022)" },
+  { section:"Cardiovascular System & Blood", q:"Pulmonary artery carries de-oxygenated blood.", ans:true, tip:"Only artery carrying deoxygenated blood — to lungs for oxygenation.", freq:"1× (Aug 2018)" },
+  { section:"Cardiovascular System & Blood", q:"Blood circulation between heart and body is called pulmonary circulation.", ans:false, tip:"Heart→Body = Systemic circulation. Heart→Lungs = Pulmonary circulation.", freq:"1× (Aug 2014)" },
+  { section:"Cardiovascular System & Blood", q:"Peritoneum is a covering layer/membrane of heart.", ans:false, tip:"Pericardium covers the heart. Peritoneum covers abdominal organs.", freq:"3× (Feb 2016, Aug 2016, Feb 2018)" },
+  { section:"Cardiovascular System & Blood", q:"Heart is situated in the mediastinum.", ans:true, tip:"Mediastinum = central chest compartment between the lungs.", freq:"1× (Aug 2015)" },
+  { section:"Cardiovascular System & Blood", q:"Pace maker of heart is Situated in Right atrium.", ans:true, tip:"SA Node (pacemaker) is in the wall of the RIGHT atrium.", freq:"1× (May 2023)" },
+  { section:"Cardiovascular System & Blood", q:"Cardiac muscles are involuntary muscles.", ans:true, tip:"You cannot voluntarily control your heartbeat — it's involuntary!", freq:"1× (July 2024)" },
+  { section:"Cardiovascular System & Blood", q:"Cardiac muscles are voluntary muscles.", ans:false, tip:"Cardiac muscle = INVOLUNTARY. You can't decide when your heart beats!", freq:"2× (Aug 2018, May 2023)" },
+  { section:"Cardiovascular System & Blood", q:"The right atrio-Ventricular Valve is also called as Mitral Valve.", ans:false, tip:"Mitral (Bicuspid) = LEFT AV valve. Right AV valve = Tricuspid valve.", freq:"1× (Sep 2013)" },
+  { section:"Cardiovascular System & Blood", q:"A person with AB blood group is a universal donor.", ans:false, tip:"AB = universal RECIPIENT. O negative = universal donor.", freq:"1× (Aug 2018)" },
+  { section:"Cardiovascular System & Blood", q:"The life span of RBC is 80 days.", ans:false, tip:"RBC lifespan = 120 days (not 80). 4 months = 120 days.", freq:"1× (Aug 2017)" },
+  { section:"Cardiovascular System & Blood", q:"Iron part of haemoglobin is known as haem.", ans:true, tip:"HaeMoglobin: HAEM = iron-containing part. Gives blood its red color!", freq:"1× (Feb 2014)" },
+  { section:"Cardiovascular System & Blood", q:"Blood is an Epithelial Tissue.", ans:false, tip:"Blood is CONNECTIVE (fluid) tissue, not epithelial.", freq:"1× (Aug 2011)" },
+  { section:"Cardiovascular System & Blood", q:"William Harvey discovered blood circulation in Human body.", ans:true, tip:"William Harvey (1628) first described complete circulation of blood.", freq:"1× (Feb 2011)" },
+  { section:"Skeletal & Muscular System", q:"Stapes is the smallest bone of our body.", ans:true, tip:"Stapes (stirrup bone in ear) = smallest bone. Only 3mm long!", freq:"2× (Aug 2017, Feb 2025)" },
+  { section:"Skeletal & Muscular System", q:"Mandible bone is the only movable bone of the skull.", ans:true, tip:"All skull bones are fused except the mandible (lower jaw)!", freq:"1× (Jan 2024)" },
+  { section:"Skeletal & Muscular System", q:"The thoracic cage consists of 12 pairs of ribs.", ans:true, tip:"12 pairs = 24 ribs total. 7 true + 3 false + 2 floating.", freq:"1× (Feb 2019)" },
+  { section:"Skeletal & Muscular System", q:"There are eight Cervical Vertebrae.", ans:false, tip:"There are 7 cervical vertebrae (C1–C7). 7 days in a week, 7 neck bones!", freq:"1× (Feb 2017)" },
+  { section:"Skeletal & Muscular System", q:"The first cervical vertebra is named as atlas.", ans:true, tip:"Atlas (C1) holds the skull like Atlas holds the world!", freq:"1× (Feb 2011)" },
+  { section:"Skeletal & Muscular System", q:"Total bones of our body is 250.", ans:false, tip:"Adults have 206 bones (not 250).", freq:"1× (Feb 2018)" },
+  { section:"Skeletal & Muscular System", q:"The skeletal muscle cells are multinucleated.", ans:true, tip:"Skeletal muscle fibers formed by fusion of many cells → multinucleated!", freq:"1× (Feb 2019)" },
+  { section:"Skeletal & Muscular System", q:"Trapezius muscle is located in the upper part of the back.", ans:true, tip:"Trapezius = trapezoid-shaped back/neck muscle. Shrug = trapezius!", freq:"1× (Aug 2011)" },
+  { section:"Skeletal & Muscular System", q:"There are 12 pairs of intercostal muscles that occupy the space the 12 pair of ribs.", ans:false, tip:"12 pairs of ribs but 11 pairs of intercostal muscles (spaces BETWEEN ribs = 11).", freq:"1× (Feb 2011)" },
+  { section:"Respiratory & Digestive System", q:"The act of swallowing is deglutition.", ans:true, tip:"Deglutition = swallowing. DEGlutition = DEGlutting food down!", freq:"1× (July 2024)" },
+  { section:"Respiratory & Digestive System", q:"Mediastinum is the space between the lungs.", ans:true, tip:"Mediastinum = central chest space. Contains heart, trachea, esophagus.", freq:"1× (Aug 2017)" },
+  { section:"Respiratory & Digestive System", q:"Larynx is also known as Voice box.", ans:true, tip:"Larynx contains vocal cords = voice box.", freq:"1× (Feb 2017)" },
+  { section:"Respiratory & Digestive System", q:"Laryngeal prominence is called as Adam's apple.", ans:true, tip:"Adam's apple = visible thyroid cartilage of larynx.", freq:"1× (Aug 2011)" },
+  { section:"Respiratory & Digestive System", q:"Diaphragm Relaxes during Expiration.", ans:true, tip:"Exhale = diaphragm relaxes and rises. Inhale = contracts and flattens.", freq:"1× (Sep 2013)" },
+  { section:"Respiratory & Digestive System", q:"Temporary arrest of breathing is called Dysphonia.", ans:false, tip:"Dysphonia = voice difficulty. Temporary breathing stop = Apnea.", freq:"1× (Feb 2014)" },
+  { section:"Respiratory & Digestive System", q:"Bile is secreted by the stomach.", ans:false, tip:"Bile is secreted by LIVER, stored in gallbladder. Stomach makes HCl.", freq:"1× (Aug 2015)" },
+  { section:"Respiratory & Digestive System", q:"The double layer of peritoneum is called mesentery.", ans:true, tip:"Mesentery = double fold of peritoneum attaching intestines to abdominal wall.", freq:"1× (June 2013)" },
+  { section:"Reproductive & Endocrine System", q:"The inner most layer of uterus is endometrium.", ans:true, tip:"Endo = inner. Endometrium sheds each month during menstruation.", freq:"1× (Feb 2019)" },
+  { section:"Reproductive & Endocrine System", q:"Progesterone is hormone produced by corpus luteum.", ans:true, tip:"Corpus luteum produces progesterone after ovulation to maintain pregnancy.", freq:"1× (Jan 2024)" },
+  { section:"Reproductive & Endocrine System", q:"Pituitary gland is also called as master gland.", ans:true, tip:"Pituitary = master gland controlling all other glands.", freq:"1× (Apr 2021)" },
+  { section:"Reproductive & Endocrine System", q:"Thymus gland is the largest lymph organ.", ans:false, tip:"Spleen = largest lymphoid organ. Thymus is a small chest gland.", freq:"1× (Feb 2011)" },
+  { section:"Reproductive & Endocrine System", q:"Child birth is also called as parturition.", ans:true, tip:"Parturition = the process of giving birth.", freq:"1× (Aug 2012)" },
+  { section:"Cell Biology & General", q:"Nucleus is the power house of the cell.", ans:false, tip:"Mitochondria = power house. Nucleus = control center (contains DNA).", freq:"4× (Feb 2016, Apr 2021, May 2023, July 2025)" },
+  { section:"Cell Biology & General", q:"Lysosomes are the suicidal bags of cell.", ans:true, tip:"Lysosomes contain digestive enzymes that can destroy the cell itself!", freq:"1× (Jan 2022)" },
+  { section:"Cell Biology & General", q:"Lysosomes are rich in protein.", ans:false, tip:"Lysosomes are rich in ENZYMES (hydrolytic enzymes), not protein.", freq:"1× (Aug 2012)" },
+  { section:"Cell Biology & General", q:"Electron microscope is discovered by Ruska.", ans:true, tip:"Ernst Ruska invented the electron microscope in 1931.", freq:"1× (Feb 2019)" },
+  { section:"Cell Biology & General", q:"Derma is the superficial layer of the skin.", ans:false, tip:"Epidermis = superficial (outer) layer. Dermis = deeper layer.", freq:"2× (Feb 2016, July 2025)" },
+  { section:"Cell Biology & General", q:"Neuron is the functional unit of Kidney.", ans:false, tip:"Nephron = functional unit of kidney. Neuron = nervous system unit.", freq:"2× (Feb 2015, July 2025)" },
+];
+
+const meaningsData = [
+  { section:"Commonly Repeated Definitions", term:"Immunity", def:"Body's ability to resist infection by identifying and destroying pathogens using innate and adaptive defense systems.", mem:"IMmunity = IM-possible for germs to win! Your personal army!", freq:"8× (Jan 2024, July 2024, Feb 2025, May 2023, Feb 2019, Aug 2018, Feb 2018, Aug 2014)" },
+  { section:"Commonly Repeated Definitions", term:"Hypersensitivity", def:"Exaggerated immune response to an antigen (allergen) that damages the body's own tissues — e.g., allergies, anaphylaxis.", mem:"HYPER-sensitivity = OVER-reaction. Immune system throwing a tantrum!", freq:"6× (July 2024, Feb 2025, Feb 2019, Feb 2017, Feb 2015, Sep 2013)" },
+  { section:"Commonly Repeated Definitions", term:"Sterilization", def:"Complete destruction of ALL forms of microbial life including spores. Best method: Autoclaving.", mem:"Sterilization = STERILE = ZERO life. Not just reducing — ELIMINATING everything!", freq:"6× (May 2023, Apr 2021, Feb 2018, Feb 2015, June 2013, Aug 2011)" },
+  { section:"Commonly Repeated Definitions", term:"Pasteurization", def:"Heating food/liquids to specific temperature for set time to kill pathogenic bacteria without destroying all microorganisms.", mem:"PASTEURization = Louis PASTEUR invented it. Heat the milk, save the people!", freq:"4× (Apr 2021, Feb 2018, Aug 2016, Aug 2014)" },
+  { section:"Commonly Repeated Definitions", term:"Osmosis", def:"Passive movement of WATER through a semi-permeable membrane from low solute concentration to high solute concentration.", mem:"Water goes to where it's needed most. Water follows the crowd!", freq:"3× (Jan 2022, Feb 2025, Feb 2014)" },
+  { section:"Commonly Repeated Definitions", term:"Infection", def:"Invasion, colonization and multiplication of pathogenic microorganisms in body tissues causing a host reaction.", mem:"INfection = INvaders inside! Germs invade, colonize, and cause trouble.", freq:"4× (June 2013, Aug 2017, Feb 2017, Feb 2016)" },
+  { section:"Movements & Positions", term:"Abduction", def:"Movement of a limb AWAY from the midline of the body.", mem:"ABduction = ABsent from midline. Like ABducted/taken away from center!", freq:"4× (Jan 2022, Feb 2025, Feb 2015, July 2025)" },
+  { section:"Movements & Positions", term:"Adduction", def:"Movement of a limb TOWARD the midline of the body.", mem:"ADDuction = ADD to midline. Bring back toward center — ADD it back!", freq:"2× (Jan 2024, Feb 2017)" },
+  { section:"Movements & Positions", term:"Extension", def:"Movement that INCREASES the angle between two body parts — straightening a joint.", mem:"EXTENsion = EXTENd/straighten. Extending your arm = straightening it!", freq:"2× (July 2024, Aug 2017)" },
+  { section:"Movements & Positions", term:"Flexion", def:"Movement that DECREASES the angle between two body parts — bending a joint.", mem:"FLEXion = FLEXing muscles by bending. Curl your arm = flexion!", freq:"3× (May 2023, Apr 2021, Feb 2016)" },
+  { section:"Cardiovascular System", term:"Cardiac Cycle", def:"Complete sequence of events in one heartbeat: Systole (contraction) + Diastole (relaxation).", mem:"One full heartbeat routine. Squeeze and release — repeat forever!", freq:"1× (Feb 2018)" },
+  { section:"Cardiovascular System", term:"Cardiac Output", def:"Volume of blood pumped by left ventricle per minute. CO = Stroke Volume × Heart Rate.", mem:"OUTPUT = what comes OUT per minute. Formula: CO = SV × HR!", freq:"1× (Feb 2016)" },
+  { section:"Cardiovascular System", term:"Pulse", def:"Rhythmic expansion and recoil of an artery with each heartbeat, felt against a bone.", mem:"Pulse = heartbeat felt in arteries. Wrist pulse = counting your heartbeats!", freq:"1× (Jan 2022)" },
+  { section:"Cardiovascular System", term:"Pulmonary Circulation", def:"Blood flow pathway: deoxygenated blood → heart → lungs (gas exchange) → oxygenated blood back to heart.", mem:"PULmonary = PULM = lungs. Heart-to-LUNGS trip!", freq:"1× (Aug 2014)" },
+  { section:"Cardiovascular System", term:"Vein", def:"Blood vessel carrying blood TOWARD the heart. Typically carries deoxygenated blood (except pulmonary veins).", mem:"Vein = Visits heart. Blue tubes going back to the heart.", freq:"1× (Aug 2012)" },
+  { section:"Reproductive System", term:"Fertilization", def:"Fusion of sperm + egg → zygote. Usually occurs in the ampulla of the fallopian tube.", mem:"FERTILization = making FERTILE. Sperm + Egg = new life begins!", freq:"2× (Jan 2024, Feb 2018)" },
+  { section:"Reproductive System", term:"Fimbriae", def:"Finger-like projections at distal end of fallopian tubes that sweep the released ovum into the tube.", mem:"FIMbriae = FINgers that catch the egg after ovulation!", freq:"1× (Sep 2013)" },
+  { section:"Reproductive System", term:"Fontanelles", def:"Soft, membranous gaps between infant skull bones — allow brain growth and skull compression during birth.", mem:"Baby's head has soft windows that close as brain grows!", freq:"1× (Feb 2014)" },
+  { section:"Reproductive System", term:"Meiosis", def:"Cell division reducing chromosome number by HALF → 4 haploid gamete cells (sperm/egg).", mem:"MEIosis = MEan division — cuts chromosomes in HALF. For sex cells only!", freq:"2× (Aug 2016, Aug 2012)" },
+  { section:"Reproductive System", term:"Menopause", def:"Permanent cessation of menstruation, confirmed after 12 consecutive months without a period.", mem:"MENO-pause = menstruation PAUSES forever. Usually age 45–55.", freq:"1× (Aug 2018)" },
+  { section:"Reproductive System", term:"Mitosis", def:"Cell division: one parent cell → two IDENTICAL daughter cells. Used for growth and tissue repair.", mem:"MITosis = One becomes TWO identical twins! Body's copy machine!", freq:"1× (Feb 2018)" },
+  { section:"Reproductive System", term:"Ovulation", def:"Mature follicle bursts and releases an egg (ovum) from the ovary.", mem:"OVULation = OVUm is launched! Egg fired from ovary like a tiny rocket!", freq:"1× (May 2023)" },
+  { section:"Digestive System", term:"Deglutition", def:"The act of swallowing — moves food from mouth → pharynx → esophagus → stomach.", mem:"DEGlutition = DEGlut-ition. 'You gotta DEGlut (gulp) it down!'", freq:"1× (Aug 2017)" },
+  { section:"Digestive System", term:"Digestion", def:"Mechanical and chemical breakdown of food into absorbable components.", mem:"DIGEST-ion = food gets DIGested into usable fuel!", freq:"1× (May 2023)" },
+  { section:"Digestive System", term:"Ingestion", def:"Process of taking food/drink into the body through the mouth.", mem:"INgestion = putting things IN the mouth. IN = intake!", freq:"1× (Aug 2015)" },
+  { section:"Digestive System", term:"Mastication", def:"The mechanical process of chewing food to grind it and mix with saliva.", mem:"MASTication = chewing. Chew your food properly!", freq:"1× (July 2024)" },
+  { section:"Digestive System", term:"Peristalsis", def:"Wave-like muscular contractions of the digestive tract that propel food contents forward.", mem:"PeriSTALsis = food STALLs without it! Waves push food along.", freq:"1× (Sep 2013)" },
+  { section:"General Structures & Functions", term:"Anatomy", def:"Branch of science studying the STRUCTURE of body parts and their relationships.", mem:"ANATOMY = studying body PARTS. Ana=up, tomy=cutting. Cut up to study!", freq:"1× (Aug 2015)" },
+  { section:"General Structures & Functions", term:"Cartilage", def:"Tough, flexible connective tissue in joints, airways, ears — structural support and reduces bone friction.", mem:"CART-ilage = CART that carries load between bones. Shock absorber!", freq:"1× (June 2013)" },
+  { section:"General Structures & Functions", term:"Cytology", def:"Branch of biology studying the structure, function, and chemistry of cells.", mem:"CYTO = cell (Greek). Cytology = study of cells!", freq:"3× (Jan 2024, Feb 2015, Aug 2014)" },
+  { section:"General Structures & Functions", term:"Diffusion", def:"Passive movement of particles from HIGH to LOW concentration area.", mem:"Diffusion = spreading out. Like perfume spreading — high to low!", freq:"1× (Aug 2016)" },
+  { section:"General Structures & Functions", term:"Endocrine Gland", def:"Ductless gland secreting hormones DIRECTLY into the bloodstream to regulate body functions.", mem:"ENDOcrine = secretes ENDO (inward) into blood. No duct needed!", freq:"2× (Sep 2013, Feb 2014)" },
+  { section:"General Structures & Functions", term:"Enzyme", def:"Biological catalyst (usually protein) that speeds up chemical reactions without being consumed.", mem:"ENZYME = speed demon of chemistry. Never gets used up!", freq:"2× (Feb 2016, Feb 2015)" },
+  { section:"General Structures & Functions", term:"Foramen Magnum", def:"Large opening in occipital bone of skull through which spinal cord connects to the brain.", mem:"FORAMEN = opening. MAGNUM = large. The GREAT hole in your skull!", freq:"1× (June 2013)" },
+  { section:"General Structures & Functions", term:"Histology", def:"Microscopic study of the structure of tissues.", mem:"HISTO = tissue (Greek). Histology = tissue under the microscope!", freq:"2× (Aug 2016, Sep 2013)" },
+  { section:"General Structures & Functions", term:"Metabolism", def:"Sum of ALL chemical reactions (catabolism + anabolism) in a living organism to maintain life.", mem:"METABOLISM = Meta = change. All the chemical changes keeping you ALIVE!", freq:"1× (Feb 2014)" },
+  { section:"General Structures & Functions", term:"Micturition", def:"Physiological process of emptying the urinary bladder — urination.", mem:"MICTUrition = going to the toilet. Can't hold it forever!", freq:"2× (Feb 2019, Apr 2021)" },
+  { section:"General Structures & Functions", term:"Neuron", def:"Fundamental structural and functional unit of the nervous system, specialized to transmit electrical impulses.", mem:"NEURON = nerve cell. Every thought, feeling, movement = neurons firing!", freq:"1× (Feb 2017)" },
+  { section:"General Structures & Functions", term:"Physiology", def:"Branch of biology dealing with the NORMAL FUNCTIONS of living organisms and their parts.", mem:"Anatomy = structure. Physiology = FUNCTION. What things DO!", freq:"1× (Feb 2019)" },
+  { section:"General Structures & Functions", term:"Respiration", def:"Process of gas exchange — oxygen in, carbon dioxide out — between organism and environment.", mem:"RESPIRation = inhale + exhale. OXYGEN in, CO2 out!", freq:"2× (Feb 2015, Feb 2017)" },
+  { section:"General Structures & Functions", term:"Tendon", def:"Fibrous connective tissue attaching MUSCLE to BONE.", mem:"TENDON: T-T-T! Muscle → Tendon → Bone. Tendons = ties!", freq:"1× (Aug 2012)" },
+  { section:"Microbiology Terms", term:"Anaerobe", def:"Microorganism that requires ABSENCE of free oxygen to live and grow.", mem:"AN-aerobe = WITHOUT air. Anaerobes hate oxygen!", freq:"1× (Aug 2012)" },
+  { section:"Microbiology Terms", term:"Antigen", def:"Any substance (usually foreign protein) that triggers the immune system to produce antibodies.", mem:"ANTIGEN = ANTIbody GENerator. Antigens trigger antibody production!", freq:"2× (Apr 2021, Aug 2018)" },
+  { section:"Microbiology Terms", term:"Asepsis", def:"Absence of bacteria, viruses, and microorganisms; practice of maintaining a sterile environment.", mem:"A-SEPSIS = WITHOUT sepsis. No germs = aseptic!", freq:"2× (Aug 2015, Aug 2018)" },
+  { section:"Microbiology Terms", term:"Autoimmunity", def:"Condition where immune system attacks the body's own healthy tissues (e.g., Rheumatoid Arthritis, Lupus).", mem:"AUTO = self. AutoIMMUNITY = immunity attacking SELF. Friendly fire!", freq:"2× (Aug 2017, July 2025)" },
+  { section:"Microbiology Terms", term:"Disinfection", def:"Process of destroying MOST bacteria (not spores) on inanimate surfaces using chemicals.", mem:"DISinfection = DISRUPTING germs. Less powerful than sterilization!", freq:"2× (Jan 2022, Feb 2017)" },
+  { section:"Microbiology Terms", term:"Nosocomial Infection", def:"Infection acquired during a stay in a hospital or healthcare facility (Hospital-Acquired Infection).", mem:"NOSOcomial = Nasty hospital bug! The irony of getting sick IN the hospital!", freq:"1× (Sep 2013)" },
+  { section:"Microbiology Terms", term:"Zygote", def:"Single cell formed by fusion of sperm + egg. Contains full diploid chromosome set. First cell of new life.", mem:"ZYGOTE = ZYG = joined (Greek). The very FIRST cell of a new human!", freq:"1× (July 2025)" },
+];
+
+// ===================== STATE =====================
+let currentTab = 'fill';
+const fillState = {}; // id -> { status: 'correct'|'incorrect'|'skipped', userAns }
+const tfState = {};   // id -> { status, chosen }
+
+function getScore() {
+  let correct = 0, wrong = 0, total = 0;
+  Object.values(fillState).forEach(s => { total++; if (s.status === 'correct') correct++; else if (s.status === 'incorrect') wrong++; });
+  Object.values(tfState).forEach(s => { total++; if (s.status === 'correct') correct++; else if (s.status === 'incorrect') wrong++; });
+  return { correct, wrong, total };
+}
+
+function getGrade(pct) {
+  if (pct >= 90) return { g: 'A+', c: '#4ddd80' };
+  if (pct >= 80) return { g: 'A', c: '#4ddd80' };
+  if (pct >= 70) return { g: 'B', c: '#f5c842' };
+  if (pct >= 60) return { g: 'C', c: '#f5a623' };
+  if (pct >= 50) return { g: 'D', c: '#ff9f43' };
+  return { g: 'F', c: '#ff6b6b' };
+}
+
+function updateScore() {
+  const { correct, wrong, total } = getScore();
+  document.getElementById('sc-total').textContent = total;
+  document.getElementById('sc-correct').textContent = correct;
+  document.getElementById('sc-wrong').textContent = wrong;
+  const pct = total > 0 ? Math.round((correct / total) * 100) : null;
+  document.getElementById('sc-pct').textContent = pct !== null ? pct + '%' : '—';
+  document.getElementById('progress-bar').style.width = (pct || 0) + '%';
+  const gb = document.getElementById('sc-grade');
+  if (pct !== null) {
+    const { g, c } = getGrade(pct);
+    gb.textContent = g;
+    gb.style.color = c;
+    gb.style.borderColor = c;
+  } else {
+    gb.textContent = '—';
+    gb.style.color = '#7a82a0';
+    gb.style.borderColor = '#7a82a0';
+  }
+}
+
+function resetAll() {
+  if (!confirm('Reset all answers and scores?')) return;
+  Object.keys(fillState).forEach(k => delete fillState[k]);
+  Object.keys(tfState).forEach(k => delete tfState[k]);
+  updateScore();
+  renderAll();
+}
+
+function checkFill(id, correctAns, alts) {
+  const input = document.getElementById('input-' + id);
+  const userAns = input.value.trim();
+  if (!userAns) return;
+  const normalUser = userAns.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const normalCorrect = correctAns.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const allAlts = [normalCorrect, ...alts.map(a => a.toLowerCase().replace(/[^a-z0-9]/g, ''))];
+  const isCorrect = allAlts.some(a => normalUser.includes(a) || a.includes(normalUser));
+  fillState[id] = { status: isCorrect ? 'correct' : 'incorrect', userAns };
+  updateScore();
+  refreshFillCard(id, correctAns);
+}
+
+function skipFill(id) {
+  fillState[id] = { status: 'skipped' };
+  updateScore();
+  refreshFillCard(id);
+}
+
+function refreshFillCard(id, correctAns) {
+  const card = document.getElementById('fcard-' + id);
+  if (!card) return;
+  const s = fillState[id];
+  card.classList.remove('correct', 'incorrect', 'skipped');
+  if (s) card.classList.add(s.status);
+
+  const aa = card.querySelector('.answer-area');
+  const item = fillData[parseInt(id)];
+  if (!item) return;
+  if (s && s.status !== undefined) {
+    let html = '';
+    if (s.status === 'correct') {
+      html = `<div class="result-row"><span class="result-ans ok">✅ Correct! "${s.userAns}"</span></div>`;
+    } else if (s.status === 'incorrect') {
+      html = `<div class="result-row"><span class="result-ans bad">❌ Wrong: "${s.userAns}"</span></div><div class="correct-ans">✅ Answer: ${item.ans}</div>`;
+    } else {
+      html = `<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;
+    }
+    html += `<div class="mnemonic">💡 ${item.mem}</div>`;
+    aa.innerHTML = html;
+  }
+}
+
+function checkTF(id, chosen) {
+  const item = tfData[parseInt(id)];
+  if (!item) return;
+  const isCorrect = (chosen === item.ans);
+  tfState[id] = { status: isCorrect ? 'correct' : 'incorrect', chosen };
+  updateScore();
+  refreshTFCard(id);
+}
+
+function refreshTFCard(id) {
+  const card = document.getElementById('tfcard-' + id);
+  if (!card) return;
+  const s = tfState[id];
+  const item = tfData[parseInt(id)];
+  card.classList.remove('correct', 'incorrect');
+  if (s) {
+    card.classList.add(s.status);
+    const trueBtn = card.querySelector('.true-btn');
+    const falseBtn = card.querySelector('.false-btn');
+    if (trueBtn) { trueBtn.disabled = true; trueBtn.classList.toggle('selected-true', s.chosen === true); }
+    if (falseBtn) { falseBtn.disabled = true; falseBtn.classList.toggle('selected-false', s.chosen === false); }
+    const resultDiv = card.querySelector('.tf-result');
+    if (resultDiv) {
+      if (s.status === 'correct') resultDiv.innerHTML = `<span style="color:var(--green)">✅ Correct!</span>`;
+      else resultDiv.innerHTML = `<span style="color:var(--red)">❌ Wrong — Answer: <strong style="color:var(--teal)">${item.ans ? 'TRUE' : 'FALSE'}</strong></span>`;
+      const tipDiv = card.querySelector('.tf-tip');
+      if (tipDiv) tipDiv.style.display = 'block';
+    }
+  }
+}
+
+// ===================== RENDER =====================
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', ['fill','tf','meanings'][i] === tab);
+  });
+  renderAll();
+}
+
+function getQ() { return document.getElementById('searchBox').value.toLowerCase().trim(); }
+
+function renderAll() {
+  const q = getQ();
+  const container = document.getElementById('content');
+  container.innerHTML = '';
+  if (currentTab === 'fill') renderFill(q, container);
+  else if (currentTab === 'tf') renderTF(q, container);
+  else renderMeanings(q, container);
+}
+
+function renderFill(q, container) {
+  const sections = {};
+  let total = 0;
+  fillData.forEach((item, i) => {
+    if (q && !item.q.toLowerCase().includes(q) && !item.ans.toLowerCase().includes(q) && !item.section.toLowerCase().includes(q) && !item.mem.toLowerCase().includes(q)) return;
+    if (!sections[item.section]) sections[item.section] = [];
+    sections[item.section].push({ item, i });
+    total++;
+  });
+  document.getElementById('countLine').textContent = `Showing ${total} questions`;
+  if (!total) { container.innerHTML = '<p class="no-results">No results found.</p>'; return; }
+
+  Object.entries(sections).forEach(([sec, entries]) => {
+    container.insertAdjacentHTML('beforeend', `<div class="section-header">${sec} <span class="section-count">${entries.length} questions</span></div>`);
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    entries.forEach(({ item, i }) => {
+      const s = fillState[i];
+      const stateClass = s ? s.status : '';
+      let innerHtml = `
+        <div class="card-top">
+          <div class="q-text">${item.q}</div>
+          <div class="freq">🔁 ${item.freq}</div>
+        </div>
+        <div class="answer-area">`;
+      if (s) {
+        if (s.status === 'correct') innerHtml += `<div class="result-row"><span class="result-ans ok">✅ Correct! "${s.userAns}"</span></div>`;
+        else if (s.status === 'incorrect') innerHtml += `<div class="result-row"><span class="result-ans bad">❌ Wrong: "${s.userAns}"</span></div><div class="correct-ans">✅ Answer: ${item.ans}</div>`;
+        else innerHtml += `<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;
+        innerHtml += `<div class="mnemonic">💡 ${item.mem}</div>`;
+      } else {
+        innerHtml += `
+          <input class="ans-input" id="input-${i}" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter') checkFill(${i}, '${item.ans.replace(/'/g,"\\'")}', ${JSON.stringify(item.alts)})">
+          <button class="btn-check" onclick="checkFill(${i}, '${item.ans.replace(/'/g,"\\'")}', ${JSON.stringify(item.alts)})">Check ✓</button>
+          <button class="btn-skip" onclick="skipFill(${i})">Skip</button>`;
+      }
+      innerHtml += `</div>`;
+      const card = document.createElement('div');
+      card.className = `fill-card ${stateClass}`;
+      card.id = 'fcard-' + i;
+      card.innerHTML = innerHtml;
+      grid.appendChild(card);
+    });
+    container.appendChild(grid);
+  });
+}
+
+function renderTF(q, container) {
+  const sections = {};
+  let total = 0;
+  tfData.forEach((item, i) => {
+    if (q && !item.q.toLowerCase().includes(q) && !item.section.toLowerCase().includes(q) && !item.tip.toLowerCase().includes(q)) return;
+    if (!sections[item.section]) sections[item.section] = [];
+    sections[item.section].push({ item, i });
+    total++;
+  });
+  document.getElementById('countLine').textContent = `Showing ${total} statements`;
+  if (!total) { container.innerHTML = '<p class="no-results">No results found.</p>'; return; }
+
+  Object.entries(sections).forEach(([sec, entries]) => {
+    container.insertAdjacentHTML('beforeend', `<div class="section-header">${sec} <span class="section-count">${entries.length} statements</span></div>`);
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    entries.forEach(({ item, i }) => {
+      const s = tfState[i];
+      const stateClass = s ? s.status : '';
+      const tipDisplay = s ? 'block' : 'none';
+      let resultHtml = '';
+      if (s) {
+        if (s.status === 'correct') resultHtml = `<span style="color:var(--green)">✅ Correct!</span>`;
+        else resultHtml = `<span style="color:var(--red)">❌ Wrong — Answer: <strong style="color:var(--teal)">${item.ans ? 'TRUE' : 'FALSE'}</strong></span>`;
+      }
+      const card = document.createElement('div');
+      card.className = `tf-card ${stateClass}`;
+      card.id = 'tfcard-' + i;
+      card.innerHTML = `
+        <div class="tf-q">${item.q}</div>
+        <div class="tf-buttons">
+          <button class="tf-btn true-btn ${s && s.chosen===true ? 'selected-true' : ''}" onclick="checkTF(${i}, true)" ${s ? 'disabled' : ''}>✓ TRUE</button>
+          <button class="tf-btn false-btn ${s && s.chosen===false ? 'selected-false' : ''}" onclick="checkTF(${i}, false)" ${s ? 'disabled' : ''}>✗ FALSE</button>
+        </div>
+        <div class="tf-result">${resultHtml}</div>
+        <div class="tf-tip" style="display:${tipDisplay}">💡 ${item.tip}</div>
+        <div class="tf-freq">🔁 ${item.freq}</div>`;
+      grid.appendChild(card);
+    });
+    container.appendChild(grid);
+  });
+}
+
+function renderMeanings(q, container) {
+  const sections = {};
+  let total = 0;
+  meaningsData.forEach((item, i) => {
+    if (q && !item.term.toLowerCase().includes(q) && !item.def.toLowerCase().includes(q) && !item.section.toLowerCase().includes(q) && !item.mem.toLowerCase().includes(q)) return;
+    if (!sections[item.section]) sections[item.section] = [];
+    sections[item.section].push({ item, i });
+    total++;
+  });
+  document.getElementById('countLine').textContent = `Showing ${total} definitions`;
+  if (!total) { container.innerHTML = '<p class="no-results">No results found.</p>'; return; }
+
+  Object.entries(sections).forEach(([sec, entries]) => {
+    container.insertAdjacentHTML('beforeend', `<div class="section-header">${sec} <span class="section-count">${entries.length} terms</span></div>`);
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    entries.forEach(({ item }) => {
+      const card = document.createElement('div');
+      card.className = 'def-card';
+      card.innerHTML = `
+        <div class="def-term">${item.term}</div>
+        <div class="def-text">${item.def}</div>
+        <div class="def-mem">💡 ${item.mem}</div>
+        <div class="def-freq">🔁 ${item.freq}</div>`;
+      grid.appendChild(card);
+    });
+    container.appendChild(grid);
+  });
+}
+
+// Init
+updateScore();
+renderAll();
+</script>
+</body>
+</html>
