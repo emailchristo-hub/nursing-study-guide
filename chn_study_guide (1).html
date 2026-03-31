@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Health Nursing · Self-Evaluation Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0e1a;
+  --surface: #141828;
+  --card: #1c2235;
+  --border: #2a3050;
+  --gold: #f5c842;
+  --teal: #38d9c0;
+  --red: #ff6b6b;
+  --green: #4ddd80;
+  --blue: #5b9cf6;
+  --text: #e8ecf8;
+  --muted: #7a82a0;
+  --tag: #1e2640;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+.hero {
+  background: linear-gradient(135deg, #0b0e1a 0%, #0e1a14 40%, #0b1510 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 20px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(56,217,192,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 900; color: var(--teal); letter-spacing: -0.5px; margin-bottom: 6px; }
+.hero p { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; }
+
+.scoreboard { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+.score-box { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 12px 20px; text-align: center; min-width: 100px; transition: transform 0.2s; }
+.score-box:hover { transform: translateY(-2px); }
+.score-val { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; line-height: 1; }
+.score-val.gold { color: var(--teal); }
+.score-val.green { color: var(--green); }
+.score-val.red { color: var(--red); }
+.score-val.blue { color: var(--blue); }
+.score-label { font-size: 0.7rem; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+.grade-badge { display: inline-block; font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; padding: 8px 24px; border-radius: 50px; border: 2px solid; margin: 8px 0; transition: all 0.4s; }
+
+.controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; padding: 16px 20px 14px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+.tab { padding: 8px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; font-size: 0.82rem; font-family: 'DM Sans', sans-serif; font-weight: 600; transition: all 0.2s; white-space: nowrap; }
+.tab.active { background: var(--teal); border-color: var(--teal); color: #0b0e1a; }
+.tab:hover:not(.active) { border-color: var(--teal); color: var(--teal); }
+.search-wrap { position: relative; width: 100%; max-width: 320px; }
+.search { width: 100%; padding: 8px 14px 8px 36px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card); color: var(--text); font-size: 0.85rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border 0.2s; }
+.search:focus { border-color: var(--teal); }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.85rem; pointer-events: none; }
+.btn-reset { padding: 8px 16px; border-radius: 20px; border: 1.5px solid var(--red); background: transparent; color: var(--red); cursor: pointer; font-size: 0.8rem; font-family: 'DM Sans', sans-serif; font-weight: 600; transition: all 0.2s; }
+.btn-reset:hover { background: var(--red); color: white; }
+
+.main { padding: 20px; max-width: 1200px; margin: 0 auto; }
+.section-header { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--teal); border-left: 4px solid var(--teal); padding-left: 10px; margin: 24px 0 12px; display: flex; align-items: center; gap: 8px; }
+.section-count { font-size: 0.72rem; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+
+.fill-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 16px; transition: all 0.25s; }
+.fill-card:hover { border-color: var(--teal); transform: translateY(-2px); box-shadow: var(--shadow); }
+.fill-card.correct { border-color: var(--green); background: #1c2d24; }
+.fill-card.incorrect { border-color: var(--red); background: #2d1c1c; }
+.fill-card.skipped { border-color: var(--blue); opacity: 0.75; }
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+.q-text { font-weight: 500; font-size: 0.9rem; color: var(--text); flex: 1; line-height: 1.5; }
+.freq { background: var(--tag); color: var(--teal); font-size: 0.68rem; font-weight: 700; padding: 3px 8px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; border: 1px solid #38d9c020; }
+.ans-input { width: 100%; padding: 8px 12px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.88rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border 0.2s; }
+.ans-input:focus { border-color: var(--teal); }
+.btn-check { margin-top: 8px; padding: 7px 16px; border-radius: 8px; border: none; background: var(--teal); color: #0b0e1a; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.btn-check:hover { background: #2fc4ad; }
+.btn-skip { margin-top: 8px; margin-left: 6px; padding: 7px 14px; border-radius: 8px; border: 1.5px solid var(--border); background: transparent; color: var(--muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.btn-skip:hover { border-color: var(--blue); color: var(--blue); }
+.result-ans.ok { color: var(--green); font-size: 0.88rem; font-weight: 600; }
+.result-ans.bad { color: var(--red); font-size: 0.88rem; font-weight: 600; }
+.correct-ans { font-size: 0.82rem; color: var(--teal); margin-top: 4px; }
+.mnemonic { font-size: 0.78rem; color: var(--muted); font-style: italic; background: #1e2640; border-radius: 6px; padding: 6px 10px; border-left: 3px solid var(--teal); margin-top: 6px; line-height: 1.5; }
+
+.tf-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 14px 16px; transition: all 0.25s; }
+.tf-card:hover { border-color: var(--teal); box-shadow: var(--shadow); }
+.tf-card.correct { border-color: var(--green); background: #1c2d24; }
+.tf-card.incorrect { border-color: var(--red); background: #2d1c1c; }
+.tf-q { font-size: 0.9rem; font-weight: 500; margin-bottom: 10px; line-height: 1.5; }
+.tf-buttons { display: flex; gap: 8px; margin-bottom: 6px; }
+.tf-btn { flex: 1; padding: 8px; border-radius: 8px; border: 1.5px solid var(--border); background: transparent; color: var(--muted); font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.tf-btn.true-btn:hover { border-color: var(--green); color: var(--green); }
+.tf-btn.false-btn:hover { border-color: var(--red); color: var(--red); }
+.tf-btn.selected-true { background: #1a3d2b; border-color: var(--green); color: var(--green); }
+.tf-btn.selected-false { background: #3d1a1a; border-color: var(--red); color: var(--red); }
+.tf-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+.tf-result { font-size: 0.82rem; margin-top: 6px; }
+.tf-tip { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-top: 5px; background: #1e2640; border-radius: 6px; padding: 5px 9px; border-left: 3px solid var(--teal); line-height: 1.4; }
+.tf-freq { font-size: 0.68rem; color: var(--teal); font-weight: 700; margin-top: 5px; }
+
+.def-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 16px; transition: all 0.25s; }
+.def-card:hover { border-color: var(--teal); transform: translateY(-2px); box-shadow: var(--shadow); }
+.def-term { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--teal); margin-bottom: 6px; }
+.def-text { font-size: 0.85rem; color: var(--text); margin-bottom: 8px; line-height: 1.6; }
+.def-mem { font-size: 0.78rem; color: var(--muted); font-style: italic; background: #1e2640; border-radius: 6px; padding: 6px 10px; border-left: 3px solid var(--teal); line-height: 1.5; }
+.def-freq { font-size: 0.68rem; color: var(--teal); font-weight: 700; margin-top: 6px; }
+
+.progress-bar-wrap { background: var(--bg); border-radius: 8px; height: 12px; overflow: hidden; margin: 12px auto; max-width: 400px; }
+.progress-bar { height: 100%; border-radius: 8px; transition: width 1s ease; background: linear-gradient(90deg, var(--teal), var(--green)); }
+.count-line { text-align: center; color: var(--muted); font-size: 0.8rem; margin-bottom: 10px; }
+.no-results { text-align: center; color: var(--muted); padding: 50px; font-size: 1rem; }
+
+@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 1.5rem; } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.fill-card, .tf-card, .def-card { animation: fadeIn 0.3s ease both; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🏥 Community Health Nursing</h1>
+  <p>CHN · Repeated Exam Questions · Self-Evaluation Study Guide</p>
+  <div class="scoreboard">
+    <div class="score-box"><div class="score-val gold" id="sc-total">0</div><div class="score-label">Attempted</div></div>
+    <div class="score-box"><div class="score-val green" id="sc-correct">0</div><div class="score-label">Correct</div></div>
+    <div class="score-box"><div class="score-val red" id="sc-wrong">0</div><div class="score-label">Wrong</div></div>
+    <div class="score-box"><div class="score-val blue" id="sc-pct">—</div><div class="score-label">Score %</div></div>
+    <div class="score-box"><div class="grade-badge" id="sc-grade" style="font-size:1.2rem;padding:6px 16px;color:#7a82a0;border-color:#7a82a0;">—</div><div class="score-label">Grade</div></div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+</div>
+
+<div class="controls">
+  <button class="tab active" onclick="switchTab('fill')">📝 Fill in Blank</button>
+  <button class="tab" onclick="switchTab('tf')">✅ True / False</button>
+  <button class="tab" onclick="switchTab('meanings')">📖 Meanings</button>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search" type="text" id="searchBox" placeholder="Search topics, answers..." oninput="renderAll()">
+  </div>
+  <button class="btn-reset" onclick="resetAll()">↺ Reset All</button>
+</div>
+
+<div class="main">
+  <p class="count-line" id="countLine"></p>
+  <div id="content"></div>
+</div>
+
+<script>
+const fillData = [
+  // 1. Concept of Health, Disease & Epidemiology
+  { section:"Concept of Health, Disease & Epidemiology", q:"Epidemiological triad involves Agent, Host and _______.", ans:"Environment", alts:["environmental"], mem:"Agent + Host + Environment = Epidemiological TRIAD. AHE = Always Have Evidence!", freq:"1× (May 2023)" },
+  { section:"Concept of Health, Disease & Epidemiology", q:"Typhoid is caused by _______.", ans:"Salmonella typhi", alts:["salmonella"], mem:"SALMOnella = contaminated SALMON/food. TYPHI = typhoid. Dirty water route!", freq:"1× (May 2023)" },
+  { section:"Concept of Health, Disease & Epidemiology", q:"Typhoid is a _______ born disease.", ans:"Water (or Water-borne)", alts:["water","waterborne","water borne"], mem:"TYPHOID = Tainted wYPHOID water! Always water-borne!", freq:"1× (Aug 2016)" },
+  { section:"Concept of Health, Disease & Epidemiology", q:"Malaria is caused by the bite of _______.", ans:"Female Anopheles mosquito", alts:["anopheles","female anopheles"], mem:"FEMALE Anopheles = Malaria. Only FEMALES bite and spread it!", freq:"3× (July/Aug 2024, Jan 2024, Aug 2012)" },
+  { section:"Concept of Health, Disease & Epidemiology", q:"Dengue fever is caused by the bite of _______.", ans:"Aedes aegypti mosquito", alts:["aedes aegypti","aedes"], mem:"AEDES = AIDS-like dengue. Aedes aegypti = Day-biting tiger mosquito!", freq:"1× (Feb 2019)" },
+  { section:"Concept of Health, Disease & Epidemiology", q:"The Causative organism of cholera is _______.", ans:"Vibrio cholerae", alts:["vibrio"], mem:"VIBRio = vibrating comma-shaped bacteria. Cholera = contaminated water!", freq:"1× (Aug 2015)" },
+  { section:"Concept of Health, Disease & Epidemiology", q:"Leprosy is caused by _______.", ans:"Mycobacterium leprae", alts:["mycobacterium leprae"], mem:"Myco = fungus-like. LEPrae = LEProsy. Same TB family!", freq:"1× (Jan 2022)" },
+  { section:"Concept of Health, Disease & Epidemiology", q:"_______ micro-organism causes Tuberculosis.", ans:"Mycobacterium tuberculosis", alts:["mycobacterium"], mem:"Myco-TUBERculosis = TB. Koch's bacillus — Robert KOCH discovered it!", freq:"1× (Feb 2017)" },
+  { section:"Concept of Health, Disease & Epidemiology", q:"A disease that is transmitted through contact is _______ disease.", ans:"Contagious (or Communicable)", alts:["contagious","communicable"], mem:"CONTAGIOUS = CONTACT. Touch it, catch it! Communicable = can communicate to others!", freq:"1× (Sep 2013)" },
+  { section:"Concept of Health, Disease & Epidemiology", q:"Hospital acquired infection is _______.", ans:"Nosocomial infection", alts:["nosocomial"], mem:"NOSOcomial = hospital acquired. NOSO = disease in Greek. Sick IN the hospital!", freq:"1× (Feb 2019)" },
+  { section:"Concept of Health, Disease & Epidemiology", q:"The infection originating in a patient while in a hospital is called _______.", ans:"Nosocomial infection", alts:["nosocomial"], mem:"Originating IN hospital = NOSOcomial. Hospital = home of nosocomial bugs!", freq:"1× (June 2013)" },
+
+  // 2. Community Health Nursing & Administration
+  { section:"Community Health Nursing & Administration", q:"The Backbone of Public Health Nursing is _______.", ans:"Home visiting", alts:["home visit"], mem:"HOME visiting = BACKBONE of PHN. The nurse goes to YOUR home = backbone!", freq:"1× (July/Aug 2024)" },
+  { section:"Community Health Nursing & Administration", q:"Community participation is one of the principles of _______.", ans:"Primary Health Care", alts:["primary health care","phc"], mem:"PRIMARY Health Care = people participate. PHC = People's Health Choice!", freq:"1× (Nov 2022)" },
+  { section:"Community Health Nursing & Administration", q:"A sub centre covers a population of _______.", ans:"3000 to 5000", alts:["3000-5000","3000 to 5000"], mem:"Sub-centre = 3000-5000 people. Small sub = smaller population! 3-5 thousand.", freq:"1× (Aug 2011)" },
+  { section:"Community Health Nursing & Administration", q:"A PHC caters to a population of _______.", ans:"20,000 to 30,000", alts:["20000-30000","20000 to 30000","20,000-30,000"], mem:"PHC = 20,000-30,000 people. 10 sub-centres × 3000 = PHC level!", freq:"1× (June 2013)" },
+  { section:"Community Health Nursing & Administration", q:"The first referral unit for Primary Health Centre is _______.", ans:"Community Health Centre (CHC)", alts:["chc","community health centre"], mem:"PHC → CHC for referral. COMMUNITY Health Centre = first step up from PHC!", freq:"2× (Feb 2019, Feb 2011)" },
+  { section:"Community Health Nursing & Administration", q:"Universal symbol of nursing is _______.", ans:"the White Heart", alts:["white heart"], mem:"WHITE HEART = nursing symbol. Pure, caring, universal! White = clean, Heart = care.", freq:"1× (Aug 2011)" },
+  { section:"Community Health Nursing & Administration", q:"The Scientific study of human population is _______.", ans:"Demography", alts:[], mem:"DEMO = people, GRAPHY = study. Demography = study of people/population!", freq:"1× (Sep 2013)" },
+
+  // 3. MCH & Immunization
+  { section:"Maternal & Child Health & Immunization", q:"Under five clinic is also known/called as _______.", ans:"Well baby clinic", alts:["well baby"], mem:"Under-5 = WELL BABY clinic. Keeping babies WELL before 5 years!", freq:"4× (Jan 2024, Jan 2022, Feb 2019, Sep 2013)" },
+  { section:"Maternal & Child Health & Immunization", q:"Normal weight of Indian new born baby is _______.", ans:"2.5 to 3.0 kg", alts:["2.5-3","2.5 to 3","2.5kg","2.5-3.0"], mem:"Indian newborn = 2.5-3 kg. About the weight of a bag of sugar!", freq:"2× (July 2025, Jan 2024)" },
+  { section:"Maternal & Child Health & Immunization", q:"BCG vaccine is given to prevent _______.", ans:"Tuberculosis", alts:["tb"], mem:"BCG = Bacille Calmette-Guérin. B-C-G = Blocks Chest/TB Germs!", freq:"1× (July 2025)" },
+  { section:"Maternal & Child Health & Immunization", q:"Dosage of BCG vaccine is _______.", ans:"0.05 ml (for new born)", alts:["0.05","0.05ml"], mem:"BCG = 0.05 ml. Tiny baby = TINY 0.05 dose!", freq:"1× (Feb 2011)" },
+  { section:"Maternal & Child Health & Immunization", q:"The route of administration of BCG vaccine is _______.", ans:"Intradermal", alts:[], mem:"BCG = INTRAdermal. INTRA = within skin. The skin itself, not under it!", freq:"1× (June 2013)" },
+  { section:"Maternal & Child Health & Immunization", q:"Most heat sensitive vaccine is _______.", ans:"OPV (Oral Polio Vaccine)", alts:["opv","oral polio vaccine","polio"], mem:"OPV = Oral Polio = most heat sensitive. 'Oh! Polio Vanishes in heat!' Keep COLD!", freq:"1× (Feb 2011)" },
+  { section:"Maternal & Child Health & Immunization", q:"Measles vaccine protects against _______.", ans:"Measles", alts:[], mem:"Measles vaccine = Measles protection. Simple! Given at 9 months.", freq:"1× (July/Aug 2024)" },
+  { section:"Maternal & Child Health & Immunization", q:"IUD's are the _______ method of family planning in Females.", ans:"Temporary (or Spacing)", alts:["temporary","spacing"], mem:"IUD = Temporary. IUD can be removed = temporary! Not permanent like tubectomy.", freq:"1× (May 2023)" },
+  { section:"Maternal & Child Health & Immunization", q:"'I pill' is an example of _______.", ans:"Emergency Contraceptive", alts:["emergency contraceptive","emergency"], mem:"I-pill = Emergency use after unprotected sex. EMERGENCY = last resort!", freq:"1× (Aug 2011)" },
+
+  // 4. Nutrition
+  { section:"Nutrition", q:"Deficiency of _______ in diets leads to Goiter.", ans:"Iodine", alts:[], mem:"IODINE deficiency = goIter. IO-dine = I-Owe my thyroid iodine! No iodine = big neck!", freq:"5× (Jan 2024, Feb 2019, Aug 2018, Aug 2016, Aug 2015)" },
+  { section:"Nutrition", q:"The natural/main Source of Vitamin D is _______.", ans:"Sunlight", alts:["sun"], mem:"Vitamin D = Sunlight = D for Daylight! Stand in the SUN = free Vitamin D!", freq:"2× (July/Aug 2024, Feb 2019)" },
+  { section:"Nutrition", q:"Rickets is the deficiency disease of _______.", ans:"Vitamin D", alts:[], mem:"RICKETS = soft/bent bones. RICKety = lacking Vitamin D + Calcium!", freq:"1× (Feb 2016)" },
+  { section:"Nutrition", q:"Vitamin A deficiency leads to _______.", ans:"Night blindness", alts:["night blind"], mem:"Vitamin A = vIsion in night. No A = No night-sIght = Night blindness!", freq:"1× (May 2023)" },
+  { section:"Nutrition", q:"Deficiency of Vitamin C causes _______.", ans:"Scurvy", alts:[], mem:"C = Citrus prevents sCurvy. Old sailors = no citrus = scurvy gums!", freq:"1× (Nov 2022)" },
+  { section:"Nutrition", q:"Deficiency of Thiamine causes _______.", ans:"Beriberi", alts:[], mem:"THIAMINE deficiency = BERIBERI. 'I BERI BERI sick without Thiamine (B1)!'", freq:"1× (Aug 2014)" },
+  { section:"Nutrition", q:"Niacin deficiency results in _______.", ans:"Pellagra", alts:[], mem:"NIACIN (B3) = PELLAGRA. 3 Ds of Pellagra: Dermatitis, Diarrhoea, Dementia!", freq:"1× (Feb 2011)" },
+  { section:"Nutrition", q:"Deficiency of Iron causes/leads to _______.", ans:"Anemia", alts:["anaemia"], mem:"IRON deficiency = ANEMIA. No iron = no haemoglobin = pale and tired!", freq:"2× (Feb 2017, Feb 2016)" },
+  { section:"Nutrition", q:"Koilonychia means _______.", ans:"Spoon shaped nails", alts:["spoon shaped","spoon nails"], mem:"KOILonychia = KOIL = hollow/spoon in Greek. Spoon nails = iron deficiency sign!", freq:"1× (Aug 2012)" },
+  { section:"Nutrition", q:"Protein requirement is _______ Body weight.", ans:"1 gm per kg", alts:["1g/kg","1gm/kg","1 gram per kg"], mem:"Protein = 1g per kg. Easy! 60kg person = 60g protein daily!", freq:"1× (Aug 2012)" },
+  { section:"Nutrition", q:"_______ are the building blocks of proteins.", ans:"Amino acids", alts:["amino acid"], mem:"AMINO ACIDS = protein building blocks. Like LEGO bricks that build the protein structure!", freq:"1× (Feb 2017)" },
+  { section:"Nutrition", q:"Essential amino acids are _______ in number which cannot be synthesized in the body.", ans:"9", alts:["nine"], mem:"9 essential amino acids = body can't make them. 'NINE that you MUST Dine on!'", freq:"1× (Aug 2012)" },
+
+  // 5. Environmental Hygiene
+  { section:"Environmental Hygiene", q:"Contact period of Chlorination of water is _______.", ans:"60 minutes (1 hour)", alts:["60 minutes","1 hour","60 mins"], mem:"Chlorination contact = 60 minutes. 1 HOUR for chlorine to kill all germs!", freq:"2× (July 2025, Aug 2012)" },
+  { section:"Environmental Hygiene", q:"Wells are disinfected by _______.", ans:"Bleaching powder", alts:["bleach"], mem:"WELLS + BLEACHING powder = clean water. Bleach the well to kill the germs!", freq:"1× (Aug 2014)" },
+  { section:"Environmental Hygiene", q:"The water testing apparatus is _______.", ans:"Horrock's Apparatus", alts:["horrocks"], mem:"HORROCK'S = water testing. 'HORROCKs tests water — HORRIBLE water = needs testing!'", freq:"1× (Feb 2016)" },
+  { section:"Environmental Hygiene", q:"The best method of disposal of hospital waste is _______.", ans:"Incineration", alts:[], mem:"Hospital waste = INCINERATION. INCINERATE = burn completely. Safest for biohazard!", freq:"1× (Nov 2022)" },
+  { section:"Environmental Hygiene", q:"Disposal of waste by burning is called as _______.", ans:"Incineration", alts:[], mem:"Burning = INCINERATION. INCINER = to reduce to ashes by fire!", freq:"1× (Aug 2018)" },
+  { section:"Environmental Hygiene", q:"Sullage means waste water which does not contain _______.", ans:"Human excreta", alts:["human excreta","excreta"], mem:"SULLAGE = grey water (kitchen/bath). SULLage = SULLIED but no faecal matter!", freq:"1× (Feb 2011)" },
+  { section:"Environmental Hygiene", q:"Exchange of air between indoor and outdoor is called as _______.", ans:"Ventilation", alts:[], mem:"VENTILATION = VENTing air. Open the VENT = indoor + outdoor air exchange!", freq:"1× (Aug 2018)" },
+  { section:"Environmental Hygiene", q:"Deafness is caused by _______ pollution.", ans:"Noise", alts:[], mem:"NOISE = Deafness. Too much NOISE = no more hearing! Noise pollution damages ears.", freq:"1× (Aug 2016)" },
+  { section:"Environmental Hygiene", q:"Loudness of noise is measured in _______.", ans:"Decibels (dB)", alts:["decibels","db"], mem:"DECIBELS (dB) = loudness unit. DECIbel = DECI sound measurement. Loud = high dB!", freq:"1× (Feb 2011)" },
+
+  // 6. Communication & Health Education
+  { section:"Communication & Health Education", q:"The essential tool of communication is _______.", ans:"Language", alts:[], mem:"LANGUAGE = essential communication tool. Without language, how would you express?", freq:"2× (Feb 2016, Aug 2012)" },
+  { section:"Communication & Health Education", q:"The process of sharing ideas and opinions between individuals is called _______.", ans:"Communication", alts:[], mem:"COMMUNICATION = sharing. Like a two-way road of ideas and opinions!", freq:"1× (Aug 2014)" },
+  { section:"Communication & Health Education", q:"Facial expression is a _______ type of communication.", ans:"Non-verbal", alts:["nonverbal"], mem:"Facial expression = NON-VERBAL. Your face speaks without words!", freq:"1× (Jan 2022)" },
+  { section:"Communication & Health Education", q:"Gesture is an example of _______ communication.", ans:"Non-verbal", alts:["nonverbal"], mem:"GESTURE = NON-VERBAL. Hand wave, thumbs up — no words needed!", freq:"1× (Nov 2022)" },
+  { section:"Communication & Health Education", q:"Television is a _______ communication.", ans:"Mass (or Audio-Visual)", alts:["mass","audio visual","audio-visual"], mem:"TV = MASS + AUDIO-VISUAL. Reaches MASSES and uses both AUDIO + VISUAL!", freq:"1× (Aug 2015)" },
+  { section:"Communication & Health Education", q:"Radio talk is an example of _______ communication.", ans:"Mass (or Audio)", alts:["mass","audio"], mem:"RADIO = MASS AUDIO. Reaches masses but only SOUND — no picture!", freq:"1× (Aug 2018)" },
+  { section:"Communication & Health Education", q:"Flannel graph is grouped under _______ AV Aids.", ans:"Visual (or Non-projected)", alts:["visual","non projected","non-projected"], mem:"FLANNEL graph = VISUAL, NON-projected. No electricity needed — just cloth and figures!", freq:"2× (July 2025, Aug 2012)" },
+  { section:"Communication & Health Education", q:"The Low-cost visual form of communication is _______.", ans:"Posters (or Charts)", alts:["posters","charts"], mem:"POSTERS/CHARTS = low cost. Print and display anywhere — cheap and effective!", freq:"1× (Feb 2011)" },
+  { section:"Communication & Health Education", q:"The ideal number of members for group discussion is _______.", ans:"6 to 12", alts:["6-12"], mem:"Group discussion = 6-12 people. Too few = no ideas, too many = chaos!", freq:"1× (Aug 2016)" },
+
+  // 7. Important Days
+  { section:"Important Days & Dates", q:"Every year World Health Day is celebrated on _______.", ans:"7th April", alts:["april 7","7 april"], mem:"WHO established 7th April 1948 → World Health Day on 7th April every year!", freq:"2× (Jan 2022, Feb 2019)" },
+  { section:"Important Days & Dates", q:"The international Nurses Day is celebrated on _______.", ans:"12th May", alts:["may 12","12 may"], mem:"12th May = Florence Nightingale's birthday = Nurses Day! FLO was born on 12 May!", freq:"1× (June 2013)" },
+  { section:"Important Days & Dates", q:"World population day is celebration on _______.", ans:"11th July", alts:["july 11","11 july"], mem:"11th July = World Population Day. 11/7 = 11 x 7 = 77 billion people? No — 8 billion!", freq:"1× (Feb 2011)" },
+  { section:"Important Days & Dates", q:"'No Tobacco day' is celebrated on _______.", ans:"31st May", alts:["may 31","31 may"], mem:"31st May = No Tobacco Day. May = M-A-Y = Make A Yes to quit tobacco!", freq:"1× (Aug 2011)" },
+];
+
+const tfData = [
+  { section:"Community Health Nursing - General", q:"Health is a Multi-Dimensional Phenomenon.", ans:true, tip:"Health = physical + mental + social + spiritual well-being. Multiple dimensions!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"The back bone of public health nursing is Home visit.", ans:true, tip:"Home visiting is the most essential tool of community/public health nursing.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Nursing process helps to identify the actual and potential health problems.", ans:true, tip:"Nursing process (ADPIE) identifies both actual and potential health problems.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Nursing process is a way of rendering nursing care to families, individuals and communities.", ans:true, tip:"The nursing process is used across all levels — individual, family, and community.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Putting the plan into action is called implementation.", ans:true, tip:"Implementation = 3rd step of nursing process. Planning→Implementation→Evaluation.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Collection of data about Birth, Death, Marriage is called Vital statistics.", ans:true, tip:"Vital statistics = data on births, deaths, marriages, diseases. VITAL to health planning!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Record is a written information or Documentation.", ans:true, tip:"Records = written/documented evidence. Legal documents of care provided.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Record cannot protect the Nurses in case of legal issues.", ans:false, tip:"RECORDS DO protect nurses! They are legal documents and evidence of care given.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"The recording system is not essential during home visit.", ans:false, tip:"Recording is ESSENTIAL during home visits — tracks health status, progress, follow-up.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Each sub centre covers the population of 8000.", ans:false, tip:"Sub-centre covers 3000-5000 people, NOT 8000. PHC covers 20,000-30,000.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Concept of public health was born in Rome.", ans:true, tip:"Ancient Romans had public health systems — aqueducts, sewage, public baths!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Report is a method of communication.", ans:true, tip:"Report = formal communication method. Oral or written reports transfer information.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Epidemiological triad consists of Agent, Host and environment factors.", ans:true, tip:"Epidemiological TRIAD = Agent + Host + Environment. All three cause disease!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Disease prevalence over a whole country or whole world is called Pandemic.", ans:true, tip:"PANDEMIC = worldwide disease spread. Pan = all, demic = people. COVID-19 = pandemic!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Disease is the maladjustment of human being of the environment.", ans:true, tip:"Disease = failure to adapt to the environment. Maladjustment leads to illness.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Quarantine is the period of isolation of an infectious person to prevent infection.", ans:false, tip:"ISOLATION = for INFECTED persons. QUARANTINE = for HEALTHY contacts who were exposed!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"The physician induced infection is known as Iatrogenic infection.", ans:true, tip:"IATRO = physician (Greek). Iatrogenic = caused by medical treatment/physician!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Study of arthropods is known as gerontology.", ans:false, tip:"Study of arthropods = ENTOMOLOGY. Gerontology = study of AGING/elderly!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Typhoid is caused due to drinking contaminated water.", ans:true, tip:"Typhoid = water/food-borne disease. Salmonella typhi spreads through contaminated water!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Malaria is an example for vector-borne disease.", ans:true, tip:"Vector-borne = spread by vectors (insects). Malaria vector = Female Anopheles mosquito.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Dengue fever is due to the bite of Aedes aegypti mosquito.", ans:true, tip:"Aedes aegypti = day-biting tiger mosquito. Dengue + Zika + Chikungunya all from Aedes!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Chikungunya is transmitted by consuming of infected Chicken.", ans:false, tip:"Chikungunya is spread by MOSQUITOES (Aedes), NOT by eating chicken!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Sleeping sickness is caused due to the bite of sand flea.", ans:false, tip:"Sleeping sickness = Tsetse fly (Africa). Sand flea = causes tungiasis/Kala-azar.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Diabetes is a communicable disease.", ans:false, tip:"Diabetes is NON-communicable (NCD). You can't 'catch' diabetes from someone!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Round worm is otherwise known as Anchylostoma duodenale.", ans:false, tip:"Round worm = ASCARIS lumbricoides. Anchylostoma = HOOKWORM (different worm!).", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Antigen is a substance that stimulates the formation of an antibody.", ans:true, tip:"ANTIGEN → triggers ANTIBODY production. ANTIgen = ANTIbody GENerator!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"BCG and polio are examples of killed vaccine.", ans:false, tip:"BCG and polio = LIVE ATTENUATED vaccines (weakened live organisms), not killed!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Live vaccines are prepared from dead organisms.", ans:false, tip:"Live vaccines = LIVING but weakened organisms. Dead organism = killed/inactivated vaccine!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Most heat sensitive vaccine is polio.", ans:true, tip:"OPV (Oral Polio Vaccine) is the MOST heat sensitive. Must be kept at -20°C!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"DPT is a triple antigen given against diphtheria, pertussis and tetanus.", ans:true, tip:"DPT = Diphtheria + Pertussis (whooping cough) + Tetanus. Triple protection!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"The pioneers of immunization are Romans.", ans:false, tip:"Pioneers of immunization = Edward Jenner (smallpox vaccine, 1796) and later Louis Pasteur.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Tubectomy is the permanent method of family planning in females.", ans:true, tip:"Tubectomy = cutting/tying fallopian tubes in females. PERMANENT sterilization!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Tubectomy is the permanent method of family planning for males.", ans:false, tip:"VASECTOMY = permanent male sterilization. TUBECTOMY = female. V for Vasectomy = Vas deferens!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Vasectomy is the method of contraception in Males.", ans:true, tip:"Vasectomy = cutting the VAS deferens in males. Permanent male contraception.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"Oral Contraceptives are used as temporary method of family planning.", ans:true, tip:"OCP = temporary (reversible). Stop taking the pill = fertility returns.", freq:"—" },
+  { section:"Community Health Nursing - General", q:"A packet of oral pills contains 28 pills out of which 21 are contraceptives and 7 are iron/calcium tablets.", ans:true, tip:"28 pills = 21 active (hormonal) + 7 iron/calcium (placebo week). 28 day cycle!", freq:"—" },
+  { section:"Community Health Nursing - General", q:"A Nation-wide Family planning programme was launched officially in 1997.", ans:false, tip:"National Family Planning Programme launched in 1952 — India was the FIRST country!", freq:"—" },
+  { section:"Nutrition True/False", q:"Amino Acids are building blocks of protein.", ans:true, tip:"Amino acids = protein building blocks. Like LEGO bricks for proteins!", freq:"—" },
+  { section:"Nutrition True/False", q:"Essential amino acid is 8 in number which cannot be synthesized in the body.", ans:true, tip:"8 (or 9 with histidine for infants) essential amino acids. Body can't make them — must eat them!", freq:"—" },
+  { section:"Nutrition True/False", q:"One gram of carbohydrate yields 9 calories.", ans:false, tip:"Carbohydrate = 4 cal/g. FAT = 9 cal/g. Protein = 4 cal/g. Fat is 9, not carbs!", freq:"—" },
+  { section:"Nutrition True/False", q:"One gram of protein yields 9 calories.", ans:false, tip:"Protein = 4 cal/g (not 9). FAT = 9 cal/g. Remember: FAT is 9!", freq:"—" },
+  { section:"Nutrition True/False", q:"Milk is a best source of Iron.", ans:false, tip:"Milk is POOR in iron. Best iron sources = leafy greens, meat, legumes, jaggery.", freq:"—" },
+  { section:"Nutrition True/False", q:"Soya bean is the poor source of protein among pulses.", ans:false, tip:"Soya bean is the RICHEST protein source among pulses. ~36% protein!", freq:"—" },
+  { section:"Nutrition True/False", q:"Pressure cooking destroys the valuable nutrients of food.", ans:false, tip:"Pressure cooking PRESERVES nutrients better (faster cooking = less nutrient loss).", freq:"—" },
+  { section:"Nutrition True/False", q:"Roughage in diet helps in preventing constipation.", ans:true, tip:"Roughage = dietary fibre. Adds bulk, promotes bowel movement, prevents constipation!", freq:"—" },
+  { section:"Nutrition True/False", q:"Hyponatremia is due to excess consumption of salt.", ans:false, tip:"Hyponatremia = LOW sodium (hypo). Excess salt causes HYPERnatremia (high sodium)!", freq:"—" },
+  { section:"Nutrition True/False", q:"Iodine deficiency causes goiter.", ans:true, tip:"Iodine deficiency → thyroid enlarges to compensate → GOITER. Use iodized salt!", freq:"—" },
+  { section:"Nutrition True/False", q:"Vitamin K is a fat soluble vitamin.", ans:true, tip:"Fat-soluble vitamins = A, D, E, K. Remember: 'ADEK' — all fat soluble!", freq:"—" },
+  { section:"Nutrition True/False", q:"Vitamin K is used as anti-coagulant.", ans:false, tip:"Vitamin K = PRO-coagulant (helps clotting). Anti-coagulant drugs (like Warfarin) BLOCK Vitamin K!", freq:"—" },
+  { section:"Nutrition True/False", q:"Vitamin-C is also called as Cynocobalamine.", ans:false, tip:"Vitamin C = ASCORBIC ACID. Cyanocobalamin = VITAMIN B12!", freq:"—" },
+  { section:"Nutrition True/False", q:"Thiamine is otherwise known as Vitamin B1.", ans:true, tip:"Thiamine = Vitamin B1. Deficiency = Beriberi. B1 = the FIRST B vitamin!", freq:"—" },
+  { section:"Nutrition True/False", q:"Vitamin B6 is also called as Pyridoxine.", ans:true, tip:"Vitamin B6 = Pyridoxine. Deficiency causes peripheral neuropathy.", freq:"—" },
+  { section:"Nutrition True/False", q:"Vitamin B1 Deficiency causes Night Blindness.", ans:false, tip:"Night blindness = VITAMIN A deficiency. Vitamin B1 deficiency = Beriberi!", freq:"—" },
+  { section:"Nutrition True/False", q:"Scurvy is a disease caused by the deficiency of vitamin D.", ans:false, tip:"Scurvy = VITAMIN C deficiency. Vitamin D deficiency = Rickets/Osteomalacia!", freq:"—" },
+  { section:"Nutrition True/False", q:"Calcium is essential for the formation of Muscles.", ans:false, tip:"PROTEINS = muscle formation. Calcium = Bones/Teeth formation and muscle CONTRACTION.", freq:"—" },
+  { section:"Nutrition True/False", q:"Phosphorus is essential for the formation of bones and teeth.", ans:true, tip:"Phosphorus + Calcium = bone and teeth formation. Both minerals work together!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"The word hygiene is derived from Greek language.", ans:true, tip:"Hygiene from Greek goddess 'Hygieia' = goddess of health, cleanliness, sanitation.", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Rain water is the Natural source of water.", ans:true, tip:"Rainwater = purest natural water source. The water cycle starts with rainfall!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"The prime source of water is river.", ans:false, tip:"RAIN is the prime/original source of water. Rivers are fed by rain!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Chlorine acts as germicide in water purification.", ans:true, tip:"Chlorine = germicide in water. Kills bacteria, viruses. Contact time = 60 mins!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"The waste water which does not contain human excreta is called Sullage.", ans:true, tip:"SULLAGE = grey water (no human excreta). Kitchen + bathroom water = sullage.", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"The waste water which contains human excreta is called as Sullage.", ans:false, tip:"Water WITH human excreta = SEWAGE. Sullage = WITHOUT human excreta (grey water).", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"The waste which contains human excrete is sewage.", ans:true, tip:"SEWAGE = black water containing human excreta. Requires proper sewage treatment!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Community noise level is usually measured in terms of Decibels.", ans:true, tip:"Decibels (dB) = unit of sound/noise measurement. 85+ dB = hearing damage risk!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Light is measured in terms of Foot candles.", ans:true, tip:"Foot-candles = unit of illuminance (light). Used to measure indoor lighting levels.", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Feedback is one of the key concept in effective communication.", ans:true, tip:"Feedback = receiver's response. Without feedback, communication is one-way and ineffective!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Body language is nonverbal communication.", ans:true, tip:"Body language = nonverbal. Posture, gestures, facial expressions = all non-verbal!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Facial expression is a verbal communication.", ans:false, tip:"Facial expression = NON-VERBAL communication. Smiling, frowning = no words used!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Television and Radio are examples of individual Health Education.", ans:false, tip:"TV and Radio = MASS media education. Reaches millions = MASS approach, not individual!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Television is an example for audio-visual aid.", ans:true, tip:"TV = AUDIO (sound) + VISUAL (picture). Audio-visual = uses both senses!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Flash cards are Non-Projected aids.", ans:true, tip:"Flash cards = non-projected visual aids. No projector needed — just hold and show!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Black board is the example for Auditory aid.", ans:false, tip:"Blackboard = VISUAL aid (you see it). Auditory aids = radio, audio recordings.", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Street play comes in the category of auditory aids.", ans:false, tip:"Street play = AUDIO-VISUAL aid (you see and hear). Not purely auditory!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Symposium is the one way method of Group Teaching.", ans:true, tip:"Symposium = mostly one-way/didactic. Experts present, audience listens.", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Group Discussion is an example for Didactic Method.", ans:false, tip:"Group Discussion = SOCRATIC/two-way method. Didactic = one-way lecture method!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"Role play is an example of mass approach in Health Communication.", ans:false, tip:"Role play = GROUP approach. Mass approach = TV, radio, newspapers reaching millions.", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"World Health Day is celebrated on April 7th.", ans:true, tip:"WHO founded 7th April 1948 → World Health Day = 7th April every year!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"World health day is celebrated on April 12th.", ans:false, tip:"World Health Day = 7th APRIL, not 12th. 12th May = Nurses Day!", freq:"—" },
+  { section:"Environmental & Communication True/False", q:"31st May is celebrated as World 'No Tobacco' day.", ans:true, tip:"31st May = World No Tobacco Day. Quit smoking campaign worldwide!", freq:"—" },
+];
+
+const meaningsData = [
+  // 1. Concept of Health, Disease & Epidemiology
+  { section:"Concept of Health, Disease & Epidemiology", term:"Health", def:"A complete state of physical, mental and social well-being and not merely an absence of disease or infirmity. (WHO definition)", mem:"Health = 3 dimensions: Physical + Mental + Social. Not just 'no disease' — total wellness!", freq:"6× (July 2025, Jan 2022, Aug 2018, Aug 2016, Feb 2016, Feb 2012)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Disease", def:"A deviation from a state of health or a condition in which the body's functions are disturbed.", mem:"DISease = DIS-comfort. Disruption of normal body functions. Body is out of harmony!", freq:"2× (July 2025, Feb 2011)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Epidemiology", def:"The study of the distribution and determinants of health-related states or events in specified populations, applied to control health problems.", mem:"EPI = upon, DEMOS = people, LOGOS = study. Study of what falls UPON the PEOPLE!", freq:"4× (Nov 2022, Aug 2017, Feb 2016, Aug 2014)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Endemic", def:"The constant presence of a disease in a given geographic area.", mem:"ENDEMIC = ENDuring disease in an area. 'It ENDS within that area — stays there constantly!'", freq:"4× (Jan 2024, Feb 2015, Aug 2014, Feb 2011)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Epidemic", def:"The rapid spread of infectious disease to a large number of people in a given population within a short period of time.", mem:"EPIDEMIC = EPIdemic explosion! Sudden rapid spread. EPI = upon — falls on many people fast!", freq:"1× (Feb 2014)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Pandemic", def:"A worldwide spread of a new disease affecting a large number of people across many countries/continents (e.g., COVID-19, Influenza).", mem:"PAN = all/every (Greek). PANDEMIC = ALL countries affected. Bigger than epidemic!", freq:"2× (May 2023, June 2013)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Sporadic", def:"Occurrence of disease at irregular intervals of single, scattered cases in a population — no regular pattern.", mem:"SPORADIC = SPORAdic = SPARSELY occurring. Like scattered SPORES — here and there!", freq:"2× (Feb 2019, Feb 2012)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Carrier", def:"A person who carries the disease agent in his/her body but outwardly appears healthy and can spread the disease.", mem:"CARRIER = carries germs but looks healthy! Like a carrier bag — holds things inside!", freq:"3× (July/Aug 2024, May 2023, Aug 2017)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Immunity", def:"The ability of the body to recognise, destroy and eliminate antigenic material — resistance to disease.", mem:"IMmunity = IM-possible for germs to win! Your body's personal security system!", freq:"3× (July/Aug 2024, Aug 2015, Aug 2011)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Infection", def:"The entry and multiplication of a disease producing agent in the body of man or animals.", mem:"INfection = INvaders enter and multiply. Germ enters → multiplies → causes disease!", freq:"1× (Feb 2019)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Incubation Period", def:"The time interval between the entry of the disease agent into the body and the appearance of the first signs and symptoms of disease.", mem:"INCUBation = like an egg INCUBATING. Germ enters, 'hatches' inside, then symptoms appear!", freq:"1× (Feb 2014)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Communicable Disease", def:"An illness due to a specific infectious agent which tends to spread among the individuals in a community.", mem:"COMMUNIcable = can COMMUNICATE to others. The disease communicates/spreads person to person!", freq:"1× (Jan 2024)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Fomites", def:"Inanimate objects (e.g., handkerchiefs, utensils, clothing) contaminated by infectious discharges that can transfer infectious agents.", mem:"FOMITES = inanimate CARRIERS. Dirty objects that carry and spread germs!", freq:"1× (Aug 2014)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Disinfection", def:"The process by which infectious agents are killed outside the human body by direct exposure to chemical or physical agents.", mem:"DISinfection = DISrupting germs outside body. Kills most bugs on surfaces (not spores)!", freq:"2× (Aug 2015, Sep 2013)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Mortality", def:"Deaths occurring by a disease or event in a population — the death rate.", mem:"MORTality = MORT = death (Latin). Mortality rate = how many people DIE from a disease!", freq:"3× (July/Aug 2024, Aug 2017, Aug 2015)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Morbidity", def:"Deviation from physiological basis — the state of being diseased or unhealthy; incidence of illness in a population.", mem:"MORBidity = MORBID = sick/diseased. How many people get SICK (not die)!", freq:"2× (July 2025, Aug 2016)" },
+  { section:"Concept of Health, Disease & Epidemiology", term:"Infant Mortality Rate (IMR)", def:"The number of infant deaths per 1000 live births in one year — key indicator of a country's health status.", mem:"IMR = Infant deaths per 1000 live births. Lower IMR = better healthcare system!", freq:"1× (Feb 2011)" },
+
+  // 2. Community Health Nursing & Administration
+  { section:"Community Health Nursing & Administration", term:"Community", def:"A social group determined by geographical boundaries and/or common values and interests.", mem:"COMMUNITY = common unity. People sharing COMMON area + values = community!", freq:"3× (Nov 2022, Aug 2016, Aug 2011)" },
+  { section:"Community Health Nursing & Administration", term:"Community Health", def:"The health status of the members of the community and the totality of health care provided to the community.", mem:"Community HEALTH = health of ALL members. Collective well-being of the whole group!", freq:"1× (Feb 2014)" },
+  { section:"Community Health Nursing & Administration", term:"Community Health Nursing", def:"The synthesis of nursing practice and public health practice applied to promoting and preserving the health of populations.", mem:"CHN = Nursing + Public Health together. Takes care outside the hospital to the community!", freq:"3× (Jan 2022, June 2013, Feb 2011)" },
+  { section:"Community Health Nursing & Administration", term:"Community Nursing Process", def:"An orderly, systematic process to solve the problems related to the Health of the Community.", mem:"Nursing process applied to COMMUNITY. Same ADPIE steps but for a whole community!", freq:"1× (Feb 2017)" },
+  { section:"Community Health Nursing & Administration", term:"Community Diagnosis", def:"The interpretation of relevant information for the identification of a health problem in the community.", mem:"Community DIAGNOSIS = finding community's health PROBLEM. Like diagnosing a patient but for a whole community!", freq:"1× (May 2023)" },
+  { section:"Community Health Nursing & Administration", term:"Primary Health Care (PHC)", def:"An essential health care made universally accessible to individuals and acceptable to them through full participation at an affordable cost.", mem:"PHC = People's Health Care. Affordable + accessible + acceptable + available to ALL!", freq:"1× (Aug 2011)" },
+  { section:"Community Health Nursing & Administration", term:"Home Visit / Home Visiting", def:"Providing services to the family at their doorstep to maintain their health and to reduce the mortality and morbidity in the family.", mem:"HOME visit = nurse comes to YOUR home. No travel for patient — nurse brings healthcare to them!", freq:"4× (July 2025, Jan 2024, Feb 2017, Sep 2013)" },
+  { section:"Community Health Nursing & Administration", term:"ASHA (Expand)", def:"Accredited Social Health Activist — a local community health worker who acts as a link between the community and health system.", mem:"ASHA = HOPE in Hindi. ASHA workers bring health services to rural communities!", freq:"1× (Aug 2018)" },
+
+  // 3. MCH & Family Planning
+  { section:"Maternal & Child Health & Family Planning", term:"Maternal and Child Health (MCH)", def:"Promotive, preventive, curative and rehabilitative care services for mothers and children.", mem:"MCH = Mother + Child care. 4 types: Promote, Prevent, Cure, Rehabilitate!", freq:"1× (Feb 2012)" },
+  { section:"Maternal & Child Health & Family Planning", term:"Antenatal Care", def:"The period of care from conception to the onset of labour — care provided to a pregnant woman before delivery.", mem:"ANTE = before, NATAL = birth. Antenatal = BEFORE birth. The 9 months of pregnancy care!", freq:"2× (Feb 2016, June 2013)" },
+  { section:"Maternal & Child Health & Family Planning", term:"Antenatal Woman", def:"A woman before birth or during or relating to pregnancy — a pregnant woman.", mem:"ANTE = before, NATAL = birth. Antenatal woman = a woman who is PREGNANT (before birth)!", freq:"1× (Aug 2018)" },
+  { section:"Maternal & Child Health & Family Planning", term:"Postnatal Care", def:"The period beginning immediately after the birth of a child and extending for about six weeks.", mem:"POST = after, NATAL = birth. Postnatal = AFTER birth. 6 weeks of recovery care!", freq:"1× (Aug 2016)" },
+  { section:"Maternal & Child Health & Family Planning", term:"Eligible Couple", def:"A target group for family welfare services — couples where the wife is in the reproductive age group (15-45 years).", mem:"ELIGIBLE = qualified for family planning services. Couple where wife is of childbearing age!", freq:"3× (Feb 2017, Aug 2014, Feb 2012)" },
+  { section:"Maternal & Child Health & Family Planning", term:"Infant", def:"A child up to 1 year of age.", mem:"INFANT = baby under 1 year. INfant = IN first year of life!", freq:"1× (Feb 2019)" },
+  { section:"Maternal & Child Health & Family Planning", term:"Neonatal Period", def:"The first 28 days of life — the period from birth to 28 days.", mem:"NEO = new, NATAL = birth. NEONATAL = brand new birth period. First 28 days!", freq:"1× (Feb 2015)" },
+  { section:"Maternal & Child Health & Family Planning", term:"Weaning", def:"The process of gradually introducing non-milk foods into an infant's diet while reducing breastfeeding.", mem:"WEANING = WEANing off breast milk. Gradually introducing solid foods at 6 months!", freq:"1× (Aug 2011)" },
+  { section:"Maternal & Child Health & Family Planning", term:"Immunization", def:"The process of administering immunity agents to protect specific protection against a given disease.", mem:"IMMUNIzation = giving IMMUNIty artificially. Vaccines train your immune system to fight disease!", freq:"4× (Nov 2022, Feb 2019, Feb 2015, Aug 2014)" },
+  { section:"Maternal & Child Health & Family Planning", term:"Cold Chain", def:"A system of transporting and storing vaccines in the recommended temperatures to maintain their efficacy.", mem:"COLD CHAIN = keeping vaccines COLD throughout the supply chain. Break the chain = useless vaccine!", freq:"2× (Jan 2024, Feb 2014)" },
+  { section:"Maternal & Child Health & Family Planning", term:"Contraceptives", def:"Means used for pregnancy spacing and family planning to prevent conception.", mem:"CONTRA = against, CONCEPTION. Contraceptives = AGAINST pregnancy. Various methods available!", freq:"1× (Aug 2015)" },
+  { section:"Maternal & Child Health & Family Planning", term:"IUCD (Intrauterine Contraceptive Devices)", def:"A choice of conventional (non-hormonal) contraceptive device placed inside the uterus after delivery.", mem:"IUCD = device placed IN THE UTERUS. Copper-T is most common. Long-acting reversible!", freq:"1× (Sep 2013)" },
+
+  // 4. Family, Records & Environment
+  { section:"Family, Records & Environment", term:"Family Folder", def:"A document used to maintain the health records of all the members of the family.", mem:"Family FOLDER = FOLDER for the whole FAMILY's health records. One folder per family!", freq:"4× (July/Aug 2024, Jan 2024, Aug 2017, June 2013)" },
+  { section:"Family, Records & Environment", term:"Cumulative Record", def:"Records which are maintained and continued for a longer period — ongoing records that build over time.", mem:"CUMULATIVE = accumulating over time. Like a running total — keeps adding up!", freq:"2× (May 2023, Sep 2013)" },
+  { section:"Family, Records & Environment", term:"Demography", def:"Structural characteristics of a population such as age, sex, and socio-economic distribution.", mem:"DEMO = people, GRAPHY = study. Demography = statistical study of populations!", freq:"1× (Feb 2016)" },
+  { section:"Family, Records & Environment", term:"Health Education", def:"The part of health care concerned with promoting healthy behaviour in individuals and communities.", mem:"Health EDUCATION = teaching healthy BEHAVIOUR. Knowledge → Attitude → Practice change!", freq:"1× (Jan 2022)" },
+  { section:"Family, Records & Environment", term:"Air Pollution", def:"The excessive concentration of foreign matter in the air which adversely affects the well-being of an individual.", mem:"Air POLLUTION = dirty AIR = health hazard. Too many pollutants in the air we breathe!", freq:"1× (Jan 2022)" },
+  { section:"Family, Records & Environment", term:"Ventilation", def:"Exchange of air between outdoors and indoors to replace stagnant air with fresh air.", mem:"VENTILATION = VENTing stale air out, fresh air in. Like opening a window to breathe fresh!", freq:"1× (Nov 2022)" },
+];
+
+// STATE
+let currentTab = 'fill';
+const fillState = {};
+const tfState = {};
+
+function getScore() {
+  let correct = 0, wrong = 0, total = 0;
+  Object.values(fillState).forEach(s => { total++; if (s.status === 'correct') correct++; else if (s.status === 'incorrect') wrong++; });
+  Object.values(tfState).forEach(s => { total++; if (s.status === 'correct') correct++; else if (s.status === 'incorrect') wrong++; });
+  return { correct, wrong, total };
+}
+
+function getGrade(pct) {
+  if (pct >= 90) return { g: 'A+', c: '#4ddd80' };
+  if (pct >= 80) return { g: 'A', c: '#4ddd80' };
+  if (pct >= 70) return { g: 'B', c: '#f5c842' };
+  if (pct >= 60) return { g: 'C', c: '#f5a623' };
+  if (pct >= 50) return { g: 'D', c: '#ff9f43' };
+  return { g: 'F', c: '#ff6b6b' };
+}
+
+function updateScore() {
+  const { correct, wrong, total } = getScore();
+  document.getElementById('sc-total').textContent = total;
+  document.getElementById('sc-correct').textContent = correct;
+  document.getElementById('sc-wrong').textContent = wrong;
+  const pct = total > 0 ? Math.round((correct / total) * 100) : null;
+  document.getElementById('sc-pct').textContent = pct !== null ? pct + '%' : '—';
+  document.getElementById('progress-bar').style.width = (pct || 0) + '%';
+  const gb = document.getElementById('sc-grade');
+  if (pct !== null) { const { g, c } = getGrade(pct); gb.textContent = g; gb.style.color = c; gb.style.borderColor = c; }
+  else { gb.textContent = '—'; gb.style.color = '#7a82a0'; gb.style.borderColor = '#7a82a0'; }
+}
+
+function resetAll() {
+  if (!confirm('Reset all answers and scores?')) return;
+  Object.keys(fillState).forEach(k => delete fillState[k]);
+  Object.keys(tfState).forEach(k => delete tfState[k]);
+  updateScore(); renderAll();
+}
+
+function checkFill(id, correctAns, alts) {
+  const input = document.getElementById('input-' + id);
+  const userAns = input.value.trim();
+  if (!userAns) return;
+  const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const nu = norm(userAns);
+  const isCorrect = [norm(correctAns), ...alts.map(norm)].some(a => nu.includes(a) || a.includes(nu));
+  fillState[id] = { status: isCorrect ? 'correct' : 'incorrect', userAns };
+  updateScore(); refreshFillCard(id);
+}
+
+function skipFill(id) {
+  fillState[id] = { status: 'skipped' };
+  updateScore(); refreshFillCard(id);
+}
+
+function refreshFillCard(id) {
+  const card = document.getElementById('fcard-' + id);
+  if (!card) return;
+  const s = fillState[id];
+  const item = fillData[parseInt(id)];
+  card.classList.remove('correct','incorrect','skipped');
+  if (s) card.classList.add(s.status);
+  const aa = card.querySelector('.answer-area');
+  if (s) {
+    let html = '';
+    if (s.status === 'correct') html = `<div class="result-ans ok">✅ Correct! "${s.userAns}"</div>`;
+    else if (s.status === 'incorrect') html = `<div class="result-ans bad">❌ Wrong: "${s.userAns}"</div><div class="correct-ans">✅ Answer: ${item.ans}</div>`;
+    else html = `<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;
+    html += `<div class="mnemonic">💡 ${item.mem}</div>`;
+    aa.innerHTML = html;
+  }
+}
+
+function checkTF(id, chosen) {
+  const item = tfData[parseInt(id)];
+  if (!item) return;
+  tfState[id] = { status: (chosen === item.ans) ? 'correct' : 'incorrect', chosen };
+  updateScore(); refreshTFCard(id);
+}
+
+function refreshTFCard(id) {
+  const card = document.getElementById('tfcard-' + id);
+  if (!card) return;
+  const s = tfState[id];
+  const item = tfData[parseInt(id)];
+  card.classList.remove('correct','incorrect');
+  if (s) {
+    card.classList.add(s.status);
+    card.querySelector('.true-btn').disabled = true;
+    card.querySelector('.false-btn').disabled = true;
+    card.querySelector('.true-btn').classList.toggle('selected-true', s.chosen === true);
+    card.querySelector('.false-btn').classList.toggle('selected-false', s.chosen === false);
+    const rd = card.querySelector('.tf-result');
+    if (rd) rd.innerHTML = s.status === 'correct' ? `<span style="color:var(--green)">✅ Correct!</span>` : `<span style="color:var(--red)">❌ Wrong — Answer: <strong style="color:var(--teal)">${item.ans ? 'TRUE' : 'FALSE'}</strong></span>`;
+    const td = card.querySelector('.tf-tip');
+    if (td) td.style.display = 'block';
+  }
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['fill','tf','meanings'][i] === tab));
+  renderAll();
+}
+
+function getQ() { return document.getElementById('searchBox').value.toLowerCase().trim(); }
+
+function renderAll() {
+  const q = getQ();
+  const container = document.getElementById('content');
+  container.innerHTML = '';
+  if (currentTab === 'fill') renderFill(q, container);
+  else if (currentTab === 'tf') renderTF(q, container);
+  else renderMeanings(q, container);
+}
+
+function renderFill(q, container) {
+  const sections = {};
+  let total = 0;
+  fillData.forEach((item, i) => {
+    if (q && !item.q.toLowerCase().includes(q) && !item.ans.toLowerCase().includes(q) && !item.section.toLowerCase().includes(q) && !item.mem.toLowerCase().includes(q)) return;
+    if (!sections[item.section]) sections[item.section] = [];
+    sections[item.section].push({ item, i }); total++;
+  });
+  document.getElementById('countLine').textContent = `Showing ${total} questions`;
+  if (!total) { container.innerHTML = '<p class="no-results">No results found.</p>'; return; }
+  Object.entries(sections).forEach(([sec, entries]) => {
+    container.insertAdjacentHTML('beforeend', `<div class="section-header">${sec} <span class="section-count">${entries.length} questions</span></div>`);
+    const grid = document.createElement('div'); grid.className = 'grid';
+    entries.forEach(({ item, i }) => {
+      const s = fillState[i];
+      const card = document.createElement('div');
+      card.className = `fill-card ${s ? s.status : ''}`;
+      card.id = 'fcard-' + i;
+      let aaHtml = '';
+      if (s) {
+        if (s.status === 'correct') aaHtml = `<div class="result-ans ok">✅ Correct! "${s.userAns}"</div>`;
+        else if (s.status === 'incorrect') aaHtml = `<div class="result-ans bad">❌ Wrong: "${s.userAns}"</div><div class="correct-ans">✅ Answer: ${item.ans}</div>`;
+        else aaHtml = `<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;
+        aaHtml += `<div class="mnemonic">💡 ${item.mem}</div>`;
+      } else {
+        aaHtml = `<input class="ans-input" id="input-${i}" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter') checkFill(${i}, '${item.ans.replace(/'/g,"\\'")}', ${JSON.stringify(item.alts)})">
+        <button class="btn-check" onclick="checkFill(${i}, '${item.ans.replace(/'/g,"\\'")}', ${JSON.stringify(item.alts)})">Check ✓</button>
+        <button class="btn-skip" onclick="skipFill(${i})">Skip</button>`;
+      }
+      card.innerHTML = `<div class="card-top"><div class="q-text">${item.q}</div><div class="freq">🔁 ${item.freq}</div></div><div class="answer-area">${aaHtml}</div>`;
+      grid.appendChild(card);
+    });
+    container.appendChild(grid);
+  });
+}
+
+function renderTF(q, container) {
+  const sections = {};
+  let total = 0;
+  tfData.forEach((item, i) => {
+    if (q && !item.q.toLowerCase().includes(q) && !item.section.toLowerCase().includes(q) && !item.tip.toLowerCase().includes(q)) return;
+    if (!sections[item.section]) sections[item.section] = [];
+    sections[item.section].push({ item, i }); total++;
+  });
+  document.getElementById('countLine').textContent = `Showing ${total} statements`;
+  if (!total) { container.innerHTML = '<p class="no-results">No results found.</p>'; return; }
+  Object.entries(sections).forEach(([sec, entries]) => {
+    container.insertAdjacentHTML('beforeend', `<div class="section-header">${sec} <span class="section-count">${entries.length} statements</span></div>`);
+    const grid = document.createElement('div'); grid.className = 'grid';
+    entries.forEach(({ item, i }) => {
+      const s = tfState[i];
+      const card = document.createElement('div');
+      card.className = `tf-card ${s ? s.status : ''}`;
+      card.id = 'tfcard-' + i;
+      const resultHtml = s ? (s.status === 'correct' ? `<span style="color:var(--green)">✅ Correct!</span>` : `<span style="color:var(--red)">❌ Wrong — Answer: <strong style="color:var(--teal)">${item.ans ? 'TRUE' : 'FALSE'}</strong></span>`) : '';
+      card.innerHTML = `
+        <div class="tf-q">${item.q}</div>
+        <div class="tf-buttons">
+          <button class="tf-btn true-btn ${s && s.chosen===true ? 'selected-true' : ''}" onclick="checkTF(${i}, true)" ${s ? 'disabled' : ''}>✓ TRUE</button>
+          <button class="tf-btn false-btn ${s && s.chosen===false ? 'selected-false' : ''}" onclick="checkTF(${i}, false)" ${s ? 'disabled' : ''}>✗ FALSE</button>
+        </div>
+        <div class="tf-result">${resultHtml}</div>
+        <div class="tf-tip" style="display:${s ? 'block' : 'none'}">💡 ${item.tip}</div>
+        <div class="tf-freq">🔁 ${item.freq}</div>`;
+      grid.appendChild(card);
+    });
+    container.appendChild(grid);
+  });
+}
+
+function renderMeanings(q, container) {
+  const sections = {};
+  let total = 0;
+  meaningsData.forEach((item, i) => {
+    if (q && !item.term.toLowerCase().includes(q) && !item.def.toLowerCase().includes(q) && !item.section.toLowerCase().includes(q) && !item.mem.toLowerCase().includes(q)) return;
+    if (!sections[item.section]) sections[item.section] = [];
+    sections[item.section].push({ item, i }); total++;
+  });
+  document.getElementById('countLine').textContent = `Showing ${total} definitions`;
+  if (!total) { container.innerHTML = '<p class="no-results">No results found.</p>'; return; }
+  Object.entries(sections).forEach(([sec, entries]) => {
+    container.insertAdjacentHTML('beforeend', `<div class="section-header">${sec} <span class="section-count">${entries.length} terms</span></div>`);
+    const grid = document.createElement('div'); grid.className = 'grid';
+    entries.forEach(({ item }) => {
+      const card = document.createElement('div'); card.className = 'def-card';
+      card.innerHTML = `<div class="def-term">${item.term}</div><div class="def-text">${item.def}</div><div class="def-mem">💡 ${item.mem}</div><div class="def-freq">🔁 ${item.freq}</div>`;
+      grid.appendChild(card);
+    });
+    container.appendChild(grid);
+  });
+}
+
+updateScore();
+renderAll();
+</script>
+</body>
+</html>

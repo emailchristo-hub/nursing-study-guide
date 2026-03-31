@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psychology & Sociology · Self-Evaluation Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0e1a;--surface:#141828;--card:#1c2235;--border:#2a3050;--gold:#f5c842;--teal:#38d9c0;--red:#ff6b6b;--green:#4ddd80;--blue:#5b9cf6;--accent:#b388ff;--text:#e8ecf8;--muted:#7a82a0;--tag:#1e2640;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+.hero{background:linear-gradient(135deg,#0b0e1a 0%,#140e1a 40%,#0e0a14 100%);border-bottom:1px solid var(--border);padding:40px 20px 30px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(179,136,255,0.07) 0%,transparent 70%);pointer-events:none;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;color:var(--accent);letter-spacing:-0.5px;margin-bottom:6px;}
+.hero p{color:var(--muted);font-size:.9rem;margin-bottom:20px;}
+.scoreboard{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.score-box{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:12px 20px;text-align:center;min-width:100px;transition:transform .2s;}
+.score-box:hover{transform:translateY(-2px);}
+.score-val{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;line-height:1;}
+.score-label{font-size:.7rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.5px;}
+.grade-badge{display:inline-block;font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;padding:8px 24px;border-radius:50px;border:2px solid;margin:8px 0;transition:all .4s;}
+.controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:16px 20px 14px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+.tab{padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:.82rem;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;white-space:nowrap;}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#0b0e1a;}
+.tab:hover:not(.active){border-color:var(--accent);color:var(--accent);}
+.search-wrap{position:relative;width:100%;max-width:320px;}
+.search{width:100%;padding:8px 14px 8px 36px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;}
+.search:focus{border-color:var(--accent);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem;pointer-events:none;}
+.btn-reset{padding:8px 16px;border-radius:20px;border:1.5px solid var(--red);background:transparent;color:var(--red);cursor:pointer;font-size:.8rem;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;}
+.btn-reset:hover{background:var(--red);color:white;}
+.main{padding:20px;max-width:1200px;margin:0 auto;}
+.section-header{font-family:'Playfair Display',serif;font-size:1rem;color:var(--accent);border-left:4px solid var(--accent);padding-left:10px;margin:24px 0 12px;display:flex;align-items:center;gap:8px;}
+.section-count{font-size:.72rem;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;}
+.fill-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;transition:all .25s;}
+.fill-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.fill-card.correct{border-color:var(--green);background:#1c2d24;}
+.fill-card.incorrect{border-color:var(--red);background:#2d1c1c;}
+.fill-card.skipped{border-color:var(--blue);opacity:.75;}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px;}
+.q-text{font-weight:500;font-size:.9rem;color:var(--text);flex:1;line-height:1.5;}
+.freq{background:var(--tag);color:var(--accent);font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0;border:1px solid rgba(179,136,255,.2);}
+.ans-input{width:100%;padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.88rem;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;}
+.ans-input:focus{border-color:var(--accent);}
+.btn-check{margin-top:8px;padding:7px 16px;border-radius:8px;border:none;background:var(--accent);color:#0b0e1a;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-check:hover{background:#9c6fe0;}
+.btn-skip{margin-top:8px;margin-left:6px;padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-skip:hover{border-color:var(--blue);color:var(--blue);}
+.result-ans.ok{color:var(--green);font-size:.88rem;font-weight:600;}
+.result-ans.bad{color:var(--red);font-size:.88rem;font-weight:600;}
+.correct-ans{font-size:.82rem;color:var(--accent);margin-top:4px;}
+.mnemonic{font-size:.78rem;color:var(--muted);font-style:italic;background:#1e2640;border-radius:6px;padding:6px 10px;border-left:3px solid var(--accent);margin-top:6px;line-height:1.5;}
+.tf-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;transition:all .25s;}
+.tf-card:hover{border-color:var(--accent);box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.tf-card.correct{border-color:var(--green);background:#1c2d24;}
+.tf-card.incorrect{border-color:var(--red);background:#2d1c1c;}
+.tf-q{font-size:.9rem;font-weight:500;margin-bottom:10px;line-height:1.5;}
+.tf-buttons{display:flex;gap:8px;margin-bottom:6px;}
+.tf-btn{flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.tf-btn.true-btn:hover{border-color:var(--green);color:var(--green);}
+.tf-btn.false-btn:hover{border-color:var(--red);color:var(--red);}
+.tf-btn.selected-true{background:#1a3d2b;border-color:var(--green);color:var(--green);}
+.tf-btn.selected-false{background:#3d1a1a;border-color:var(--red);color:var(--red);}
+.tf-btn:disabled{cursor:not-allowed;opacity:.6;}
+.tf-result{font-size:.82rem;margin-top:6px;}
+.tf-tip{font-size:.78rem;color:var(--muted);font-style:italic;margin-top:5px;background:#1e2640;border-radius:6px;padding:5px 9px;border-left:3px solid var(--accent);line-height:1.4;}
+.tf-freq{font-size:.68rem;color:var(--accent);font-weight:700;margin-top:5px;}
+.def-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;transition:all .25s;}
+.def-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.def-term{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--accent);margin-bottom:6px;}
+.def-text{font-size:.85rem;color:var(--text);margin-bottom:8px;line-height:1.6;}
+.def-mem{font-size:.78rem;color:var(--muted);font-style:italic;background:#1e2640;border-radius:6px;padding:6px 10px;border-left:3px solid var(--accent);line-height:1.5;}
+.def-freq{font-size:.68rem;color:var(--accent);font-weight:700;margin-top:6px;}
+.progress-bar-wrap{background:var(--bg);border-radius:8px;height:12px;overflow:hidden;margin:12px auto;max-width:400px;}
+.progress-bar{height:100%;border-radius:8px;transition:width 1s ease;background:linear-gradient(90deg,var(--accent),var(--blue));}
+.count-line{text-align:center;color:var(--muted);font-size:.8rem;margin-bottom:10px;}
+.no-results{text-align:center;color:var(--muted);padding:50px;font-size:1rem;}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}.hero h1{font-size:1.5rem;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.fill-card,.tf-card,.def-card{animation:fadeIn .3s ease both;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>🧠 Psychology & Sociology</h1>
+  <p>Psych & Socio · Repeated Exam Questions · Self-Evaluation Study Guide</p>
+  <div class="scoreboard">
+    <div class="score-box"><div class="score-val" style="color:var(--accent)" id="sc-total">0</div><div class="score-label">Attempted</div></div>
+    <div class="score-box"><div class="score-val" style="color:var(--green)" id="sc-correct">0</div><div class="score-label">Correct</div></div>
+    <div class="score-box"><div class="score-val" style="color:var(--red)" id="sc-wrong">0</div><div class="score-label">Wrong</div></div>
+    <div class="score-box"><div class="score-val" style="color:var(--blue)" id="sc-pct">—</div><div class="score-label">Score %</div></div>
+    <div class="score-box"><div class="grade-badge" id="sc-grade" style="font-size:1.2rem;padding:6px 16px;color:#7a82a0;border-color:#7a82a0;">—</div><div class="score-label">Grade</div></div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+</div>
+<div class="controls">
+  <button class="tab active" onclick="switchTab('fill')">📝 Fill in Blank</button>
+  <button class="tab" onclick="switchTab('tf')">✅ True / False</button>
+  <button class="tab" onclick="switchTab('meanings')">📖 Meanings</button>
+  <div class="search-wrap"><span class="search-icon">🔍</span><input class="search" type="text" id="searchBox" placeholder="Search topics, answers..." oninput="renderAll()"></div>
+  <button class="btn-reset" onclick="resetAll()">↺ Reset All</button>
+</div>
+<div class="main"><p class="count-line" id="countLine"></p><div id="content"></div></div>
+<script>
+const fillData=[
+  // Psychology
+  {section:"Psychology — Introduction & History",q:"Wilhelm Wundt is the father of Psychology.",ans:"Wilhelm Wundt",alts:["wundt"],mem:"WUNDT = Wonder of psychology. He opened the FIRST psychology lab in 1879!",freq:"6× (May 2023, Nov 2022, Jan 2022, Feb 2019, Aug 2018, Aug 2016)"},
+  {section:"Psychology — Introduction & History",q:"The term psychology is derived from two Greek words _______.",ans:"Psyche and Logos",alts:["psyche","logos"],mem:"PSYCHE = soul/mind, LOGOS = study. Psychology = study of the MIND!",freq:"2× (July 2024, Feb 2014)"},
+  {section:"Psychology — Introduction & History",q:"'Psyche' and 'logos' means _______.",ans:"Soul (or Mind) and Study (or Science)",alts:["soul","mind","study","science"],mem:"Psyche = SOUL/MIND. Logos = STUDY/SCIENCE. Together = science of the mind!",freq:"1× (Feb 2019)"},
+  {section:"Psychology — Introduction & History",q:"Psyche means soul and mind. _______.",ans:"Psyche",alts:[],mem:"PSYCHE = soul + mind. Greek origin. Psyche = the inner self!",freq:"2× (Apr 2021, June 2013)"},
+  {section:"Psychology — Introduction & History",q:"Psychology is the study of _______.",ans:"Human Behavior",alts:["human behaviour","behaviour","behavior"],mem:"Psychology = study of HUMAN BEHAVIOR. Why people think, feel, and act!",freq:"2× (Feb 2017, Feb 2015)"},
+  {section:"Psychology — Cognitive Processes",q:"False perception with presence of object is called _______.",ans:"Illusion",alts:[],mem:"ILLUSION = misinterpreting something REAL. Magic tricks = illusions!",freq:"4× (May 2023, Feb 2019, Feb 2017, Feb 2016)"},
+  {section:"Psychology — Cognitive Processes",q:"Illusions are _______.",ans:"False (or Misinterpreted) perception",alts:["false perception","misinterpreted perception"],mem:"Illusion = WRONG interpretation of a real stimulus. See rope → think snake = illusion!",freq:"2× (July 2024, Aug 2015)"},
+  {section:"Psychology — Cognitive Processes",q:"Hallucination is a sensory experience without stimulus. _______.",ans:"Hallucination",alts:[],mem:"HALLUCINATION = perceiving what ISN'T there. No object but still 'sees' it!",freq:"1× (Aug 2018)"},
+  {section:"Psychology — Cognitive Processes",q:"Meaningful sensation is known as _______.",ans:"Perception",alts:[],mem:"PERCEPTION = meaningful sensation. Raw sensation + meaning = perception!",freq:"1× (July 2025)"},
+  {section:"Psychology — Cognitive Processes",q:"Delusion is an unshakable false belief. _______.",ans:"Delusion",alts:[],mem:"DELUSION = false belief that CAN'T be corrected. Paranoid patient = delusion!",freq:"1× (Feb 2016)"},
+  {section:"Psychology — Cognitive Processes",q:"Reasoning (or Creative Thinking) is the highest form of thinking. _______.",ans:"Reasoning (or Creative Thinking)",alts:["reasoning","creative thinking"],mem:"REASONING = highest thinking. Beyond basic thought — logical, creative problem-solving!",freq:"1× (Feb 2025)"},
+  {section:"Psychology — Cognitive Processes",q:"Thinking is a _______ activity.",ans:"Cognitive (or Mental)",alts:["cognitive","mental"],mem:"Thinking = COGNITIVE (mental) activity. Cognitive = brain-based!",freq:"2× (Feb 2015, Aug 2012)"},
+  {section:"Psychology — Cognitive Processes",q:"Formula for IQ is _______.",ans:"(MA/CA) × 100",alts:["ma/ca x 100","ma/ca"],mem:"IQ = Mental Age ÷ Chronological Age × 100. MA/CA × 100 = IQ!",freq:"6× (Nov 2022, Apr 2021, Jan 2024, Feb 2018, Aug 2016, Aug 2012)"},
+  {section:"Psychology — Cognitive Processes",q:"The term IQ was introduced by _______.",ans:"William Stern",alts:["stern"],mem:"William STERN introduced IQ. STERN = serious about measuring intelligence!",freq:"1× (Feb 2025)"},
+  {section:"Psychology — Cognitive Processes",q:"The normal IQ is _______.",ans:"90 – 109",alts:["90-109","90 to 109"],mem:"Normal IQ = 90-109. Average = 100. You're normal if you're around 100!",freq:"1× (Jan 2022)"},
+  {section:"Psychology — Cognitive Processes",q:"IQ of a moron is _______.",ans:"50 – 70",alts:["50-70","50 to 70"],mem:"Moron IQ = 50-70. Mild intellectual disability range!",freq:"1× (Feb 2016)"},
+  {section:"Psychology — Cognitive Processes",q:"IQ of an imbecile is _______.",ans:"25 – 49",alts:["25-49","25 to 49"],mem:"Imbecile IQ = 25-49. Moderate intellectual disability range!",freq:"1× (Feb 2012)"},
+  {section:"Psychology — Learning, Memory & Habits",q:"Loss of memory is called _______.",ans:"Amnesia",alts:[],mem:"AMNESIA = A + MNESIA (memory). No memory = Amnesia!",freq:"5× (May 2023, Aug 2018, Feb 2017, Aug 2015, Aug 2011)"},
+  {section:"Psychology — Learning, Memory & Habits",q:"Failure to recall something learnt before is _______.",ans:"Forgetting",alts:[],mem:"FORGETTING = memory failure. Learned but can't retrieve = forgotten!",freq:"1× (Jan 2024)"},
+  {section:"Psychology — Learning, Memory & Habits",q:"Process of putting information into memory is _______.",ans:"Encoding (or Registration)",alts:["encoding","registration"],mem:"ENCODing = coding information INTO memory. Like saving a file on computer!",freq:"2× (July 2025, Nov 2022)"},
+  {section:"Psychology — Learning, Memory & Habits",q:"Theory of classical conditioning was proposed by _______.",ans:"Ivan Pavlov",alts:["pavlov"],mem:"PAVLOV's dogs! Ring bell → food → saliva. Bell alone → saliva = classical conditioning!",freq:"2× (Apr 2021, Feb 2016)"},
+  {section:"Psychology — Learning, Memory & Habits",q:"Habits are form of _______.",ans:"Learned behavior",alts:["learned behaviour"],mem:"HABITS = LEARNED behavior that became automatic. Practice → habit!",freq:"2× (Feb 2019, Feb 2012)"},
+  {section:"Psychology — Motivation, Emotion & Personality",q:"Thirst is a _______ motive.",ans:"Biological (or Physiological)",alts:["biological","physiological"],mem:"THIRST = biological need. Body NEEDS water = biological/physiological motive!",freq:"3× (Nov 2022, Jan 2022, Apr 2021)"},
+  {section:"Psychology — Motivation, Emotion & Personality",q:"Unattainable goals lead to _______.",ans:"Frustration",alts:[],mem:"Can't reach goal = FRUSTRATION. Blocked path = frustrated emotions!",freq:"2× (Feb 2018, Aug 2011)"},
+  {section:"Psychology — Motivation, Emotion & Personality",q:"Fantasy is day dreaming: _______.",ans:"Fantasy",alts:[],mem:"FANTASY = daydreaming. Escape from reality into imagination!",freq:"3× (July 2024, Aug 2016, June 2013)"},
+  {section:"Psychology — Motivation, Emotion & Personality",q:"Emotions classified into _______.",ans:"Positive and Negative",alts:["positive","negative"],mem:"Emotions = POSITIVE (joy, love) + NEGATIVE (fear, anger). Two sides!",freq:"1× (Feb 2011)"},
+  {section:"Psychology — Motivation, Emotion & Personality",q:"Respect attitude towards elders is example of _______.",ans:"Positive attitude",alts:["positive"],mem:"Respecting elders = POSITIVE attitude. Good values = positive attitudes!",freq:"2× (Jan 2024, June 2013)"},
+  {section:"Psychology — Motivation, Emotion & Personality",q:"Ego deals with reality: _______.",ans:"Ego",alts:[],mem:"EGO = reality principle. Between Id (pleasure) and Superego (morality)!",freq:"1× (May 2023)"},
+  {section:"Psychology — Motivation, Emotion & Personality",q:"Personality term derived from _______.",ans:"Persona",alts:[],mem:"PERSONALITY from PERSONA = mask (Latin). How we present ourselves to others!",freq:"1× (July 2025)"},
+  {section:"Psychology — Motivation, Emotion & Personality",q:"Blaming others for own fault is _______.",ans:"Projection",alts:[],mem:"PROJECTION = projecting your faults onto others. 'It's not me, it's YOU!'",freq:"1× (Feb 2018)"},
+  {section:"Psychology — Motivation, Emotion & Personality",q:"Conflicts in unconscious mind are _______.",ans:"Repressed",alts:[],mem:"REPRESSED = pushed into unconscious. Hidden conflicts = repressed memories!",freq:"1× (Aug 2012)"},
+  // Sociology
+  {section:"Sociology — Introduction & Society",q:"Term Sociology from Latin _______.",ans:"Socius and Logos",alts:["socius","socius and logos"],mem:"SOCIUS = companion/society (Latin), LOGOS = study (Greek). Sociology = study of society!",freq:"3× (Nov 2022, Jan 2022, Aug 2017)"},
+  {section:"Sociology — Introduction & Society",q:"Father of sociology is _______.",ans:"Auguste Comte",alts:["comte"],mem:"Auguste COMTE = father of sociology. COMTE = COUNTed on to start sociology!",freq:"2× (Feb 2017, Feb 2016)"},
+  {section:"Sociology — Introduction & Society",q:"Sociology is study of _______.",ans:"Society (or Social Relationships)",alts:["society","social relationships"],mem:"Sociology = study of SOCIETY and how people interact socially!",freq:"1× (Feb 2017)"},
+  {section:"Sociology — Introduction & Society",q:"Society formed by _______.",ans:"Social Relationships (or People)",alts:["social relationships","people"],mem:"SOCIETY = formed by PEOPLE and their SOCIAL RELATIONSHIPS!",freq:"3× (May 2023, Apr 2021, Aug 2016)"},
+  {section:"Sociology — Introduction & Society",q:"Man is a _______.",ans:"Social Animal",alts:["social animal"],mem:"Aristotle said 'Man is a SOCIAL ANIMAL.' We need society to survive!",freq:"1× (Aug 2017)"},
+  {section:"Sociology — Introduction & Society",q:"Large unorganized gathering is called _______.",ans:"Crowd",alts:[],mem:"CROWD = large, unorganized gathering. No structure, temporary collection!",freq:"2× (Feb 2019, Feb 2017)"},
+  {section:"Sociology — Introduction & Society",q:"Difference in social phenomenon over time is _______.",ans:"Social Change",alts:["social change"],mem:"SOCIAL CHANGE = society transforming over time. Traditions change = social change!",freq:"1× (Aug 2016)"},
+  {section:"Sociology — Social Institutions",q:"In patriarchal family head is _______.",ans:"Father (or Eldest Male)",alts:["father","eldest male"],mem:"PATRIARCHAL = PATRI = father. Father is head in patriarchal family!",freq:"1× (Feb 2019)"},
+  {section:"Sociology — Social Institutions",q:"Marriage outside group is _______.",ans:"Exogamy",alts:[],mem:"EXO = outside, GAMY = marriage. Exogamy = marrying OUTSIDE your group!",freq:"1× (Aug 2018)"},
+  {section:"Sociology — Social Institutions",q:"One man & one woman is _______.",ans:"Monogamy",alts:[],mem:"MONO = one, GAMY = marriage. One man + one woman = Monogamy!",freq:"1× (Feb 2015)"},
+  {section:"Sociology — Social Institutions",q:"Man with two wives is _______.",ans:"Polygyny",alts:[],mem:"POLY = many, GYNY = women. One man + many wives = Polygyny!",freq:"1× (Feb 2012)"},
+  {section:"Sociology — Social Institutions",q:"Caste membership determined by _______.",ans:"Birth",alts:[],mem:"CASTE = determined by BIRTH. You're born into a caste — cannot change!",freq:"3× (Nov 2022, Aug 2018, Feb 2018)"},
+  {section:"Sociology — Social Institutions",q:"Face-to-face relation in _______.",ans:"Primary group",alts:["primary"],mem:"Face-to-face = PRIMARY group. Family = primary group. Direct personal contact!",freq:"2× (Aug 2017, Aug 2015)"},
+  {section:"Sociology — Demography & Culture",q:"Scientific study of population is _______.",ans:"Demography",alts:[],mem:"DEMO = people, GRAPHY = study. Demography = statistical study of populations!",freq:"4× (Feb 2019, Feb 2015, Feb 2012, Feb 2011)"},
+  {section:"Sociology — Demography & Culture",q:"Country with highest population is _______.",ans:"India (formerly China)",alts:["india","china"],mem:"INDIA overtook China as most populous in 2023! 1.4+ billion people!",freq:"1× (Aug 2017)"},
+  {section:"Sociology — Demography & Culture",q:"Dowry Prohibition Act year _______.",ans:"1961",alts:[],mem:"Dowry Prohibition Act = 1961. 1-9-6-1: India said NO to dowry in 1961!",freq:"5× (May 2023, Jan 2022, Apr 2021, Feb 2017, Feb 2012)"},
+  {section:"Sociology — Demography & Culture",q:"Language is chief vehicle of _______.",ans:"Culture transmission",alts:["culture"],mem:"LANGUAGE = culture carrier. Culture passes through language across generations!",freq:"1× (Aug 2015)"},
+  {section:"Sociology — Demography & Culture",q:"Training child in culture is _______.",ans:"Socialization",alts:[],mem:"SOCIALIZATION = teaching child society's norms. Family = primary socializing agent!",freq:"1× (Feb 2014)"},
+];
+
+const tfData=[
+  // Sociology & Community
+  {section:"Sociology & Community",q:"Sociology is a study of society.",ans:true,tip:"Sociology = scientific study of human society, social relations, and institutions.",freq:"1× (Feb 2025)"},
+  {section:"Sociology & Community",q:"Sociology is derived from a Greek word.",ans:false,tip:"Sociology = Latin 'Socius' + Greek 'Logos'. It's from BOTH Latin AND Greek!",freq:"1× (July 2024)"},
+  {section:"Sociology & Community",q:"Sociology originated in 1839.",ans:true,tip:"Auguste Comte coined the term 'Sociology' in 1839.",freq:"1× (Aug 2016)"},
+  {section:"Sociology & Community",q:"Web of social relations is called society.",ans:true,tip:"Society = web of social relationships among people.",freq:"1× (Aug 2011)"},
+  {section:"Sociology & Community",q:"Man is a social animal.",ans:true,tip:"Aristotle: 'Man is a social animal.' Humans are inherently social beings.",freq:"1× (Feb 2014)"},
+  {section:"Sociology & Community",q:"Group of people sharing a common shelter is community.",ans:false,tip:"Community = specific locality + we-feeling. Common shelter alone = household/family.",freq:"1× (Feb 2025)"},
+  {section:"Sociology & Community",q:"In India, maximum population lives in urban community.",ans:false,tip:"India's maximum population lives in RURAL communities (agriculture-based).",freq:"1× (Feb 2016)"},
+  {section:"Sociology & Community",q:"In rural areas, maximum number of people are engaged in industrial activities.",ans:false,tip:"Rural areas = AGRICULTURE is main occupation, not industrial activities.",freq:"1× (Feb 2014)"},
+  {section:"Sociology & Community",q:"Agriculture is the fundamental occupation of rural society.",ans:true,tip:"Rural society = farming community. Agriculture = backbone of rural economy.",freq:"1× (July 2025)"},
+  {section:"Sociology & Community",q:"Rural community is Heterogeneous.",ans:false,tip:"Rural communities are HOMOGENEOUS (similar people). Urban = Heterogeneous (diverse).",freq:"1× (June 2013)"},
+  {section:"Sociology & Community",q:"Urban society is marked by interpersonal relations.",ans:false,tip:"Urban society = IMPERSONAL/SECONDARY relations. Rural = personal/primary relations.",freq:"1× (Feb 2015)"},
+  {section:"Sociology & Community",q:"Face to face relationship is a feature of primary group.",ans:true,tip:"Primary group = direct face-to-face contact. Family = classic primary group.",freq:"1× (Jan 2024)"},
+  {section:"Sociology & Community",q:"Primary group is small in size.",ans:true,tip:"Primary groups are SMALL — family, close friends. Easy for face-to-face contact.",freq:"1× (June 2013)"},
+  {section:"Sociology & Community",q:"Scientific study of population is termed as demography.",ans:true,tip:"Demography = scientific study of population (births, deaths, migration).",freq:"1× (Feb 2016)"},
+  // Family & Marriage
+  {section:"Family & Marriage",q:"Nuclear family is one which consists of the husband, wife and their children.",ans:true,tip:"Nuclear family = parents + children only. Most basic family unit.",freq:"1× (Feb 2025)"},
+  {section:"Family & Marriage",q:"Nuclear family is also known as conjugal family.",ans:true,tip:"Conjugal = relating to marriage/spouse. Nuclear/conjugal = same family type.",freq:"2× (July 2024, Feb 2012)"},
+  {section:"Family & Marriage",q:"Family is a smallest unit of society.",ans:true,tip:"Family = the smallest and most basic social institution in society.",freq:"1× (Feb 2016)"},
+  {section:"Family & Marriage",q:"Marriage is a temporary relation.",ans:false,tip:"Marriage = PERMANENT/enduring social and legal bond between partners.",freq:"1× (Jan 2024)"},
+  {section:"Family & Marriage",q:"The type of marriage outside the group is called consanguineous.",ans:false,tip:"Marriage OUTSIDE the group = EXOGAMY. Consanguineous = within blood relatives.",freq:"1× (Feb 2025)"},
+  {section:"Family & Marriage",q:"Marriage of one man to one or more women is monogamy.",ans:false,tip:"One man to one or more women = POLYGYNY. Monogamy = one man to ONE woman.",freq:"1× (July 2024)"},
+  {section:"Family & Marriage",q:"Bigamy is a type of marriage in which one man marries two women.",ans:true,tip:"Bigamy = marrying two spouses. One man + two wives = bigamy (illegal in India).",freq:"1× (Feb 2014)"},
+  {section:"Family & Marriage",q:"Polygamy is practiced in all religions.",ans:false,tip:"Polygamy is NOT practiced in all religions. Hinduism, Christianity prohibit it.",freq:"2× (Feb 2017, June 2013)"},
+  {section:"Family & Marriage",q:"Pre-marriage counselling is necessary to build a healthy marriage.",ans:true,tip:"Pre-marriage counselling helps couples understand each other and reduces divorce risk.",freq:"1× (Aug 2011)"},
+  // Psychology, Development & Socialization
+  {section:"Psychology, Development & Socialization",q:"Socialization is a learning process.",ans:true,tip:"Socialization = learning society's norms, values, and behaviors throughout life.",freq:"2× (Feb 2017, June 2013)"},
+  {section:"Psychology, Development & Socialization",q:"Family is one of the agencies of socialization.",ans:true,tip:"Family = PRIMARY agency of socialization. First place we learn social norms.",freq:"1× (Aug 2016)"},
+  {section:"Psychology, Development & Socialization",q:"Socialization helps to prepare a person to fulfil social roles.",ans:true,tip:"Socialization teaches us to play social roles — student, parent, worker, citizen.",freq:"1× (Aug 2016)"},
+  {section:"Psychology, Development & Socialization",q:"Growth and development are not related.",ans:false,tip:"Growth and development are CLOSELY related. Growth = physical; Development = overall.",freq:"2× (Feb 2017, Aug 2015)"},
+  {section:"Psychology, Development & Socialization",q:"Adulthood is a period of stress and strain.",ans:false,tip:"ADOLESCENCE is the period of stress and strain ('Storm and Stress'). Not adulthood.",freq:"1× (Aug 2015)"},
+  {section:"Psychology, Development & Socialization",q:"Fight or flight theory was given by Walter B. Cannon.",ans:true,tip:"Walter B. Cannon (1915) described the fight-or-flight response to stress/danger.",freq:"1× (Jan 2024)"},
+  {section:"Psychology, Development & Socialization",q:"Culture is derived from Greek word.",ans:false,tip:"Culture from Latin 'COLERE' = to cultivate. Not from Greek!",freq:"1× (Feb 2012)"},
+  {section:"Psychology, Development & Socialization",q:"Culture will not broaden the vision of an individual.",ans:false,tip:"Culture DOES broaden vision — exposes us to diverse values, arts, and ways of life.",freq:"1× (Feb 2015)"},
+  // Social Problems, Health & Economics
+  {section:"Social Problems, Health & Economics",q:"Social problems are conditions promoting social well being.",ans:false,tip:"Social problems HINDER social well-being! They disturb harmony and require collective action.",freq:"2× (Aug 2016, Feb 2014)"},
+  {section:"Social Problems, Health & Economics",q:"Poverty is a religious problem.",ans:false,tip:"Poverty is a SOCIO-ECONOMIC problem, not religious.",freq:"1× (Jan 2024)"},
+  {section:"Social Problems, Health & Economics",q:"Juvenile delinquent children are to be kept in hospitals.",ans:false,tip:"Juvenile delinquents are kept in REFORMATORY SCHOOLS or observation homes.",freq:"1× (July 2024)"},
+  {section:"Social Problems, Health & Economics",q:"Child labor is prohibited.",ans:true,tip:"Child labor is PROHIBITED in India under the Child Labour (Prohibition) Act.",freq:"1× (Aug 2015)"},
+  {section:"Social Problems, Health & Economics",q:"Neglect of a child by another person is called child labor.",ans:false,tip:"Neglecting a child = CHILD NEGLECT/ABUSE, not child labor.",freq:"1× (Feb 2015)"},
+  {section:"Social Problems, Health & Economics",q:"HIV can be transmitted by hugging, shaking hands and sharing home with infected person.",ans:false,tip:"HIV is NOT transmitted by casual contact (hugging, handshakes). Transmitted via blood, sexual fluids.",freq:"1× (Aug 2011)"},
+  {section:"Social Problems, Health & Economics",q:"Economics deals with the human relationship in production, distribution and consumption.",ans:true,tip:"Economics = study of production, distribution, and consumption of goods and services.",freq:"1× (Feb 2016)"},
+  {section:"Social Problems, Health & Economics",q:"GNP means Gross National Product.",ans:true,tip:"GNP = Gross National Product. Total value of goods/services produced by a country.",freq:"1× (Feb 2012)"},
+];
+
+const meaningsData=[
+  // Psychology
+  {section:"Psychology",term:"Psychology",def:"The science of human and animal behavior and its application to human problems.",mem:"PSYCHO = mind/soul, LOGY = study. Psychology = science of BEHAVIOR and MIND!",freq:"11× (Apr 2021, Jan 2024, May 2023, Jan 2022, Feb 2019, Aug 2018, Feb 2017, Feb 2016, Aug 2015, Feb 2012, Feb 2011)"},
+  {section:"Psychology",term:"Mental Health",def:"The adjustment of individuals to themselves and others for maximum effectiveness and happiness.",mem:"Mental HEALTH = being adjusted to self + others. Balance = mental well-being!",freq:"7× (May 2023, Apr 2021, Feb 2019, Feb 2018, Feb 2017, Jun 2013, Feb 2012)"},
+  {section:"Psychology",term:"Behaviour",def:"All activities and experiences — motor, cognitive, and emotional — of living organisms.",mem:"BEHAVIOUR = everything you DO + FEEL + THINK. Observable + internal activities!",freq:"4× (Feb 2025, Aug 2017, Jun 2013, Feb 2012)"},
+  {section:"Psychology",term:"Introspection",def:"Looking within and observing one's own mental processes.",mem:"INTRO = within, SPECTION = look. Introspection = looking INSIDE your own mind!",freq:"2× (Feb 2014, Aug 2011)"},
+  {section:"Psychology",term:"Attention",def:"Concentration of consciousness on one object rather than another.",mem:"ATTENTION = focusing consciousness. Like a spotlight on one thing at a time!",freq:"9× (Jul 2025, Jul 2024, Feb 2025, Nov 2022, Aug 2018, Feb 2017, Aug 2015, Feb 2015, Feb 2014)"},
+  {section:"Psychology",term:"Perception",def:"The experience of objects or events by interpreting sensations.",mem:"PERCEPTION = sensation + MEANING. Raw senses + brain interpretation = perception!",freq:"3× (Nov 2022, Aug 2018, Aug 2015)"},
+  {section:"Psychology",term:"Intelligence",def:"The capacity to think rationally, act purposefully, and deal effectively with the environment.",mem:"Intelligence = rational thinking + purposeful action + adapting to environment. Think-Act-Adapt!",freq:"6× (Jul 2025, May 2023, Jan 2022, Apr 2021, Aug 2018, Feb 2011)"},
+  {section:"Psychology",term:"Thinking",def:"A symbolic, complex mental activity initiated by a problem.",mem:"THINKING = mental activity triggered by a PROBLEM. Problems = thought starters!",freq:"2× (Feb 2018, Aug 2017)"},
+  {section:"Psychology",term:"Reasoning",def:"Step-by-step thinking with a goal or purpose.",mem:"REASONING = logical, step-by-step thinking. Goal-directed thought process!",freq:"2× (Jul 2025, Aug 2017)"},
+  {section:"Psychology",term:"Observation",def:"The objective method of perceiving and analyzing behavior under natural conditions.",mem:"OBSERVATION = watching objectively. Systematic use of senses without interference!",freq:"4× (Apr 2021, Feb 2018, Aug 2017, Feb 2014)"},
+  {section:"Psychology",term:"Skill",def:"The ability to perform an act with ease, accuracy, and efficiency.",mem:"SKILL = ease + accuracy + efficiency. Practice makes skill PERFECT!",freq:"4× (Jul 2025, May 2023, Feb 2016, Aug 2011)"},
+  {section:"Psychology",term:"Fantasy",def:"Escape into a dream world to deal with frustration.",mem:"FANTASY = daydreaming. Escaping real frustration into an imaginary happy world!",freq:"3× (May 2023, Nov 2022, Apr 2021)"},
+  {section:"Psychology",term:"Hallucination",def:"Sensory perceptions without external stimuli.",mem:"HALLUCINATION = perceiving without stimulus. Sees/hears things that DON'T exist!",freq:"3× (Jul 2024, Feb 2015, Feb 2011)"},
+  {section:"Psychology",term:"Delusion",def:"A false, irrational belief often associated with mental disorders.",mem:"DELUSION = false belief that CANNOT be corrected. Fixed wrong belief!",freq:"1× (Feb 2014)"},
+  {section:"Psychology",term:"Learning",def:"Acquiring knowledge, habits, and attitudes resulting in behavioural change.",mem:"LEARNING = acquiring + changing behavior. Real learning = behavioral change!",freq:"4× (Jan 2024, Feb 2018, Feb 2016, Aug 2011)"},
+  {section:"Psychology",term:"Memory",def:"The power to store experiences and recall them later.",mem:"MEMORY = store + recall. Like a hard drive for experiences!",freq:"10× (Jul 2025, Jan 2024, Feb 2018, Feb 2017, Feb 2016, Aug 2015, Jun 2013, Aug 2012, Feb 2011)"},
+  {section:"Psychology",term:"Forgetting",def:"The temporary or permanent inability to recall learned material.",mem:"FORGETTING = can't retrieve stored info. Memory exists but can't be recalled!",freq:"6× (Apr 2021, Feb 2019, Aug 2017, Feb 2016, Feb 2015, Feb 2011)"},
+  {section:"Psychology",term:"Habit",def:"A learned behaviour pattern that becomes automatic.",mem:"HABIT = automatic behavior. Repeated actions become habits. 21 days = habit formed!",freq:"3× (Feb 2017, Feb 2016, Aug 2011)"},
+  {section:"Psychology",term:"Emotion",def:"A stirred-up state involving physiological changes and overt behaviour.",mem:"EMOTION = stirred-up state. Body changes (heart rate, breathing) + behavior changes!",freq:"9× (Nov 2022, Feb 2019, Aug 2018, Aug 2017, Aug 2015, Feb 2014, Jun 2013, Feb 2012, Aug 2011)"},
+  {section:"Psychology",term:"Motivation / Motive",def:"An inner force that drives a person to act to satisfy needs.",mem:"MOTIVATION = inner MOTOR that drives behavior. Motive = reason to ACT!",freq:"11× (Feb 2025, May 2023, Jan 2022, Feb 2019, Feb 2018, Feb 2017, Aug 2016, Aug 2015, Jun 2013, Aug 2012, Feb 2015)"},
+  {section:"Psychology",term:"Frustration",def:"Emotional tension caused by blocked goal-directed behaviour.",mem:"FRUSTRATION = BLOCKED goal. Can't reach what you want = frustration!",freq:"5× (Jan 2024, Feb 2019, Feb 2017, Feb 2012, Feb 2011)"},
+  {section:"Psychology",term:"Stress",def:"The non-specific response of the body to any demand.",mem:"STRESS = body's RESPONSE to demands. Hans Selye defined it as non-specific response!",freq:"3× (Jul 2025, May 2023, Nov 2022)"},
+  {section:"Psychology",term:"Personality",def:"A pattern of behaviour, thoughts, and emotions in adapting to life situations.",mem:"PERSONALITY = unique pattern of behavior + thoughts + emotions. Your distinct self!",freq:"10× (Feb 2025, Jul 2024, May 2023, Nov 2022, Feb 2019, Feb 2017, Aug 2016, Feb 2015, Feb 2012, Aug 2011)"},
+  {section:"Psychology",term:"Attitude",def:"A learned predisposition to respond positively or negatively to a situation.",mem:"ATTITUDE = learned tendency to respond. Positive attitude = see good in things!",freq:"5× (Feb 2025, Jan 2022, Feb 2019, Aug 2018, Feb 2014)"},
+  {section:"Psychology",term:"Conflict",def:"A painful emotional state arising from opposing desires.",mem:"CONFLICT = opposing desires clash. Want two things that clash = internal conflict!",freq:"7× (Jul 2024, Jan 2024, Jan 2022, Aug 2018, Feb 2018, Aug 2016, Feb 2012)"},
+  {section:"Psychology",term:"Defence Mechanism / Mental Mechanism",def:"Protective methods used to reduce anxiety and manage stress.",mem:"Defence MECHANISM = mental armor. Protects ego from anxiety through unconscious tricks!",freq:"3× (May 2023, Apr 2021, Aug 2016)"},
+  {section:"Psychology",term:"Adjustment",def:"Modification to meet conditions or interaction between person and environment.",mem:"ADJUSTMENT = adapting to environment. Flexible person = well-adjusted person!",freq:"2× (Nov 2022, Feb 2019)"},
+  {section:"Psychology",term:"Id",def:"The instinctual part of personality operating on the pleasure principle.",mem:"ID = pleasure seeker. Wants what it wants NOW! Primitive, instinctual, no morals.",freq:"2× (Feb 2025, Apr 2021)"},
+  {section:"Psychology",term:"Ego",def:"Works on the reality principle, balancing id, superego, and external world.",mem:"EGO = the realistic mediator. Balances Id's desires with Superego's morality = REALITY!",freq:"1× (Jul 2024)"},
+  {section:"Psychology",term:"Superego",def:"Follows the perfection principle and acts as conscience.",mem:"SUPER-ego = SUPER moral. Your inner conscience that judges right and wrong!",freq:"1× (Jul 2025)"},
+  {section:"Psychology",term:"Repression",def:"Unconscious and involuntary forgetting of painful experiences.",mem:"REPRESSION = pushing painful memories into unconscious. Forgetting to cope!",freq:"1× (Feb 2025)"},
+  {section:"Psychology",term:"Disorientation",def:"Confusion about time, place, or identity.",mem:"DIS-orientation = LOST sense of orientation. Confused about WHO, WHERE, WHEN!",freq:"1× (Feb 2015)"},
+  // Sociology
+  {section:"Sociology",term:"Sociology",def:"The scientific study of human society, social relationships, social institutions, and social behavior.",mem:"SOCIO = society, LOGY = study. Science of how people live together in groups!",freq:"8× (Feb 2025, Apr 2021, Feb 2019, Feb 2018, Aug 2017, Feb 2017, June 2013, Aug 2011)"},
+  {section:"Sociology",term:"Society",def:"A group of people living together with common culture, customs, traditions, and mutual interaction to achieve shared goals.",mem:"SOCIETY = people + shared culture + mutual interaction. More than just a crowd!",freq:"3× (Feb 2025, Nov 2022, June 2013)"},
+  {section:"Sociology",term:"Community",def:"A group of people living in a definite geographical area, sharing common interests, culture, and social interaction.",mem:"COMMUNITY = common locality + common interests + we-feeling. Village = community!",freq:"3× (Feb 2019, Feb 2012, Feb 2011)"},
+  {section:"Sociology",term:"Culture",def:"The total way of life of a society, including beliefs, customs, traditions, values, norms, knowledge, and habits shared by its members.",mem:"CULTURE = everything a society DOES and BELIEVES. Invisible glue holding society together!",freq:"5× (May 2023, Feb 2018, Aug 2017, Aug 2016, Aug 2011)"},
+  {section:"Sociology",term:"Family",def:"A basic social institution consisting of individuals related by blood, marriage, or adoption, sharing emotional and economic bonds.",mem:"FAMILY = blood/marriage/adoption bonds. The BASIC building block of society!",freq:"4× (July 2024, Feb 2017, June 2013, Feb 2011)"},
+  {section:"Sociology",term:"Marriage",def:"A socially approved and legally recognized union between partners that establishes rights and responsibilities.",mem:"MARRIAGE = social + legal union. Society approves + law recognizes = marriage!",freq:"2× (Jan 2022, Feb 2019)"},
+  {section:"Sociology",term:"Social problem",def:"A condition that affects a large number of people adversely, disturbs social harmony, and requires collective action for solution.",mem:"Social PROBLEM = affects MANY people negatively. Needs collective, not individual solution!",freq:"4× (Jan 2024, Feb 2018, Feb 2016, Aug 2015)"},
+  {section:"Sociology",term:"Poverty",def:"A condition in which an individual or family lacks resources to meet basic needs such as food, shelter, clothing, health care, and education.",mem:"POVERTY = cannot meet BASIC needs. Food + shelter + clothing = minimum. Poverty = below minimum!",freq:"3× (May 2023, Feb 2019, Feb 2015)"},
+  {section:"Sociology",term:"Population explosion",def:"The rapid and uncontrolled increase in population, exceeding the available resources of society.",mem:"Population EXPLOSION = too many people too fast. Resources can't keep up = crisis!",freq:"3× (Jan 2024, Feb 2016, Feb 2014)"},
+  {section:"Sociology",term:"Social change",def:"Modification or transformation in social structure, values, customs, and patterns of social life over time.",mem:"Social CHANGE = society transforming over time. Tradition → modernization = social change!",freq:"2× (Apr 2021, Aug 2018)"},
+  {section:"Sociology",term:"Social control",def:"The process by which society regulates individual behavior to maintain social order, discipline, and conformity.",mem:"Social CONTROL = society's rule enforcement. Laws, norms, customs = social control tools!",freq:"2× (Aug 2017, Aug 2011)"},
+  {section:"Sociology",term:"Social stratification",def:"The hierarchical division of society into different layers or strata based on status, caste, class, wealth, or power.",mem:"Social STRATIFICATION = society in LAYERS. Like rock strata — some layers above others!",freq:"1× (July 2025)"},
+  {section:"Sociology",term:"Urbanization",def:"The process by which an increasing proportion of people migrate from rural areas to urban areas, leading to urban growth.",mem:"URBANization = moving to URBAN areas. Rural to city migration = urbanization!",freq:"1× (Feb 2015)"},
+];
+
+let currentTab='fill';
+const fillState={},tfState={};
+function getScore(){let c=0,w=0,t=0;Object.values(fillState).forEach(s=>{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;});Object.values(tfState).forEach(s=>{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;});return{correct:c,wrong:w,total:t};}
+function getGrade(p){if(p>=90)return{g:'A+',c:'#4ddd80'};if(p>=80)return{g:'A',c:'#4ddd80'};if(p>=70)return{g:'B',c:'#f5c842'};if(p>=60)return{g:'C',c:'#f5a623'};if(p>=50)return{g:'D',c:'#ff9f43'};return{g:'F',c:'#ff6b6b'};}
+function updateScore(){const{correct,wrong,total}=getScore();document.getElementById('sc-total').textContent=total;document.getElementById('sc-correct').textContent=correct;document.getElementById('sc-wrong').textContent=wrong;const p=total>0?Math.round(correct/total*100):null;document.getElementById('sc-pct').textContent=p!==null?p+'%':'—';document.getElementById('progress-bar').style.width=(p||0)+'%';const gb=document.getElementById('sc-grade');if(p!==null){const{g,c}=getGrade(p);gb.textContent=g;gb.style.color=c;gb.style.borderColor=c;}else{gb.textContent='—';gb.style.color='#7a82a0';gb.style.borderColor='#7a82a0';}}
+function resetAll(){if(!confirm('Reset all?'))return;Object.keys(fillState).forEach(k=>delete fillState[k]);Object.keys(tfState).forEach(k=>delete tfState[k]);updateScore();renderAll();}
+function checkFill(id,ans,alts){const inp=document.getElementById('input-'+id);const u=inp.value.trim();if(!u)return;const n=s=>s.toLowerCase().replace(/[^a-z0-9]/g,'');const ok=[n(ans),...alts.map(n)].some(a=>n(u).includes(a)||a.includes(n(u)));fillState[id]={status:ok?'correct':'incorrect',userAns:u};updateScore();refreshFill(id);}
+function skipFill(id){fillState[id]={status:'skipped'};updateScore();refreshFill(id);}
+function refreshFill(id){const card=document.getElementById('fcard-'+id);if(!card)return;const s=fillState[id];const item=fillData[parseInt(id)];card.classList.remove('correct','incorrect','skipped');if(s)card.classList.add(s.status);const aa=card.querySelector('.answer-area');if(s){let h='';if(s.status==='correct')h=`<div class="result-ans ok">✅ Correct! "${s.userAns}"</div>`;else if(s.status==='incorrect')h=`<div class="result-ans bad">❌ Wrong: "${s.userAns}"</div><div class="correct-ans">✅ Answer: ${item.ans}</div>`;else h=`<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;h+=`<div class="mnemonic">💡 ${item.mem}</div>`;aa.innerHTML=h;}}
+function checkTF(id,chosen){const item=tfData[parseInt(id)];if(!item)return;tfState[id]={status:(chosen===item.ans)?'correct':'incorrect',chosen};updateScore();refreshTF(id);}
+function refreshTF(id){const card=document.getElementById('tfcard-'+id);if(!card)return;const s=tfState[id];const item=tfData[parseInt(id)];card.classList.remove('correct','incorrect');if(s){card.classList.add(s.status);card.querySelector('.true-btn').disabled=true;card.querySelector('.false-btn').disabled=true;card.querySelector('.true-btn').classList.toggle('selected-true',s.chosen===true);card.querySelector('.false-btn').classList.toggle('selected-false',s.chosen===false);const rd=card.querySelector('.tf-result');if(rd)rd.innerHTML=s.status==='correct'?`<span style="color:var(--green)">✅ Correct!</span>`:`<span style="color:var(--red)">❌ Wrong — Answer: <strong style="color:var(--accent)">${item.ans?'TRUE':'FALSE'}</strong></span>`;const td=card.querySelector('.tf-tip');if(td)td.style.display='block';}}
+function switchTab(t){currentTab=t;document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['fill','tf','meanings'][i]===t));renderAll();}
+function getQ(){return document.getElementById('searchBox').value.toLowerCase().trim();}
+function renderAll(){const q=getQ();const c=document.getElementById('content');c.innerHTML='';if(currentTab==='fill')renderFill(q,c);else if(currentTab==='tf')renderTF(q,c);else renderMeanings(q,c);}
+function renderFill(q,container){const secs={};let t=0;fillData.forEach((item,i)=>{if(q&&!item.q.toLowerCase().includes(q)&&!item.ans.toLowerCase().includes(q)&&!item.section.toLowerCase().includes(q)&&!item.mem.toLowerCase().includes(q))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} questions`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} questions</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item,i})=>{const s=fillState[i];const card=document.createElement('div');card.className=`fill-card ${s?s.status:''}`;card.id='fcard-'+i;let aa='';if(s){if(s.status==='correct')aa=`<div class="result-ans ok">✅ Correct! "${s.userAns}"</div>`;else if(s.status==='incorrect')aa=`<div class="result-ans bad">❌ Wrong: "${s.userAns}"</div><div class="correct-ans">✅ Answer: ${item.ans}</div>`;else aa=`<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;aa+=`<div class="mnemonic">💡 ${item.mem}</div>`;}else{aa=`<input class="ans-input" id="input-${i}" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkFill(${i},'${item.ans.replace(/'/g,"\\'")}',${JSON.stringify(item.alts)})"><button class="btn-check" onclick="checkFill(${i},'${item.ans.replace(/'/g,"\\'")}',${JSON.stringify(item.alts)})">Check ✓</button><button class="btn-skip" onclick="skipFill(${i})">Skip</button>`;}card.innerHTML=`<div class="card-top"><div class="q-text">${item.q}</div><div class="freq">🔁 ${item.freq}</div></div><div class="answer-area">${aa}</div>`;g.appendChild(card);});container.appendChild(g);});}
+function renderTF(q,container){const secs={};let t=0;tfData.forEach((item,i)=>{if(q&&!item.q.toLowerCase().includes(q)&&!item.section.toLowerCase().includes(q)&&!item.tip.toLowerCase().includes(q))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} statements`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} statements</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item,i})=>{const s=tfState[i];const card=document.createElement('div');card.className=`tf-card ${s?s.status:''}`;card.id='tfcard-'+i;const rh=s?(s.status==='correct'?`<span style="color:var(--green)">✅ Correct!</span>`:`<span style="color:var(--red)">❌ Wrong — Answer: <strong style="color:var(--accent)">${item.ans?'TRUE':'FALSE'}</strong></span>`):'';card.innerHTML=`<div class="tf-q">${item.q}</div><div class="tf-buttons"><button class="tf-btn true-btn ${s&&s.chosen===true?'selected-true':''}" onclick="checkTF(${i},true)" ${s?'disabled':''}>✓ TRUE</button><button class="tf-btn false-btn ${s&&s.chosen===false?'selected-false':''}" onclick="checkTF(${i},false)" ${s?'disabled':''}>✗ FALSE</button></div><div class="tf-result">${rh}</div><div class="tf-tip" style="display:${s?'block':'none'}">💡 ${item.tip}</div><div class="tf-freq">🔁 ${item.freq}</div>`;g.appendChild(card);});container.appendChild(g);});}
+function renderMeanings(q,container){const secs={};let t=0;meaningsData.forEach((item,i)=>{if(q&&!item.term.toLowerCase().includes(q)&&!item.def.toLowerCase().includes(q)&&!item.section.toLowerCase().includes(q)&&!item.mem.toLowerCase().includes(q))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} definitions`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} terms</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item})=>{const card=document.createElement('div');card.className='def-card';card.innerHTML=`<div class="def-term">${item.term}</div><div class="def-text">${item.def}</div><div class="def-mem">💡 ${item.mem}</div><div class="def-freq">🔁 ${item.freq}</div>`;g.appendChild(card);});container.appendChild(g);});}
+updateScore();renderAll();
+</script>
+</body>
+</html>
