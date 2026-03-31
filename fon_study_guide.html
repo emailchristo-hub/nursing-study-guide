@@ -3,269 +3,325 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fundamentals of Nursing · Self-Evaluation Study Guide</title>
+<title>Fundamentals of Nursing · Study Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b0e1a;--surface:#141828;--card:#1c2235;--border:#2a3050;--gold:#f5c842;--teal:#38d9c0;--red:#ff6b6b;--green:#4ddd80;--blue:#5b9cf6;--accent:#ff9f43;--text:#e8ecf8;--muted:#7a82a0;--tag:#1e2640;}
+:root{--bg:#0b0e1a;--surface:#141828;--card:#1c2235;--border:#2a3050;--accent:#ff9f43;--red:#ff6b6b;--green:#4ddd80;--blue:#5b9cf6;--teal:#38d9c0;--text:#e8ecf8;--muted:#7a82a0;--tag:#1e2640;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
-.hero{background:linear-gradient(135deg,#0b0e1a 0%,#1a140e 40%,#0e0b0a 100%);border-bottom:1px solid var(--border);padding:40px 20px 30px;text-align:center;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(255,159,67,0.07) 0%,transparent 70%);pointer-events:none;}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;color:var(--accent);letter-spacing:-0.5px;margin-bottom:6px;}
-.hero p{color:var(--muted);font-size:.9rem;margin-bottom:20px;}
-.scoreboard{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
-.score-box{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:12px 20px;text-align:center;min-width:100px;transition:transform .2s;}
-.score-box:hover{transform:translateY(-2px);}
-.score-val{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;line-height:1;}
-.score-label{font-size:.7rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.5px;}
-.grade-badge{display:inline-block;font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;padding:8px 24px;border-radius:50px;border:2px solid;margin:8px 0;transition:all .4s;}
-.controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:16px 20px 14px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
-.tab{padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:.82rem;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;white-space:nowrap;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+.hero{background:linear-gradient(135deg,#0b0e1a,#1a140e);border-bottom:1px solid var(--border);padding:36px 20px 28px;text-align:center;position:relative;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:.8rem;text-decoration:none;margin-bottom:16px;transition:color .2s;}
+.back-btn:hover{color:var(--accent);}
+h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;color:var(--accent);margin-bottom:6px;}
+.hero p{color:var(--muted);font-size:.88rem;margin-bottom:18px;}
+.scoreboard{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+.score-box{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:10px 18px;text-align:center;min-width:90px;}
+.score-val{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;line-height:1;}
+.score-label{font-size:.65rem;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px;}
+.grade-badge{display:inline-block;font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;padding:6px 20px;border-radius:50px;border:2px solid;transition:all .4s;}
+.progress-bar-wrap{background:var(--bg);border-radius:8px;height:10px;overflow:hidden;margin:10px auto;max-width:400px;}
+.progress-bar{height:100%;border-radius:8px;transition:width 1s ease;background:linear-gradient(90deg,var(--accent),#f5c842);}
+.controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:14px 20px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+.tab{padding:7px 15px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:.8rem;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;white-space:nowrap;}
 .tab.active{background:var(--accent);border-color:var(--accent);color:#0b0e1a;}
 .tab:hover:not(.active){border-color:var(--accent);color:var(--accent);}
-.search-wrap{position:relative;width:100%;max-width:320px;}
-.search{width:100%;padding:8px 14px 8px 36px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;}
+.search-wrap{position:relative;width:100%;max-width:300px;}
+.search{width:100%;padding:7px 14px 7px 34px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:.83rem;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;}
 .search:focus{border-color:var(--accent);}
-.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem;pointer-events:none;}
-.btn-reset{padding:8px 16px;border-radius:20px;border:1.5px solid var(--red);background:transparent;color:var(--red);cursor:pointer;font-size:.8rem;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.8rem;pointer-events:none;}
+.btn-reset{padding:7px 14px;border-radius:20px;border:1.5px solid var(--red);background:transparent;color:var(--red);cursor:pointer;font-size:.78rem;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;}
 .btn-reset:hover{background:var(--red);color:white;}
-.main{padding:20px;max-width:1200px;margin:0 auto;}
-.section-header{font-family:'Playfair Display',serif;font-size:1rem;color:var(--accent);border-left:4px solid var(--accent);padding-left:10px;margin:24px 0 12px;display:flex;align-items:center;gap:8px;}
-.section-count{font-size:.72rem;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;}
-.fill-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;transition:all .25s;}
-.fill-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.main{padding:18px;max-width:1200px;margin:0 auto;}
+.section-header{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--accent);border-left:4px solid var(--accent);padding-left:10px;margin:22px 0 10px;display:flex;align-items:center;gap:8px;}
+.section-count{font-size:.7rem;color:var(--muted);font-family:'DM Sans',sans-serif;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:10px;}
+.fill-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px;transition:all .2s;}
+.fill-card:hover{border-color:var(--accent);transform:translateY(-2px);}
 .fill-card.correct{border-color:var(--green);background:#1c2d24;}
 .fill-card.incorrect{border-color:var(--red);background:#2d1c1c;}
 .fill-card.skipped{border-color:var(--blue);opacity:.75;}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px;}
-.q-text{font-weight:500;font-size:.9rem;color:var(--text);flex:1;line-height:1.5;}
-.freq{background:var(--tag);color:var(--accent);font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0;border:1px solid rgba(255,159,67,.2);}
-.ans-input{width:100%;padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.88rem;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.q-text{font-weight:500;font-size:.88rem;color:var(--text);flex:1;line-height:1.5;}
+.freq{background:var(--tag);color:var(--accent);font-size:.66rem;font-weight:700;padding:2px 7px;border-radius:6px;white-space:nowrap;flex-shrink:0;border:1px solid rgba(255,159,67,.2);}
+.ans-input{width:100%;padding:7px 11px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:.86rem;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;margin-top:6px;}
 .ans-input:focus{border-color:var(--accent);}
-.btn-check{margin-top:8px;padding:7px 16px;border-radius:8px;border:none;background:var(--accent);color:#0b0e1a;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-row{display:flex;gap:6px;margin-top:7px;}
+.btn-check{padding:6px 14px;border-radius:7px;border:none;background:var(--accent);color:#0b0e1a;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
 .btn-check:hover{background:#e8902e;}
-.btn-skip{margin-top:8px;margin-left:6px;padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-skip{padding:6px 12px;border-radius:7px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
 .btn-skip:hover{border-color:var(--blue);color:var(--blue);}
-.result-ans.ok{color:var(--green);font-size:.88rem;font-weight:600;}
-.result-ans.bad{color:var(--red);font-size:.88rem;font-weight:600;}
-.correct-ans{font-size:.82rem;color:var(--accent);margin-top:4px;}
-.mnemonic{font-size:.78rem;color:var(--muted);font-style:italic;background:#1e2640;border-radius:6px;padding:6px 10px;border-left:3px solid var(--accent);margin-top:6px;line-height:1.5;}
-.tf-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;transition:all .25s;}
-.tf-card:hover{border-color:var(--accent);box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.result-ans{font-size:.86rem;font-weight:600;margin-top:6px;}
+.result-ans.ok{color:var(--green);}
+.result-ans.bad{color:var(--red);}
+.correct-ans{font-size:.82rem;color:var(--accent);margin-top:4px;font-weight:600;}
+.explanation{font-size:.78rem;color:var(--teal);margin-top:4px;background:rgba(56,217,192,.06);border-radius:6px;padding:5px 8px;border-left:3px solid var(--teal);line-height:1.4;}
+.mnemonic{font-size:.76rem;color:var(--muted);font-style:italic;background:var(--tag);border-radius:6px;padding:5px 8px;border-left:3px solid var(--accent);margin-top:5px;line-height:1.4;}
+.tf-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;transition:all .2s;}
+.tf-card:hover{border-color:var(--accent);}
 .tf-card.correct{border-color:var(--green);background:#1c2d24;}
 .tf-card.incorrect{border-color:var(--red);background:#2d1c1c;}
-.tf-q{font-size:.9rem;font-weight:500;margin-bottom:10px;line-height:1.5;}
-.tf-buttons{display:flex;gap:8px;margin-bottom:6px;}
-.tf-btn{flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.tf-q{font-size:.88rem;font-weight:500;margin-bottom:9px;line-height:1.5;}
+.tf-buttons{display:flex;gap:7px;margin-bottom:5px;}
+.tf-btn{flex:1;padding:7px;border-radius:7px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
 .tf-btn.true-btn:hover{border-color:var(--green);color:var(--green);}
 .tf-btn.false-btn:hover{border-color:var(--red);color:var(--red);}
 .tf-btn.selected-true{background:#1a3d2b;border-color:var(--green);color:var(--green);}
 .tf-btn.selected-false{background:#3d1a1a;border-color:var(--red);color:var(--red);}
 .tf-btn:disabled{cursor:not-allowed;opacity:.6;}
-.tf-result{font-size:.82rem;margin-top:6px;}
-.tf-tip{font-size:.78rem;color:var(--muted);font-style:italic;margin-top:5px;background:#1e2640;border-radius:6px;padding:5px 9px;border-left:3px solid var(--accent);line-height:1.4;}
-.tf-freq{font-size:.68rem;color:var(--accent);font-weight:700;margin-top:5px;}
-.def-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;transition:all .25s;}
-.def-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 24px rgba(0,0,0,.4);}
-.def-term{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--accent);margin-bottom:6px;}
-.def-text{font-size:.85rem;color:var(--text);margin-bottom:8px;line-height:1.6;}
-.def-mem{font-size:.78rem;color:var(--muted);font-style:italic;background:#1e2640;border-radius:6px;padding:6px 10px;border-left:3px solid var(--accent);line-height:1.5;}
-.def-freq{font-size:.68rem;color:var(--accent);font-weight:700;margin-top:6px;}
-.desc-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px;transition:all .25s;}
-.desc-card:hover{border-color:var(--accent);transform:translateY(-2px);}
-.desc-q{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:6px;line-height:1.5;}
-.desc-years{font-size:.75rem;color:var(--muted);margin-bottom:4px;}
-.desc-freq{font-size:.72rem;color:var(--accent);font-weight:700;background:var(--tag);padding:3px 8px;border-radius:8px;display:inline-block;margin-top:4px;border:1px solid rgba(255,159,67,.2);}
-.progress-bar-wrap{background:var(--bg);border-radius:8px;height:12px;overflow:hidden;margin:12px auto;max-width:400px;}
-.progress-bar{height:100%;border-radius:8px;transition:width 1s ease;background:linear-gradient(90deg,var(--accent),var(--gold));}
-.count-line{text-align:center;color:var(--muted);font-size:.8rem;margin-bottom:10px;}
-.no-results{text-align:center;color:var(--muted);padding:50px;font-size:1rem;}
-@media(max-width:600px){.grid{grid-template-columns:1fr;}.hero h1{font-size:1.5rem;}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.fill-card,.tf-card,.def-card,.desc-card{animation:fadeIn .3s ease both;}
+.tf-result{font-size:.8rem;margin-top:5px;}
+.tf-tip{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:4px;background:var(--tag);border-radius:6px;padding:5px 8px;border-left:3px solid var(--teal);line-height:1.4;}
+.tf-freq{font-size:.66rem;color:var(--accent);font-weight:700;margin-top:4px;}
+.def-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px;transition:all .2s;}
+.def-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.def-term{font-family:'Playfair Display',serif;font-size:1rem;color:var(--accent);margin-bottom:5px;}
+.def-text{font-size:.83rem;color:var(--text);margin-bottom:7px;line-height:1.6;}
+.def-mem{font-size:.76rem;color:var(--muted);font-style:italic;background:var(--tag);border-radius:6px;padding:5px 8px;border-left:3px solid var(--accent);line-height:1.4;}
+.def-freq{font-size:.66rem;color:var(--accent);font-weight:700;margin-top:5px;}
+.count-line{text-align:center;color:var(--muted);font-size:.78rem;margin-bottom:8px;}
+.no-results{text-align:center;color:var(--muted);padding:40px;}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.fill-card,.tf-card,.def-card{animation:fadeIn .25s ease both;}
 </style>
 </head>
 <body>
 <div class="hero">
+  <a href="index.html" class="back-btn">← Back to Home</a>
   <h1>🩺 Fundamentals of Nursing</h1>
-  <p>FON · Repeated Exam Questions · Self-Evaluation Study Guide</p>
+  <p>FON · Fill in Blank · True/False · Meanings · Self-Evaluation</p>
   <div class="scoreboard">
     <div class="score-box"><div class="score-val" style="color:var(--accent)" id="sc-total">0</div><div class="score-label">Attempted</div></div>
     <div class="score-box"><div class="score-val" style="color:var(--green)" id="sc-correct">0</div><div class="score-label">Correct</div></div>
     <div class="score-box"><div class="score-val" style="color:var(--red)" id="sc-wrong">0</div><div class="score-label">Wrong</div></div>
     <div class="score-box"><div class="score-val" style="color:var(--blue)" id="sc-pct">—</div><div class="score-label">Score %</div></div>
-    <div class="score-box"><div class="grade-badge" id="sc-grade" style="font-size:1.2rem;padding:6px 16px;color:#7a82a0;border-color:#7a82a0;">—</div><div class="score-label">Grade</div></div>
+    <div class="score-box"><div class="grade-badge" id="sc-grade" style="font-size:1.1rem;padding:5px 14px;color:#7a82a0;border-color:#7a82a0;">—</div><div class="score-label">Grade</div></div>
   </div>
   <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
 </div>
 <div class="controls">
   <button class="tab active" onclick="switchTab('fill')">📝 Fill in Blank</button>
+  <button class="tab" onclick="switchTab('tf')">✅ True / False</button>
   <button class="tab" onclick="switchTab('meanings')">📖 Meanings</button>
-  <button class="tab" onclick="switchTab('desc')">📋 Descriptive Topics</button>
-  <div class="search-wrap"><span class="search-icon">🔍</span><input class="search" type="text" id="searchBox" placeholder="Search topics, answers..." oninput="renderAll()"></div>
-  <button class="btn-reset" onclick="resetAll()">↺ Reset All</button>
+  <div class="search-wrap"><span class="search-icon">🔍</span><input class="search" type="text" id="searchBox" placeholder="Search..." oninput="renderAll()"></div>
+  <button class="btn-reset" onclick="resetAll()">↺ Reset</button>
 </div>
 <div class="main"><p class="count-line" id="countLine"></p><div id="content"></div></div>
 <script>
 const fillData=[
-  {section:"Respiratory & Vital Signs",q:"Lack of oxygen in the tissue is called _______.",ans:"Hypoxia",alts:[],mem:"HYPO = less, OXIA = oxygen. Hypoxia = tissues crying for oxygen!",freq:"5× (Nov 2022, Feb 2019, Feb 2016, Aug 2015, Feb 2012)"},
-  {section:"Respiratory & Vital Signs",q:"Lack of oxygen in the blood is called _______.",ans:"Hypoxemia",alts:[],mem:"HYPO = less, OXEMIA = oxygen in blood. Hypoxemia = low O2 in blood!",freq:"2× (July 2025, Aug 2017)"},
-  {section:"Respiratory & Vital Signs",q:"Difficulty in breathing is called _______.",ans:"Dyspnea",alts:["dyspnoea"],mem:"DYS = difficult, PNEA = breathing. Dyspnea = difficult breathing!",freq:"2× (Jan 2024, Sep 2013)"},
-  {section:"Respiratory & Vital Signs",q:"Difficulty in swallowing is called _______.",ans:"Dysphagia",alts:[],mem:"DYS = difficult, PHAGIA = swallowing. Dysphagia = can't swallow easily!",freq:"3× (Nov 2022, Aug 2017, Aug 2012)"},
-  {section:"Respiratory & Vital Signs",q:"Bleeding from the nose is _______.",ans:"Epistaxis",alts:[],mem:"EPI = upon, STAXIS = dripping. Epistaxis = blood dripping from nose!",freq:"3× (May 2023, Aug 2018, Aug 2016)"},
-  {section:"Respiratory & Vital Signs",q:"Blood in the sputum is _______.",ans:"Hemoptysis",alts:["haemoptysis"],mem:"HEMO = blood, PTYSIS = spitting. Hemoptysis = spitting blood!",freq:"2× (July 2025, Apr 2021)"},
-  {section:"Respiratory & Vital Signs",q:"Increase in respiratory rate is _______.",ans:"Tachypnea",alts:["tachypnoea"],mem:"TACHY = fast, PNEA = breathing. Tachypnea = fast breathing!",freq:"1× (Jan 2022)"},
-  {section:"Respiratory & Vital Signs",q:"Respiratory rate >24/min is _______.",ans:"Tachypnea",alts:["tachypnoea"],mem:"TACHY = fast. More than 24 breaths/min = Tachypnea!",freq:"1× (Feb 2018)"},
-  {section:"Respiratory & Vital Signs",q:"Total cessation of breathing is _______.",ans:"Apnea",alts:["apnoea"],mem:"A = without, PNEA = breathing. APNEA = NO breathing at all!",freq:"1× (Aug 2014)"},
-  {section:"Respiratory & Vital Signs",q:"Bluish discoloration of skin & mucous membrane is _______.",ans:"Cyanosis",alts:[],mem:"CYANO = blue (Greek). Cyanosis = blue skin = oxygen emergency!",freq:"2× (Apr 2021, Aug 2017)"},
-  {section:"Respiratory & Vital Signs",q:"Phonation is a function of _______.",ans:"Larynx",alts:[],mem:"PHONation = PHONe = voice. Larynx = voice box!",freq:"1× (Aug 2012)"},
-  {section:"Respiratory & Vital Signs",q:"Pulse rate <60/min is _______.",ans:"Bradycardia",alts:[],mem:"BRADY = slow, CARDIA = heart. Bradycardia = slow heart!",freq:"2× (Feb 2025, Feb 2017)"},
-  {section:"Respiratory & Vital Signs",q:"BP measured by _______.",ans:"Sphygmomanometer",alts:["sphygmo"],mem:"SPHYGMO = pulse, MANO = pressure, METER = measure. Big word for BP machine!",freq:"2× (July 2024, Aug 2018)"},
-  {section:"Respiratory & Vital Signs",q:"High blood pressure is _______.",ans:"Hypertension",alts:[],mem:"HYPER = high, TENSION = pressure. Hypertension = HIGH blood pressure!",freq:"1× (Feb 2016)"},
-  {section:"Respiratory & Vital Signs",q:"Low blood pressure is _______.",ans:"Hypotension",alts:[],mem:"HYPO = low, TENSION = pressure. Hypotension = LOW blood pressure!",freq:"1× (Aug 2014)"},
-  {section:"Respiratory & Vital Signs",q:"Normal BP is _______.",ans:"120/80 mmHg",alts:["120/80"],mem:"120/80 = standard. '1-2-0 over 80 = healthy flow!'",freq:"1× (Feb 2017)"},
-  {section:"Oral & GI Health",q:"Loss of appetite is _______.",ans:"Anorexia",alts:[],mem:"AN = without, OREXIA = appetite. Anorexia = no desire to eat!",freq:"4× (July 2024, Aug 2018, Feb 2018, Feb 2012)"},
-  {section:"Oral & GI Health",q:"Inflammation of oral mucosa is _______.",ans:"Stomatitis",alts:[],mem:"STOMATO = mouth, ITIS = inflammation. Stomatitis = inflamed mouth!",freq:"3× (Nov 2022, Feb 2019, Feb 2016)"},
-  {section:"Oral & GI Health",q:"Inflammation of gums is _______.",ans:"Gingivitis",alts:[],mem:"GINGIVA = gums, ITIS = inflammation. Gingivitis = gum disease!",freq:"1× (Jan 2024)"},
-  {section:"Oral & GI Health",q:"Bleeding from gums is _______.",ans:"Gingival bleeding / Gingiorrhagia",alts:["gingival bleeding","gingiorrhagia"],mem:"GINGIVA = gums, RRHAGIA = bleeding. Gingival bleeding = gums bleed!",freq:"1× (Feb 2014)"},
-  {section:"Oral & GI Health",q:"Inflammation of the tongue is _______.",ans:"Glossitis",alts:[],mem:"GLOSS = tongue (Greek), ITIS = inflammation. Glossitis = sore tongue!",freq:"1× (Feb 2017)"},
-  {section:"Oral & GI Health",q:"Bad breath is _______.",ans:"Halitosis",alts:[],mem:"HALI = breath, TOSIS = condition. Halitosis = bad breath condition!",freq:"1× (Jan 2024)"},
-  {section:"Oral & GI Health",q:"Cheilosis occurs due to deficiency of _______.",ans:"Vitamin B2 (Riboflavin)",alts:["vitamin b2","riboflavin","b2"],mem:"Cheilosis = cracked lips from B2 deficiency. B2 = Beautiful lips need it!",freq:"1× (Aug 2011)"},
-  {section:"Oral & GI Health",q:"Cheilosis = _______.",ans:"Cracking/ulceration of lips & mouth angles",alts:["cracking","ulceration of lips"],mem:"Cheilosis = CHEILO (lips) damage. Cracked corners of mouth = Cheilosis!",freq:"1× (June 2013)"},
-  {section:"Oral & GI Health",q:"Gas in GI tract is _______.",ans:"Flatulence",alts:[],mem:"FLATulence = FLATus = gas. Trapped gas in gut = Flatulence!",freq:"1× (Feb 2019)"},
-  {section:"Oral & GI Health",q:"Lack of roughage leads to _______.",ans:"Constipation",alts:[],mem:"No roughage = no bulk = no movement = CONSTIPATION!",freq:"1× (Aug 2016)"},
-  {section:"Urine & Excretion",q:"Blood in urine is _______.",ans:"Hematuria",alts:["haematuria"],mem:"HEMATO = blood, URIA = urine. Hematuria = blood in urine!",freq:"1× (Feb 2025)"},
-  {section:"Urine & Excretion",q:"Glucose in urine is _______.",ans:"Glycosuria",alts:[],mem:"GLYCO = sugar, SURIA = urine. Glycosuria = sugar in urine = diabetes sign!",freq:"1× (Feb 2014)"},
-  {section:"Urine & Excretion",q:"Test for urinary sugar is _______.",ans:"Benedict's Test",alts:["benedict"],mem:"BENEDICT's test = checks for sugar. Benedict = tests for sugars!",freq:"1× (Apr 2021)"},
-  {section:"Urine & Excretion",q:"Specific gravity of urine = 1.010–1.030, measured by _______.",ans:"Urinometer",alts:[],mem:"URINometer = measures URINE specific gravity. Like a thermometer but for urine!",freq:"2× (May 2023, Aug 2012)"},
-  {section:"Urine & Excretion",q:"Blue litmus turns red when urine is _______.",ans:"Acidic",alts:["acid"],mem:"BLUE litmus + ACID = RED. Acid turns blue to red!",freq:"1× (Feb 2011)"},
-  {section:"Urine & Excretion",q:"Frequent night urination is _______.",ans:"Nocturia",alts:[],mem:"NOCTU = night, URIA = urine. Nocturia = night-time urination!",freq:"1× (Jan 2022)"},
-  {section:"Urine & Excretion",q:"Removal of body waste is _______.",ans:"Excretion",alts:[],mem:"EXcretion = EXpelling waste. Body removes what it doesn't need!",freq:"1× (Feb 2014)"},
-  {section:"Urine & Excretion",q:"Main organ for drug excretion is _______.",ans:"Kidney",alts:[],mem:"Kidney = filtration organ. Most drugs exit through kidneys in urine!",freq:"1× (Jan 2022)"},
-  {section:"Examination & Assessment",q:"Visual examination is _______.",ans:"Inspection",alts:[],mem:"INspection = looking IN carefully. Use your eyes = Inspection!",freq:"2× (Jan 2024, Feb 2016)"},
-  {section:"Examination & Assessment",q:"Examination by tapping is _______.",ans:"Percussion",alts:[],mem:"PERCussion = tapping like a drum. Tap the body = Percussion!",freq:"2× (July 2024, Feb 2018)"},
-  {section:"Examination & Assessment",q:"Examination using stethoscope is _______.",ans:"Auscultation",alts:[],mem:"AUSCULTation = AUSCULT = listen. Stethoscope = listening to body sounds!",freq:"1× (Feb 2017)"},
-  {section:"Examination & Assessment",q:"Instrument to view ear is _______.",ans:"Otoscope",alts:[],mem:"OTO = ear, SCOPE = view. Otoscope = ear-viewing instrument!",freq:"1× (May 2023)"},
-  {section:"Examination & Assessment",q:"Unconscious patient assessed by _______.",ans:"Glasgow Coma Scale (GCS)",alts:["glasgow coma scale","gcs"],mem:"GCS = Glasgow Coma Scale. G-C-S = Grades Consciousness State!",freq:"1× (Feb 2011)"},
-  {section:"Examination & Assessment",q:"Primary source of data is _______.",ans:"The Patient",alts:["patient"],mem:"PRIMARY source = the PATIENT themselves. Best info comes directly from the patient!",freq:"1× (Aug 2016)"},
-  {section:"Examination & Assessment",q:"Data classified as _______ & _______.",ans:"Subjective & Objective",alts:["subjective","objective"],mem:"SUBJECTIVE = patient feels. OBJECTIVE = nurse observes. S-O = Symptoms-Observations!",freq:"1× (Aug 2015)"},
-  {section:"Infection Control & Sterilization",q:"Agent inhibiting microorganism growth is _______.",ans:"Antiseptic / Bacteriostatic",alts:["antiseptic","bacteriostatic"],mem:"ANTI = against, SEPTIC = germs. Antiseptic STOPS germ growth!",freq:"2× (Nov 2022, Feb 2019)"},
-  {section:"Infection Control & Sterilization",q:"Separation of infected from non-infected is _______.",ans:"Isolation",alts:[],mem:"ISOLATION = keeping infection contained. Separate to protect others!",freq:"1× (Jan 2022)"},
-  {section:"Infection Control & Sterilization",q:"Steam under pressure sterilization is _______.",ans:"Autoclaving",alts:["autoclave"],mem:"AUTO-CLAVE = high pressure steam. Best sterilization method!",freq:"2× (Feb 2015, Aug 2012)"},
-  {section:"Infection Control & Sterilization",q:"Artificial resistance to disease is _______.",ans:"Immunization / Vaccination",alts:["immunization","vaccination"],mem:"ARTIFICIAL immunity = vaccines teach body to fight. Protection through injection!",freq:"2× (Feb 2015, Sep 2013)"},
-  {section:"Nursing History & Identity",q:"Florence Nightingale born on _______.",ans:"12 May 1820",alts:["12 may","may 12","1820"],mem:"12 May 1820 = Florence's birthday = International Nurses Day date!",freq:"2× (Feb 2025, Feb 2012)"},
-  {section:"Nursing History & Identity",q:"International Nurses Day is _______.",ans:"12 May",alts:["may 12"],mem:"12th May = Florence Nightingale's birthday = Nurses Day!",freq:"1× (May 2023)"},
-  {section:"Nursing History & Identity",q:"Pioneer of Modern Nursing is _______.",ans:"Florence Nightingale",alts:["nightingale","florence"],mem:"FLORENCE NIGHTINGALE = Lady with the Lamp. Pioneer of modern nursing!",freq:"1× (Aug 2016)"},
-  {section:"Nursing History & Identity",q:"One pint ≈ _______.",ans:"500 ml",alts:["500ml"],mem:"1 pint = 500ml. Half a litre. Remember for fluid balance!",freq:"1× (Feb 2025)"},
-  {section:"Patient Care & Conditions",q:"Post-death stiffness is _______.",ans:"Rigor Mortis",alts:["rigor mortis"],mem:"RIGOR = stiffness, MORTIS = death. Rigor Mortis = death stiffness!",freq:"1× (Sep 2013)"},
-  {section:"Patient Care & Conditions",q:"Inability to sleep is _______.",ans:"Insomnia",alts:[],mem:"IN = without, SOMNIA = sleep. Insomnia = cannot sleep!",freq:"1× (Sep 2013)"},
-  {section:"Patient Care & Conditions",q:"Air cushion prevents _______.",ans:"Bed Sores / Pressure Ulcers",alts:["bed sores","pressure ulcers"],mem:"Air cushion = distributes weight = prevents PRESSURE on skin = no bed sores!",freq:"2× (July 2025, Aug 2018)"},
-  {section:"Patient Care & Conditions",q:"Temperature ≥105°F is _______.",ans:"Hyperpyrexia",alts:[],mem:"HYPER = very high, PYREXIA = fever. Hyperpyrexia = dangerously HIGH fever!",freq:"1× (Feb 2015)"},
-  {section:"Patient Care & Conditions",q:"Fever is a _______ of disease.",ans:"Sign / Symptom",alts:["sign","symptom"],mem:"Fever = SIGN (observable) + SYMPTOM (felt). Both! Measurable = sign, felt = symptom.",freq:"1× (Aug 2011)"},
-  {section:"Patient Care & Conditions",q:"Thermoregulation center is _______.",ans:"Hypothalamus",alts:[],mem:"HYPOthalamus = body's thermostat. Controls temperature regulation!",freq:"1× (June 2013)"},
-  {section:"Patient Care & Conditions",q:"Fluids/medicine into vein is _______.",ans:"IV Injection / Infusion",alts:["iv injection","infusion","intravenous"],mem:"IV = IntraVenous = INTO the VEIN. Direct route to bloodstream!",freq:"1× (Feb 2018)"},
-  {section:"Patient Care & Conditions",q:"Inner part of syringe is _______.",ans:"Plunger / Piston",alts:["plunger","piston"],mem:"PLUNGER = pushes medicine out. Like a bicycle pump — plunge to inject!",freq:"3× (July 2025, Aug 2015, Aug 2014)"},
-  {section:"Patient Care & Conditions",q:"Low hemoglobin is _______.",ans:"Anemia",alts:["anaemia"],mem:"AN = without, EMIA = blood (iron). Anemia = not enough healthy red blood cells!",freq:"1× (Apr 2021)"},
-  {section:"Professional Nursing",q:"Etiquette is code of _______.",ans:"Professional Behavior / Good Conduct",alts:["professional behavior","good conduct"],mem:"Etiquette = rules of polite behavior. Professional etiquette = conduct code!",freq:"1× (Feb 2011)"},
-  {section:"Professional Nursing",q:"Trendelenburg position used for _______.",ans:"Pelvic organ examination",alts:["pelvic"],mem:"Trendelenburg = head DOWN, feet UP. Gravity helps expose pelvic organs!",freq:"1× (Feb 2011)"},
-  {section:"Professional Nursing",q:"Low hemoglobin is _______.",ans:"Anemia",alts:["anaemia"],mem:"Low Hb = ANEMIA. Pale, tired, breathless = classic anemia signs!",freq:"1× (Apr 2021)"},
-  {section:"Professional Nursing",q:"Device used to relieve cardiac asthma is _______.",ans:"Cardiac Table",alts:[],mem:"Cardiac TABLE = patient leans forward on it = easier breathing in cardiac asthma!",freq:"1× (Aug 2015)"},
+  {section:"Respiratory & Breathing",q:"Lack of oxygen in the tissue is called _______.",ans:"Hypoxia",alts:[],exp:"Hypo = less, oxia = oxygen in tissue. Tissues not getting enough O2.",mem:"HYPO + OXIA = low oxygen in TISSUES. Tissues starving for oxygen!",freq:"5×"},
+  {section:"Respiratory & Breathing",q:"Lack of oxygen in the blood is called _______.",ans:"Hypoxemia",alts:[],exp:"Hypoxemia = low O2 specifically in BLOOD. Different from hypoxia (tissue).",mem:"HYPO + OXEMIA = low oxygen in BLOOD. Blood lacks O2!",freq:"2×"},
+  {section:"Respiratory & Breathing",q:"Difficulty in breathing is called _______.",ans:"Dyspnea",alts:["dyspnoea"],exp:"Dys = difficult, pnea = breathing. Labored or hard breathing.",mem:"DYSpnea = DYSfunction breathing. Can't breathe properly!",freq:"2×"},
+  {section:"Respiratory & Breathing",q:"Difficulty in swallowing is called _______.",ans:"Dysphagia",alts:[],exp:"Dys = difficult, phagia = swallowing/eating. Food gets stuck when swallowing.",mem:"DYS + PHAGIA = difficult swallowing. Food gets stuck = Dysphagia!",freq:"3×"},
+  {section:"Respiratory & Breathing",q:"Bleeding from the nose is _______.",ans:"Epistaxis",alts:[],exp:"Epi = upon, staxis = dripping. Nosebleed = epistaxis.",mem:"EPISTAXIS = nose dripping blood. Epi + staxis = upon + dripping!",freq:"3×"},
+  {section:"Respiratory & Breathing",q:"Blood in the sputum is _______.",ans:"Hemoptysis",alts:["haemoptysis"],exp:"Hemo = blood, ptysis = spitting. Coughing up blood from lungs.",mem:"HEMO + PTYSIS = blood + spitting. Spitting blood = Hemoptysis!",freq:"2×"},
+  {section:"Respiratory & Breathing",q:"Increase in respiratory rate is _______.",ans:"Tachypnea",alts:["tachypnoea"],exp:"Tachy = fast, pnea = breathing. Respiratory rate above 20/min.",mem:"TACHY = fast. TACHYpnea = FAST breathing!",freq:"2×"},
+  {section:"Respiratory & Breathing",q:"Total cessation of breathing is _______.",ans:"Apnea",alts:["apnoea"],exp:"A = without, pnea = breathing. Complete stop of breathing.",mem:"APNEA = A (without) + pnea (breathing). NO breathing!",freq:"1×"},
+  {section:"Respiratory & Breathing",q:"Bluish discoloration of skin & mucous membrane is _______.",ans:"Cyanosis",alts:[],exp:"Cyano = blue (Greek). Blue skin due to low oxygen levels in blood.",mem:"CYANO = blue. Blue lips/nails = oxygen emergency = Cyanosis!",freq:"2×"},
+  {section:"Respiratory & Breathing",q:"Phonation is a function of _______.",ans:"Larynx",alts:[],exp:"Larynx contains vocal cords. Voice production (phonation) happens here.",mem:"PHONation = voice. Larynx = voice BOX. Phone = voice!",freq:"1×"},
+  {section:"Oral & GI Health",q:"Loss of appetite is _______.",ans:"Anorexia",alts:[],exp:"An = without, orexia = appetite. No desire to eat.",mem:"AN + OREXIA = without appetite. No hunger = Anorexia!",freq:"4×"},
+  {section:"Oral & GI Health",q:"Inflammation of oral mucosa is _______.",ans:"Stomatitis",alts:[],exp:"Stomato = mouth, itis = inflammation. Inflamed mouth lining.",mem:"STOMATO + ITIS = mouth inflammation. Mouth sores = Stomatitis!",freq:"3×"},
+  {section:"Oral & GI Health",q:"Inflammation of gums is _______.",ans:"Gingivitis",alts:[],exp:"Gingiva = gums, itis = inflammation. Red, swollen, bleeding gums.",mem:"GINGIVA + ITIS = gum disease. Bleeding gums = Gingivitis!",freq:"1×"},
+  {section:"Oral & GI Health",q:"Bleeding from gums is _______.",ans:"Gingival bleeding / Gingiorrhagia",alts:["gingival bleeding","gingiorrhagia"],exp:"Gingival = of the gums, rrhagia = bleeding. Gum hemorrhage.",mem:"GINGIVAL + RRHAGIA = gum bleeding. Gums bleed = Gingiorrhagia!",freq:"1×"},
+  {section:"Oral & GI Health",q:"Inflammation of the tongue is _______.",ans:"Glossitis",alts:[],exp:"Gloss = tongue (Greek), itis = inflammation. Painful red swollen tongue.",mem:"GLOSS = tongue + ITIS. Sore tongue = Glossitis!",freq:"1×"},
+  {section:"Oral & GI Health",q:"Bad breath is _______.",ans:"Halitosis",alts:[],exp:"Hali = breath (Latin), tosis = condition. Persistent bad breath.",mem:"HALI + TOSIS = bad breath condition. Hali = breath in Latin!",freq:"1×"},
+  {section:"Oral & GI Health",q:"Cheilosis occurs due to deficiency of _______.",ans:"Vitamin B2 (Riboflavin)",alts:["vitamin b2","riboflavin","b2"],exp:"Cheilosis = cracked, red lip corners. Caused by Riboflavin (B2) deficiency.",mem:"Cheilosis = cracked CHEILO (lips). B2 = Beautiful lips need it!",freq:"1×"},
+  {section:"Oral & GI Health",q:"Cheilosis = _______.",ans:"Cracking/ulceration of lips & mouth angles",alts:["cracking","ulceration of lips"],exp:"Cheilosis = lesions at the corners of the mouth. Sign of B2 deficiency.",mem:"CHEIL = lip (Greek). Cheilosis = cracked lip corners!",freq:"1×"},
+  {section:"Oral & GI Health",q:"Gas in GI tract is _______.",ans:"Flatulence",alts:[],exp:"Flatus = gas. Excessive gas in stomach/intestines causing bloating.",mem:"FLATulence = gas that goes FLAT! Trapped wind = Flatulence!",freq:"1×"},
+  {section:"Oral & GI Health",q:"Lack of roughage leads to _______.",ans:"Constipation",alts:[],exp:"Roughage (dietary fibre) adds bulk and water to stool. Without it, constipation occurs.",mem:"No fibre = no bulk = no movement = CONSTIPATION!",freq:"1×"},
+  {section:"Oral & GI Health",q:"Constipation prevented by _______.",ans:"High fiber diet & plenty of fluids",alts:["high fiber","fibre","fluids"],exp:"Fibre increases stool bulk; fluids soften stool. Together they prevent constipation.",mem:"FIBRE + FLUIDS = no constipation. Two F's prevent the problem!",freq:"1×"},
+  {section:"Urine & Excretion",q:"Blood in urine is _______.",ans:"Hematuria",alts:["haematuria"],exp:"Hemato = blood, uria = urine. Blood visible in urine = hematuria.",mem:"HEMATO + URIA = blood in urine. Red urine = Hematuria!",freq:"1×"},
+  {section:"Urine & Excretion",q:"Glucose in urine is _______.",ans:"Glycosuria",alts:[],exp:"Glyco = sugar, suria = urine. Glucose spills into urine when blood sugar is high.",mem:"GLYCO + SURIA = sugar in urine. Diabetics have Glycosuria!",freq:"1×"},
+  {section:"Urine & Excretion",q:"Test for urinary sugar is _______.",ans:"Benedict's Test",alts:["benedict"],exp:"Benedict's solution turns orange/red in presence of reducing sugars like glucose.",mem:"BENEDICT tests for sugar. Changes colour with glucose present!",freq:"1×"},
+  {section:"Urine & Excretion",q:"Specific gravity of urine = 1.010-1.030, measured by _______.",ans:"Urinometer",alts:[],exp:"Urinometer = instrument to measure specific gravity (concentration) of urine.",mem:"URINometer = measures URINE density. Like a thermometer for urine!",freq:"2×"},
+  {section:"Urine & Excretion",q:"Blue litmus turns red when urine is _______.",ans:"Acidic",alts:["acid"],exp:"Acid turns blue litmus RED. Normal urine is slightly acidic (pH 4.6-8.0).",mem:"ACID turns blue to RED. Blue litmus + acid = RED!",freq:"1×"},
+  {section:"Urine & Excretion",q:"Frequent night urination is _______.",ans:"Nocturia",alts:[],exp:"Noctu = night, uria = urine. Waking repeatedly at night to pass urine.",mem:"NOCTU + URIA = night urination. Nocturia = nighttime toilet visits!",freq:"1×"},
+  {section:"Urine & Excretion",q:"Removal of body waste is _______.",ans:"Excretion",alts:[],exp:"Excretion = elimination of metabolic waste products from the body.",mem:"EXcretion = EXpelling waste. Body removes what it doesn't need!",freq:"1×"},
+  {section:"Urine & Excretion",q:"Main organ for drug excretion is _______.",ans:"Kidney",alts:[],exp:"Most drugs and metabolites are filtered by kidneys and excreted in urine.",mem:"KIDNEY = body's filter. Drugs exit mainly through kidneys!",freq:"1×"},
+  {section:"Examination & Assessment",q:"Visual examination is _______.",ans:"Inspection",alts:[],exp:"Inspection = using eyes to examine patient. First step of physical examination.",mem:"INspection = looking IN carefully. Eyes only = Inspection!",freq:"2×"},
+  {section:"Examination & Assessment",q:"Examination by tapping is _______.",ans:"Percussion",alts:[],exp:"Percussion = tapping body surface to assess underlying organs. Used for chest, abdomen.",mem:"PERCussion = tapping like PERCUSSION drums. Tap the body!",freq:"2×"},
+  {section:"Examination & Assessment",q:"Examination using stethoscope is _______.",ans:"Auscultation",alts:[],exp:"Auscultation = listening to body sounds with stethoscope. Heart, lungs, bowel sounds.",mem:"AUSCULTation = listen. Stethoscope = listening instrument!",freq:"1×"},
+  {section:"Examination & Assessment",q:"Instrument to view ear is _______.",ans:"Otoscope",alts:[],exp:"Oto = ear, scope = view. Used to examine ear canal and tympanic membrane.",mem:"OTO = ear + SCOPE = view. Otoscope looks in the ear!",freq:"1×"},
+  {section:"Examination & Assessment",q:"Unconscious patient assessed by _______.",ans:"Glasgow Coma Scale (GCS)",alts:["glasgow coma scale","gcs"],exp:"GCS scores Eye (1-4) + Verbal (1-5) + Motor (1-6) responses. Max 15, min 3.",mem:"GCS = Grades Consciousness State. Eyes + Voice + Movement = GCS score!",freq:"1×"},
+  {section:"Examination & Assessment",q:"Primary source of data is _______.",ans:"The Patient",alts:["patient"],exp:"Primary source = directly from the patient (what they say/feel = subjective data).",mem:"PRIMARY source = PATIENT directly. Best info comes from the patient!",freq:"1×"},
+  {section:"Examination & Assessment",q:"Data classified as _______ & _______.",ans:"Subjective & Objective",alts:["subjective","objective"],exp:"Subjective = patient's feelings/complaints. Objective = measurable observations by nurse.",mem:"S = Symptoms (patient says). O = Observable (nurse measures). S+O = complete data!",freq:"1×"},
+  {section:"Examination & Assessment",q:"Trendelenburg position used for _______.",ans:"Pelvic organ examination",alts:["pelvic"],exp:"Trendelenburg = head down, feet elevated. Gravity moves intestines away from pelvis.",mem:"Trendelenburg = head DOWN. Gravity exposes pelvic organs for examination!",freq:"1×"},
+  {section:"Infection Control",q:"Agent inhibiting microorganism growth is _______.",ans:"Antiseptic / Bacteriostatic",alts:["antiseptic","bacteriostatic"],exp:"Antiseptic = kills/inhibits microbes on living tissue. Bacteriostatic = stops bacterial growth.",mem:"ANTI + SEPTIC = against germs on living tissue. Stops germ growth!",freq:"2×"},
+  {section:"Infection Control",q:"Separation of infected from non-infected is _______.",ans:"Isolation",alts:[],exp:"Isolation = separating infected patient to prevent spread of infection to others.",mem:"ISOLATION = separate. Keep infected patient ALONE to protect others!",freq:"1×"},
+  {section:"Infection Control",q:"Steam under pressure sterilization is _______.",ans:"Autoclaving",alts:["autoclave"],exp:"Autoclave uses 121°C steam at 15 psi pressure. Kills all microorganisms including spores.",mem:"AUTO-CLAVE = pressurized steam. Kills EVERYTHING including resistant spores!",freq:"2×"},
+  {section:"Infection Control",q:"Artificial resistance to disease is _______.",ans:"Immunization / Vaccination",alts:["immunization","vaccination"],exp:"Vaccines stimulate immune system to produce antibodies without causing actual disease.",mem:"VACCINATION = artificial immunity. Vaccine trains body to fight disease!",freq:"2×"},
+  {section:"Vital Signs",q:"Pulse rate <60/min is _______.",ans:"Bradycardia",alts:[],exp:"Brady = slow, cardia = heart. Heart rate below 60 bpm = bradycardia.",mem:"BRADY = slow. BRADYcardia = SLOW heart (<60 bpm)!",freq:"2×"},
+  {section:"Vital Signs",q:"BP measured by _______.",ans:"Sphygmomanometer",alts:["sphygmo"],exp:"Sphygmo = pulse, mano = pressure, meter = measure. The blood pressure measuring device.",mem:"SPHYGMO-MANO-METER = pulse pressure measurer. The BP machine!",freq:"2×"},
+  {section:"Vital Signs",q:"High blood pressure is _______.",ans:"Hypertension",alts:[],exp:"Hyper = high, tension = pressure. BP consistently above 140/90 mmHg.",mem:"HYPER + TENSION = HIGH BP. Hyper = too much!",freq:"1×"},
+  {section:"Vital Signs",q:"Low blood pressure is _______.",ans:"Hypotension",alts:[],exp:"Hypo = low, tension = pressure. BP below 90/60 mmHg.",mem:"HYPO + TENSION = LOW BP. Hypo = too little!",freq:"1×"},
+  {section:"Vital Signs",q:"Normal BP is _______.",ans:"120/80 mmHg",alts:["120/80"],exp:"Systolic 120 (heart contracting) / Diastolic 80 (heart relaxing) = normal adult BP.",mem:"120/80 = the perfect score for blood pressure!",freq:"1×"},
+  {section:"Vital Signs",q:"Low hemoglobin is _______.",ans:"Anemia",alts:["anaemia"],exp:"Anemia = low hemoglobin or RBC count. Causes fatigue, pallor, breathlessness.",mem:"ANEMIA = no iron = no hemoglobin = pale and tired!",freq:"1×"},
+  {section:"Patient Care",q:"Post-death stiffness is _______.",ans:"Rigor Mortis",alts:["rigor mortis"],exp:"Rigor mortis = muscle stiffening after death due to ATP depletion. Begins 2-6 hours post-death.",mem:"RIGOR = stiffness, MORTIS = death. Death stiffness = Rigor Mortis!",freq:"1×"},
+  {section:"Patient Care",q:"Inability to sleep is _______.",ans:"Insomnia",alts:[],exp:"Insomnia = chronic difficulty falling asleep or staying asleep. In = without, somnia = sleep.",mem:"IN + SOMNIA = without sleep. Can't sleep = Insomnia!",freq:"1×"},
+  {section:"Patient Care",q:"Air cushion prevents _______.",ans:"Bed Sores / Pressure Ulcers",alts:["bed sores","pressure ulcers","decubitus"],exp:"Air/alternating pressure cushions distribute body weight evenly, preventing pressure sores.",mem:"Air cushion = no pressure = no bed sores. Protect bony prominences!",freq:"2×"},
+  {section:"Patient Care",q:"Temperature >=105°F is _______.",ans:"Hyperpyrexia",alts:[],exp:"Hyperpyrexia = dangerously high fever >=105°F (40.5°C). Medical emergency.",mem:"HYPER + PYREXIA = very HIGH fever. Dangerous temperature!",freq:"1×"},
+  {section:"Patient Care",q:"Fever is a _______ of disease.",ans:"Sign / Symptom",alts:["sign","symptom"],exp:"Fever = sign (measured by nurse) AND symptom (felt by patient). It is both.",mem:"Fever = SIGN (measured) + SYMPTOM (felt). It is BOTH!",freq:"1×"},
+  {section:"Patient Care",q:"Thermoregulation center is _______.",ans:"Hypothalamus",alts:[],exp:"Hypothalamus = body thermostat in the brain. Controls temperature via sweating and shivering.",mem:"HYPOthalamus = body's thermostat. Like an air conditioner controller!",freq:"1×"},
+  {section:"Patient Care",q:"Fluids/medicine into vein is _______.",ans:"IV Injection / Infusion",alts:["iv","intravenous","infusion"],exp:"IV = intravenous = into the vein. Fastest route for drug/fluid delivery.",mem:"IV = IntraVenous = INTO VEIN. Direct to bloodstream!",freq:"1×"},
+  {section:"Patient Care",q:"Inner part of syringe is _______.",ans:"Plunger / Piston",alts:["plunger","piston"],exp:"Plunger/piston = the movable inner rod of a syringe that draws up or expels fluid.",mem:"PLUNGER = pushes fluid OUT. Like a pump plunger!",freq:"3×"},
+  {section:"Patient Care",q:"Device used to relieve cardiac asthma is _______.",ans:"Cardiac Table",alts:["cardiac table"],exp:"Cardiac table = patient leans forward on it, reducing dyspnea in orthopnea/cardiac asthma.",mem:"Cardiac TABLE = lean forward = breathe easier in cardiac asthma!",freq:"1×"},
+  {section:"Nursing History",q:"Florence Nightingale born on _______.",ans:"12 May 1820",alts:["12 may","may 12","1820"],exp:"Born Florence, Italy on 12 May 1820. Pioneer of modern nursing, Lady with the Lamp.",mem:"12 MAY 1820 = Florence's birthday = International Nurses Day!",freq:"2×"},
+  {section:"Nursing History",q:"International Nurses Day is _______.",ans:"12 May",alts:["may 12"],exp:"12th May = Florence Nightingale's birthday = International Nurses Day worldwide.",mem:"12 May = NURSES DAY = Florence Nightingale's birthday!",freq:"1×"},
+  {section:"Nursing History",q:"Pioneer of Modern Nursing is _______.",ans:"Florence Nightingale",alts:["nightingale","florence"],exp:"Florence Nightingale reformed nursing during Crimean War (1853-56). Founded modern nursing.",mem:"FLORENCE NIGHTINGALE = Lady with the Lamp. Mother of modern nursing!",freq:"1×"},
+  {section:"Nursing History",q:"One pint = _______.",ans:"500 ml",alts:["500ml"],exp:"1 pint = approximately 500ml (473ml exactly). Used in fluid balance measurements.",mem:"1 PINT = 500ml = half a litre. Remember for fluid charts!",freq:"1×"},
+  {section:"Nursing History",q:"Etiquette is code of _______.",ans:"Professional Behavior / Good Conduct",alts:["professional behavior","good conduct"],exp:"Etiquette = rules governing professional conduct and behavior in practice.",mem:"Etiquette = professional rulebook. How a nurse should behave!",freq:"1×"},
+  {section:"Nursing History",q:"Communication means conveying _______.",ans:"Communication",alts:[],exp:"Communication = process of conveying thoughts, feelings, and ideas between individuals.",mem:"COMMUNICATION = sharing ideas and feelings. Two-way exchange!",freq:"1×"},
+];
+
+const tfData=[
+  {section:"Pharmacology & Drugs",q:"Analgesic is a drug used for relieving pain.",ans:true,tip:"Analgesic = pain reliever. From Greek 'an' = without + 'algos' = pain. e.g., paracetamol, aspirin.",freq:"4× (July 2025, May 2023, Feb 2017, Aug 2014)"},
+  {section:"Pharmacology & Drugs",q:"Drug used to relieve the pain are analgesics.",ans:true,tip:"Analgesics specifically target pain. They do not treat infection or inflammation primarily.",freq:"1× (May 2023)"},
+  {section:"Pharmacology & Drugs",q:"Drugs used to prevent Nausea and Vomiting are Antiemetics.",ans:true,tip:"Antiemetics = anti-vomiting drugs. e.g., Ondansetron, Metoclopramide.",freq:"1× (Feb 2016)"},
+  {section:"Pharmacology & Drugs",q:"Drugs used to stop vomiting are called Antidiuretics.",ans:false,tip:"WRONG! Antidiuretics REDUCE urine output (e.g., ADH/vasopressin). Vomiting drugs = ANTIEMETICS!",freq:"1× (Aug 2015)"},
+  {section:"Pharmacology & Drugs",q:"Drug used to relieve vomiting are called Anti inflammatory drugs.",ans:false,tip:"WRONG! Anti-inflammatories reduce inflammation (e.g., ibuprofen). Vomiting drugs = ANTIEMETICS!",freq:"1× (Feb 2015)"},
+  {section:"Pharmacology & Drugs",q:"Drug used to destroy worms is antitussives.",ans:false,tip:"WRONG! Antitussives = cough suppressants. Worm-killing drugs = ANTHELMINTICS!",freq:"2× (Nov 2022, Feb 2019)"},
+  {section:"Pharmacology & Drugs",q:"Drug used to relieve pain are called Antibiotics.",ans:false,tip:"WRONG! Antibiotics fight bacterial infections. Pain relief = ANALGESICS!",freq:"1× (Sep 2013)"},
+  {section:"Pharmacology & Drugs",q:"Poison can be neutralized by using specific antidotes.",ans:true,tip:"Antidotes counteract specific poisons. e.g., Naloxone for opioids, Atropine for organophosphates.",freq:"1× (Aug 2016)"},
+  {section:"Pharmacology & Drugs",q:"Sublingual Drugs should be placed under the Tongue.",ans:true,tip:"Sublingual = under the tongue. Sub = under, lingual = tongue. Rapid absorption into blood.",freq:"1× (Aug 2017)"},
+  {section:"Pharmacology & Drugs",q:"An appropriate route of administration of insulin injection is subcutaneous.",ans:true,tip:"Insulin = subcutaneous injection into fatty tissue. Provides slow, steady absorption.",freq:"1× (Apr 2021)"},
+  {section:"Pharmacology & Drugs",q:"Diuretics decreases the urine output.",ans:false,tip:"WRONG! Diuretics INCREASE urine output. They remove excess fluid. e.g., Furosemide.",freq:"1× (Feb 2014)"},
+  {section:"Infection Control",q:"Hospital acquired infection is also called as Nosocomial infection.",ans:true,tip:"Nosocomial = hospital-acquired infection (HAI). From Greek 'nosos' = disease + 'komeion' = care.",freq:"2× (Feb 2025, Sep 2013)"},
+  {section:"Infection Control",q:"Hospital acquired infection is called Zoonotic Infection.",ans:false,tip:"WRONG! Zoonotic = animal-to-human infection (rabies, bird flu). Hospital infection = NOSOCOMIAL!",freq:"1× (Feb 2017)"},
+  {section:"Infection Control",q:"Hospital acquired infection is known as droplet infection.",ans:false,tip:"WRONG! Droplet infection = MODE of transmission. Hospital-acquired infection = NOSOCOMIAL infection!",freq:"1× (Feb 2012)"},
+  {section:"Infection Control",q:"Hand washing is the best measure to control infection.",ans:true,tip:"WHO: Hand hygiene = single most important measure to prevent infection spread.",freq:"1× (Nov 2022)"},
+  {section:"Infection Control",q:"Hand washing is the only measure to control infection.",ans:false,tip:"WRONG! Hand washing is BEST but not the ONLY measure. PPE, isolation, sterilization also needed.",freq:"1× (Aug 2017)"},
+  {section:"Infection Control",q:"Isolation is the best measure to control infection.",ans:false,tip:"WRONG! Hand washing is cited as THE single most effective measure, not isolation.",freq:"1× (Jan 2024)"},
+  {section:"Infection Control",q:"Asepsis is freedom from infection.",ans:true,tip:"Asepsis = absence of pathogenic microorganisms. A = without, sepsis = infection.",freq:"1× (Jan 2022)"},
+  {section:"Infection Control",q:"Sterilization removes Spores and Pathogens.",ans:true,tip:"Sterilization kills ALL microorganisms including resistant spores (unlike disinfection).",freq:"1× (Aug 2017)"},
+  {section:"Infection Control",q:"Rabies is caused by Rabid Dog bite.",ans:true,tip:"Rabies virus transmitted via saliva of rabid dog/bat/wild mammal through bite wounds.",freq:"1× (July/Aug 2024)"},
+  {section:"Infection Control",q:"Rabies is caused by Rat bite.",ans:false,tip:"WRONG! Rabies = rabid dog/bat bite. Rat bite causes Rat Bite Fever (Streptobacillus).",freq:"2× (Nov 2022, Aug 2017)"},
+  {section:"Temperature & Vital Signs",q:"Heat regulation centre is hypothalamus.",ans:true,tip:"Hypothalamus = body's thermostat in the brain. Controls sweating, shivering, vasodilation.",freq:"5× (Jan 2024, May 2023, Jan 2022, Feb 2018, Aug 2016)"},
+  {section:"Temperature & Vital Signs",q:"Hypothermia is a term used for decreased body temperature.",ans:true,tip:"Hypothermia = low body temperature (<35°C/95°F). Hypo = low, thermia = heat/temperature.",freq:"1× (Jan 2024)"},
+  {section:"Temperature & Vital Signs",q:"Increase in the body temperature above 99°F is called hypothermia.",ans:false,tip:"WRONG! Increase above 99°F = HYPERTHERMIA/PYREXIA (fever). Hypothermia = DECREASED temperature!",freq:"1× (July/Aug 2024)"},
+  {section:"Temperature & Vital Signs",q:"The temperature falls in zigzag manner is called crisis.",ans:false,tip:"WRONG! Zigzag fall = LYSIS. CRISIS = sudden rapid drop of temperature to normal.",freq:"1× (Aug 2012)"},
+  {section:"Temperature & Vital Signs",q:"Increased respiratory rate is called as Tachypnoea.",ans:true,tip:"Tachypnea = fast breathing rate above 20 breaths per minute.",freq:"2× (Nov 2022, Feb 2019)"},
+  {section:"Temperature & Vital Signs",q:"Increased Respiratory rate above 24 breaths/min is called as Tachycardia.",ans:false,tip:"WRONG! Fast breathing = TACHYPNEA. Tachycardia = fast HEART rate (>100 bpm)!",freq:"1× (July/Aug 2024)"},
+  {section:"Temperature & Vital Signs",q:"Tachycardia is a pulse rate slower than 60 beat per minute.",ans:false,tip:"WRONG! Tachycardia = FAST heart rate (>100 bpm). Slow rate <60 bpm = BRADYCARDIA!",freq:"1× (Apr 2021)"},
+  {section:"Temperature & Vital Signs",q:"Bradycardia is the term used for increased pulse rate.",ans:false,tip:"WRONG! Bradycardia = SLOW pulse rate (<60 bpm). Increased pulse rate = TACHYCARDIA!",freq:"1× (Jan 2024)"},
+  {section:"Temperature & Vital Signs",q:"Total cessation of breathing is called as anoxia.",ans:false,tip:"WRONG! Cessation of breathing = APNEA. Anoxia = complete absence of oxygen to tissues.",freq:"1× (Feb 2025)"},
+  {section:"Temperature & Vital Signs",q:"Normal quiet breathing is called eupnoea.",ans:true,tip:"Eupnea = normal quiet breathing at rest. Eu = good/normal, pnea = breathing.",freq:"1× (Aug 2012)"},
+  {section:"Temperature & Vital Signs",q:"Blood pressure in children is normally lower than in adults.",ans:true,tip:"Children have lower BP than adults. Normal BP values increase with age.",freq:"1× (Aug 2015)"},
+  {section:"Temperature & Vital Signs",q:"Lack of oxygen in the tissue is Hypoxia.",ans:true,tip:"Hypoxia = insufficient oxygen reaching body tissues. Hypo = less, oxia = oxygen.",freq:"1× (July/Aug 2024)"},
+  {section:"Temperature & Vital Signs",q:"Anoxia means lack of oxygen in the blood.",ans:false,tip:"WRONG! Lack of O2 in blood = HYPOXEMIA. Anoxia = complete absence of oxygen to tissues.",freq:"1× (May 2023)"},
+  {section:"Oral & GI True/False",q:"Dysphagia is difficulty in swallowing.",ans:true,tip:"Dysphagia = difficulty swallowing. Dys = difficult, phagia = swallowing.",freq:"2× (Jan 2022, Aug 2018)"},
+  {section:"Oral & GI True/False",q:"Dyspnoea means difficulty in swallowing.",ans:false,tip:"WRONG! Dyspnoea = difficulty BREATHING. Difficulty swallowing = DYSPHAGIA!",freq:"1× (June 2013)"},
+  {section:"Oral & GI True/False",q:"Gingivitis is the term used for bleeding from the gums.",ans:false,tip:"WRONG! Gingivitis = INFLAMMATION of gums. Bleeding is a symptom but gingivitis = inflammation!",freq:"1× (Feb 2025)"},
+  {section:"Oral & GI True/False",q:"Gingivitis is an inflammation of tongue.",ans:false,tip:"WRONG! Gingivitis = inflammation of GUMS. Inflammation of tongue = GLOSSITIS!",freq:"1× (Feb 2014)"},
+  {section:"Oral & GI True/False",q:"Coughing of blood is called as epistaxis.",ans:false,tip:"WRONG! Coughing blood = HEMOPTYSIS. Epistaxis = NOSE bleeding!",freq:"1× (Feb 2025)"},
+  {section:"Oral & GI True/False",q:"Presence of blood in the urine is called Haematuria.",ans:true,tip:"Hematuria = blood in urine. Hemato = blood, uria = urine.",freq:"2× (Aug 2015, Feb 2015)"},
+  {section:"Oral & GI True/False",q:"Haematuria means blood in the stool.",ans:false,tip:"WRONG! Blood in stool = Melena/Hematochezia. Hematuria = blood in URINE!",freq:"2× (Jan 2022, Feb 2018)"},
+  {section:"Oral & GI True/False",q:"The presence of blood in the Urine is called Polyuria.",ans:false,tip:"WRONG! Polyuria = EXCESSIVE urine volume. Blood in urine = HEMATURIA!",freq:"1× (Sep 2013)"},
+  {section:"Oral & GI True/False",q:"Pyuria means blood in the Urine.",ans:false,tip:"WRONG! Pyuria = PUS in urine. Blood in urine = HEMATURIA. Pyo = pus!",freq:"1× (June 2013)"},
+  {section:"Oral & GI True/False",q:"Painful micturition is called oliguria.",ans:false,tip:"WRONG! Oliguria = LOW urine output. Painful urination = DYSURIA!",freq:"1× (Feb 2016)"},
+  {section:"Oral & GI True/False",q:"Presence of pus in Urine is called as Haematuria.",ans:false,tip:"WRONG! Pus in urine = PYURIA. Hematuria = BLOOD in urine!",freq:"1× (July 2025)"},
+  {section:"Oral & GI True/False",q:"Constipation is an accumulation of faecal material which forms a hard mass in the rectum.",ans:true,tip:"Constipation = hard dry stools difficult to pass. Accumulation of faecal material in rectum.",freq:"1× (Apr 2021)"},
+  {section:"Clinical Procedures",q:"Visual examination of the body is called inspection.",ans:true,tip:"Inspection = systematic visual examination using eyes. First step of physical assessment.",freq:"1× (June 2013)"},
+  {section:"Clinical Procedures",q:"The terminal stage of illness is approaching death.",ans:true,tip:"Terminal stage = end-stage of disease. Patient is approaching death. Requires palliative care.",freq:"1× (Apr 2021)"},
+  {section:"Clinical Procedures",q:"Naso gastric tube feeding is also called as Gastric Gavage.",ans:true,tip:"Gavage = tube feeding. NG tube feeding = gastric gavage. Used when patient cannot swallow.",freq:"2× (May 2023, Aug 2018)"},
+  {section:"Clinical Procedures",q:"Gastric lavage is the washing of stomach.",ans:true,tip:"Gastric lavage = stomach irrigation/washing. Used in poisoning cases to remove toxins.",freq:"1× (Feb 2018)"},
+  {section:"Clinical Procedures",q:"Stomach wash should be given in Acid Poisoning.",ans:false,tip:"WRONG! Stomach wash is CONTRAINDICATED in corrosive/acid poisoning - worsens burns!",freq:"1× (Sep 2013)"},
+  {section:"Clinical Procedures",q:"Evacuate enema relieves constipation.",ans:true,tip:"Evacuant enema = introduces fluid into rectum to soften and remove faecal matter.",freq:"2× (July 2025, Feb 2015)"},
+  {section:"Clinical Procedures",q:"Benedict's solution is used to test albumin in the urine.",ans:false,tip:"WRONG! Benedict's = tests for SUGAR (glucose). Albumin tested by heat/acetic acid test!",freq:"1× (July 2025)"},
+  {section:"Clinical Procedures",q:"Lying on the abdomen is called as supine position.",ans:false,tip:"WRONG! Lying on ABDOMEN = PRONE position. Supine = lying on the BACK!",freq:"1× (Aug 2018)"},
+  {section:"Clinical Procedures",q:"Knee chest position is used to examine rectum.",ans:true,tip:"Knee-chest/genupectoral position = used for rectal and sigmoid examinations.",freq:"1× (Aug 2016)"},
+  {section:"Clinical Procedures",q:"Proper body alignment causes fatigue and deformity.",ans:false,tip:"WRONG! Proper body alignment PREVENTS fatigue and deformity. Bad posture causes them!",freq:"1× (Aug 2014)"},
+  {section:"Clinical Procedures",q:"Laryngoscope is used to examine the Larynx.",ans:true,tip:"Laryngoscope = instrument to directly view the larynx. Used for intubation.",freq:"3× (Feb 2017, Aug 2014, June 2013)"},
+  {section:"Clinical Procedures",q:"Proctoscope is used to examine the ear.",ans:false,tip:"WRONG! Proctoscope = examines RECTUM. Ear examined by OTOSCOPE!",freq:"1× (Feb 2018)"},
+  {section:"Clinical Procedures",q:"Cone shaped fusible medicated mass is suppository.",ans:true,tip:"Suppository = cone/bullet-shaped solid medication. Inserted rectally/vaginally. Melts at body temp.",freq:"1× (Feb 2019)"},
+  {section:"Clinical Procedures",q:"The duration of sitz bath is 15-20 minutes.",ans:true,tip:"Sitz bath duration = 15-20 minutes in warm water. Used for perineal healing.",freq:"2× (Feb 2017, Feb 2012)"},
+  {section:"Clinical Procedures",q:"One pint is equal to 500ml.",ans:true,tip:"1 pint = approximately 500ml (473ml exactly). Used in fluid balance calculations.",freq:"1× (Feb 2016)"},
+  {section:"Clinical Procedures",q:"One pint is equal 30ml.",ans:false,tip:"WRONG! 1 pint = ~500ml. 1 OUNCE = ~30ml. Pint and ounce are very different!",freq:"1× (Feb 2015)"},
+  {section:"Clinical Procedures",q:"One gram of fat yields 4 calories of heat.",ans:false,tip:"WRONG! Fat = 9 cal/g. Carbohydrate = 4 cal/g. Protein = 4 cal/g. Fat is highest!",freq:"1× (Aug 2012)"},
+  {section:"Clinical Procedures",q:"Seitz is a German word means seat.",ans:true,tip:"Seitz = seat in German. Sitz bath = sitting in warm water for perineal comfort.",freq:"1× (Aug 2012)"},
+  {section:"Clinical Procedures",q:"Kicking the knee forward is seen in patellar reflex.",ans:true,tip:"Patellar reflex = knee-jerk. Tapping patellar tendon causes knee to kick forward.",freq:"1× (Feb 2019)"},
+  {section:"Clinical Procedures",q:"Bed bath is given for ambulatory patients.",ans:false,tip:"WRONG! Bed bath = for BEDRIDDEN patients. Ambulatory patients can walk to shower!",freq:"1× (Aug 2018)"},
+  {section:"Clinical Procedures",q:"Random specimens are collected only at one time.",ans:true,tip:"Random/spot specimen = collected at any time without special preparation or timing.",freq:"1× (Aug 2016)"},
 ];
 
 const meaningsData=[
-  {section:"Core Nursing Concepts",term:"Nursing",def:"A profession concerned with the care of individuals, sick or well, in the promotion of health, prevention of illness, and care of the sick, disabled, and dying.",mem:"Nursing = CARING across all settings. Not just sick care — health PROMOTION too!",freq:"9× (Feb 2025, July 2025, July 2024, Nov 2022, Jan 2022, Apr 2021, Feb 2019, Feb 2018, Sep 2013)"},
-  {section:"Core Nursing Concepts",term:"Profession",def:"An occupation that requires specialized knowledge, formal education, skill, ethical standards, and service to society.",mem:"PROFESSION = specialized + educated + ethical. Not just a job — a CALLING with standards!",freq:"3× (Jan 2024, Sep 2013, Aug 2011)"},
-  {section:"Core Nursing Concepts",term:"Health",def:"A state of complete physical, mental, and social well-being and not merely the absence of disease or infirmity.",mem:"Health = 3 dimensions: Physical + Mental + Social. Being healthy ≠ just not being sick!",freq:"3× (Jan 2024, Feb 2017, Feb 2015)"},
-  {section:"Core Nursing Concepts",term:"Hospital",def:"An institution established for the diagnosis, treatment, and care of sick and injured persons.",mem:"HOSPITAL = HOSPIT = host/guest. Originally places that hosted sick people!",freq:"2× (June 2013, Feb 2011)"},
-  {section:"Core Nursing Concepts",term:"Ethics / Code of Ethics",def:"A set of moral principles that govern the conduct and behavior of individuals in a profession.",mem:"ETHICS = moral guidelines. The rulebook of RIGHT behavior in nursing!",freq:"2× (Aug 2014, Aug 2011)"},
-  {section:"Core Nursing Concepts",term:"Comprehensive Nursing Care",def:"The total care provided to a patient including physical, psychological, social, and spiritual aspects.",mem:"COMPREHENSIVE = covering ALL aspects. Body + Mind + Spirit + Social = comprehensive!",freq:"1× (Aug 2014)"},
-  {section:"Core Nursing Concepts",term:"Nursing Diagnosis",def:"A clinical judgment about individual, family, or community responses to actual or potential health problems.",mem:"Nursing Diagnosis = what the NURSE identifies. NOT the medical diagnosis — nurse's clinical judgment!",freq:"1× (Apr 2021)"},
-  {section:"Core Nursing Concepts",term:"Observation",def:"The systematic use of senses to collect information about a patient's condition.",mem:"OBSERVation = use all senses. See, hear, smell, touch — collect patient data systematically!",freq:"1× (Aug 2014)"},
-  {section:"Core Nursing Concepts",term:"Hygiene",def:"The practice of maintaining cleanliness to preserve health and prevent disease.",mem:"HYGIENE from Greek goddess Hygieia. Cleanliness = health preservation!",freq:"1× (Feb 2011)"},
-  {section:"Core Nursing Concepts",term:"Communication",def:"The process of exchanging information, ideas, feelings, and thoughts between individuals.",mem:"COMMUNICATION = sharing. Two-way exchange of information between people!",freq:"1× (Apr 2021)"},
-  {section:"Infection Control",term:"Asepsis",def:"The practice of preventing the spread of microorganisms and maintaining freedom from infection.",mem:"A = without, SEPSIS = infection. Asepsis = keeping things INFECTION-FREE!",freq:"5× (Feb 2025, Aug 2018, Aug 2017, Aug 2015, Feb 2011)"},
-  {section:"Infection Control",term:"Infection",def:"The invasion and multiplication of pathogenic microorganisms in the body.",mem:"INfection = INvaders multiply. Germs invade → multiply → cause disease!",freq:"2× (July 2025, Feb 2015)"},
-  {section:"Infection Control",term:"Nosocomial Infection",def:"An infection acquired by a patient during hospital stay and not present at the time of admission.",mem:"NOSOcomial = hospital-acquired. Got sick IN the hospital — ironically!",freq:"2× (May 2023, Apr 2021)"},
-  {section:"Infection Control",term:"Cross Infection",def:"The transmission of infection from one person to another.",mem:"CROSS infection = infection CROSSING from one person to another. Hand hygiene prevents it!",freq:"1× (Jan 2022)"},
-  {section:"Infection Control",term:"Disinfection",def:"The process of destroying pathogenic microorganisms excluding spores.",mem:"DISinfection = destroying most germs. Less than sterilization — doesn't kill spores!",freq:"1× (Feb 2017)"},
-  {section:"Clinical Measurements",term:"Pulse",def:"The rhythmic expansion of an artery produced by the contraction of the heart.",mem:"PULSE = heartbeat felt in arteries. Count it at wrist (radial) = heart rate!",freq:"3× (Jan 2024, Feb 2018, Feb 2014)"},
-  {section:"Clinical Measurements",term:"Respiration",def:"The process of inhalation and exhalation by which oxygen is taken in and carbon dioxide is expelled.",mem:"RESPIRATION = inhale O2 + exhale CO2. Life's basic exchange!",freq:"1× (Feb 2014)"},
-  {section:"Clinical Measurements",term:"Pyrexia",def:"An abnormal rise in body temperature — fever.",mem:"PYRexia = PYRO = fire/heat. Pyrexia = body is on fire = fever!",freq:"1× (Feb 2019)"},
-  {section:"Clinical Measurements",term:"Afebrile",def:"Absence of fever or normal body temperature.",mem:"A = without, FEBRILE = fever. Afebrile = NO fever = normal temperature!",freq:"1× (Aug 2016)"},
-  {section:"Clinical Measurements",term:"Intermittent Fever",def:"A fever that rises and falls, returning to normal at intervals.",mem:"INTERMITTENT = comes and goes. Malaria fever = classic intermittent fever!",freq:"1× (Aug 2017)"},
-  {section:"Clinical Measurements",term:"Hyperglycaemia",def:"A condition characterized by increased blood glucose level.",mem:"HYPER = high, GLYCAEMIA = blood sugar. Hyperglycaemia = HIGH blood sugar = diabetes sign!",freq:"1× (Aug 2017)"},
-  {section:"Patient Conditions",term:"Dyspnoea / Dyspnea",def:"Difficulty or labored breathing.",mem:"DYS = difficult, PNEA = breathing. Can't breathe properly = Dyspnea!",freq:"3× (May 2023, Aug 2018, Feb 2015)"},
-  {section:"Patient Conditions",term:"Hypoxia",def:"A deficiency of oxygen in body tissues.",mem:"HYPO = deficiency, OXIA = oxygen. Tissues starved of oxygen = Hypoxia!",freq:"1× (Feb 2016)"},
-  {section:"Patient Conditions",term:"Cyanosis",def:"A bluish discoloration of skin and mucous membranes due to lack of oxygen.",mem:"CYANO = blue. Blue lips/fingertips = oxygen emergency = Cyanosis!",freq:"1× (Feb 2016)"},
-  {section:"Patient Conditions",term:"Asphyxia",def:"A condition caused by deprivation of oxygen leading to unconsciousness or death.",mem:"ASPHYXIA = suffocation. No oxygen = unconscious/death. Asphyxia = oxygen totally cut off!",freq:"1× (Aug 2016)"},
-  {section:"Patient Conditions",term:"Nausea",def:"An unpleasant sensation with an urge to vomit.",mem:"NAUSEA = nautical sickness (Greek: naus = ship). Seasick feeling = nausea!",freq:"2× (Nov 2022, Feb 2019)"},
-  {section:"Patient Conditions",term:"Anorexia",def:"Loss of appetite.",mem:"AN = without, OREXIA = appetite. No desire to eat = Anorexia!",freq:"1× (Feb 2016)"},
-  {section:"Patient Conditions",term:"Stomatitis",def:"Inflammation of the mouth.",mem:"STOMATO = mouth, ITIS = inflammation. Mouth ulcers/sores = Stomatitis!",freq:"2× (Jan 2024, Feb 2015)"},
-  {section:"Patient Conditions",term:"Gingivitis",def:"Inflammation of the gums.",mem:"GINGIVA = gums, ITIS = inflammation. Red, bleeding gums = Gingivitis!",freq:"2× (July 2025, Aug 2017)"},
-  {section:"Patient Conditions",term:"Oliguria",def:"Decreased urine output (less than 400 ml/day in adults).",mem:"OLIGO = little, URIA = urine. Less than 400ml/day = Oliguria = kidney alarm!",freq:"4× (July 2025, Nov 2022, Feb 2019, Feb 2018)"},
-  {section:"Patient Conditions",term:"Decubitus Ulcer / Bed Sore",def:"A localized injury to skin and tissues due to prolonged pressure.",mem:"DECUBITUS = lying down (Latin). Lying too long = pressure = bed sore!",freq:"5× (May 2023, Nov 2022, Jan 2022, Aug 2018, Aug 2015)"},
-  {section:"Patient Conditions",term:"Insomnia",def:"Difficulty in falling asleep or staying asleep.",mem:"IN = without, SOMNIA = sleep. Can't sleep = Insomnia. Count sheep!",freq:"1× (Feb 2017)"},
-  {section:"Patient Conditions",term:"Edema",def:"Abnormal accumulation of fluid in body tissues.",mem:"EDEMA = swelling. Fluid leaks out of blood vessels into tissues = puffy swelling!",freq:"1× (Sep 2013)"},
-  {section:"Patient Conditions",term:"Dehydration",def:"A condition caused by excessive loss of body fluids.",mem:"DE = loss, HYDRATION = water. Body loses more water than it takes in = Dehydration!",freq:"2× (Feb 2017, Feb 2014)"},
-  {section:"Procedures & Treatments",term:"Laxatives",def:"Agents that promote bowel evacuation and relieve constipation.",mem:"LAXatives = LAXen (loosen). They loosen the bowels = relieve constipation!",freq:"2× (Aug 2018, Feb 2014)"},
-  {section:"Procedures & Treatments",term:"First Aid",def:"The immediate and temporary care given to an injured or ill person before medical help arrives.",mem:"FIRST AID = FIRST help. Immediate care before the doctor comes!",freq:"1× (Aug 2015)"},
-  {section:"Procedures & Treatments",term:"Hot Application",def:"The use of heat to relieve pain and improve circulation.",mem:"HOT application = HEAT therapy. Warmth increases blood flow = pain relief!",freq:"1× (Jan 2022)"},
-  {section:"Procedures & Treatments",term:"Infusion",def:"The slow introduction of fluid into the body, usually intravenously.",mem:"INFUSION = slowly flowing IN. IV drip = fluid infusing into the vein!",freq:"1× (Feb 2014)"},
-  {section:"Procedures & Treatments",term:"Gavage",def:"The administration of food directly into the stomach through a tube.",mem:"GAVAGE = tube feeding. When patient can't swallow, food goes through tube to stomach!",freq:"1× (Feb 2011)"},
-  {section:"Procedures & Treatments",term:"Anticoagulants",def:"Drugs that prevent blood clotting.",mem:"ANTI = against, COAGULANT = clotting. Anticoagulants = blood thinners = prevent clots!",freq:"1× (Aug 2014)"},
-  {section:"Procedures & Treatments",term:"Immunization",def:"The process of making a person immune to disease by administering vaccines.",mem:"IMMUNization = giving IMmunity. Vaccines teach body to fight specific diseases!",freq:"1× (Feb 2011)"},
-  {section:"Procedures & Treatments",term:"Splint",def:"A device used to immobilize and support a fractured or injured limb.",mem:"SPLINT = immobilizer. Keeps broken bones STILL so they can heal!",freq:"1× (Aug 2016)"},
-  {section:"Procedures & Treatments",term:"Body Mechanics",def:"The proper use of body posture and movement to prevent injury and fatigue.",mem:"Body MECHANICS = using body like a machine properly. Lift with legs, not back!",freq:"1× (Sep 2013)"},
-  {section:"End of Life",term:"Euthanasia",def:"The intentional ending of life to relieve suffering.",mem:"EU = good/easy, THANASIA = death. Euthanasia = easy/good death. Mercy killing.",freq:"2× (Feb 2025, Aug 2011)"},
-  {section:"End of Life",term:"Autopsy",def:"A post-mortem examination to determine the cause of death.",mem:"AUTO = self, OPSY = view. Autopsy = examining the body to see what caused death!",freq:"1× (July 2024)"},
-  {section:"End of Life",term:"Embalming",def:"Preservation of a dead body by chemical treatment.",mem:"EMBALM = to preserve. Chemical treatment to slow decomposition of a body!",freq:"1× (May 2023)"},
-];
-
-const descData=[
-  {q:"Write the Importance/Purposes of Records and Reports / Nurse's role / Types of Reports.",years:"July 2025, Feb 2025, May 2023, Nov 2022, Apr 2021, Feb 2019, Aug 2018, Feb 2018, Aug 2017, Aug 2016, Aug 2015, June 2013, Aug 2012, Aug 2011",freq:"14×"},
-  {q:"Hand Washing: Steps of Medical and Surgical hand washing.",years:"Jan 2022, Nov 2022, May 2023, Feb 2019, Feb 2018, Aug 2016, Aug 2015, Aug 2014, Feb 2014, Sep 2013, June 2013, Aug 2012, Aug 2011",freq:"13×"},
-  {q:"Types of beds (Post-operative, Open bed) and procedure.",years:"Jan 2024, July 2024, Jan 2022, Feb 2019, Aug 2018, Aug 2017, Feb 2016, Feb 2015, Aug 2014, Feb 2014, Feb 2012, Aug 2011",freq:"12×"},
-  {q:"Rights of medication administration.",years:"July 2025, Feb 2025, July 2024, Apr 2021, Aug 2018, Feb 2018, Aug 2017, Feb 2016, Sep 2013, Aug 2012, Feb 2012, Feb 2011",freq:"12×"},
-  {q:"Care of terminally ill patient and Care of body after death.",years:"July 2025, Feb 2025, July 2024, Jan 2024, Jan 2022, Aug 2018, Feb 2017, Aug 2016, Aug 2015, Sep 2013, June 2013, Aug 2011",freq:"12×"},
-  {q:"First Aid Basics: Define First Aid, Golden Rules, and Objectives.",years:"July 2025, Feb 2025, Jan 2024, May 2023, Feb 2018, Aug 2017, Feb 2016, Feb 2014, Sep 2013, June 2013, Feb 2012, Feb 2011",freq:"12×"},
-  {q:"Nursing Management of a patient with fever.",years:"July 2025, Jan 2022, Apr 2021, Nov 2022, Feb 2019, Aug 2018, Feb 2017, Aug 2014, Feb 2014, Aug 2011, Feb 2011",freq:"11×"},
-  {q:"Pressure Sores: Prevention and Nursing Care/Treatment.",years:"July 2025, Nov 2022, Feb 2019, Aug 2017, Feb 2017, Aug 2016, Aug 2015, Feb 2015, Aug 2014, June 2013, Feb 2011",freq:"11×"},
-  {q:"Sitz Bath: Purposes and procedure.",years:"Feb 2025, Jan 2022, July 2024, Aug 2018, Aug 2017, Feb 2016, Aug 2015, Feb 2015, Aug 2014, Feb 2014",freq:"10×"},
-  {q:"Qualities of a Nurse: List and explain the essential qualities of a professional nurse.",years:"July 2025, July 2024, Jan 2024, Feb 2017, Aug 2015, Feb 2015, June 2013, Aug 2012, Feb 2012",freq:"9×"},
-  {q:"Comfort Devices: Define and list comfort devices and their uses.",years:"July 2025, Nov 2022, May 2023, Jan 2022, Aug 2015, Feb 2016, Aug 2014, Aug 2012, Feb 2011",freq:"9×"},
-  {q:"Types of exercises and their importance.",years:"July 2025, Jan 2024, Nov 2022, May 2023, Aug 2018, Feb 2018, Feb 2015, Feb 2011, Aug 2011",freq:"9×"},
-  {q:"Unconscious Patient: Define Unconsciousness and explain the detailed nursing care.",years:"Nov 2022, May 2023, Jan 2024, Feb 2019, Feb 2018, Feb 2017, Feb 2016, Aug 2014, Sep 2013",freq:"9×"},
-  {q:"Explain Assessment or other steps of Nursing Process in detail.",years:"Feb 2025, Jan 2024, July 2024, Nov 2022, Jan 2022, Feb 2019, Feb 2018, Sep 2013",freq:"8×"},
-  {q:"Enema: Define, classify, and explain procedure (Soap & Water).",years:"Feb 2025, Jan 2024, May 2023, Apr 2021, Feb 2017, Feb 2016, Feb 2014, Aug 2012",freq:"8×"},
-  {q:"Infection Prevention: Universal precautions, Barrier Nursing, Prevention of Cross-infection.",years:"Jan 2024, May 2023, Feb 2025, Aug 2018, Feb 2017, Aug 2016, Feb 2011",freq:"7×"},
-  {q:"Urine/Stool: Retention of Urine, Incontinence, Specimen collection.",years:"Feb 2025, Aug 2018, Feb 2018, Aug 2016, Feb 2016, Feb 2014, June 2013",freq:"7×"},
-  {q:"Define Health and explain the Determinants of Health.",years:"July 2025, July 2024, May 2023, Apr 2021, Aug 2016, Feb 2012",freq:"6×"},
-  {q:"Functions and Classification of hospitals.",years:"July 2025, Jan 2022, Feb 2018, Sep 2013, June 2013, Feb 2011",freq:"6×"},
-  {q:"Nurse's role in physical examination.",years:"July 2024, Nov 2022, Jan 2022, Aug 2018, Feb 2018, Feb 2017",freq:"6×"},
-  {q:"Catheterization: Define, indications, and procedure (Male/Female).",years:"Feb 2025, Aug 2017, Feb 2016, June 2013, Feb 2012, Aug 2011",freq:"6×"},
-  {q:"Mental Health: Characteristics of a mentally healthy person and promotion of mental health.",years:"July 2024, Feb 2017, Feb 2016, Feb 2015, Aug 2012, Feb 2012",freq:"6×"},
-  {q:"Oxygen Administration: Methods (Mask, Cannula, etc.), indications, and Nurse's role.",years:"July 2024, Apr 2021, Aug 2018, Feb 2014",freq:"4×"},
-  {q:"Pulse: Characteristics of Pulse and factors affecting it.",years:"Feb 2016, Feb 2014, Feb 2012, Aug 2011",freq:"4×"},
-  {q:"Oral Hygiene: Define, purposes, and procedure for unconscious patient.",years:"Jan 2024, Aug 2018, Aug 2014, Aug 2011",freq:"4×"},
-  {q:"Biomedical Waste Management: Define and explain segregation of waste (Color coding).",years:"July 2025, July 2024",freq:"2×"},
+  {section:"Core Nursing",term:"Nursing",def:"A profession concerned with the care of individuals, sick or well, in the promotion of health, prevention of illness, and care of the sick, disabled, and dying.",mem:"Nursing = caring across ALL settings. Health promotion + sick care!",freq:"9×"},
+  {section:"Core Nursing",term:"Profession",def:"An occupation requiring specialized knowledge, formal education, skill, ethical standards, and service to society.",mem:"PROFESSION = specialized + educated + ethical service. A calling, not just a job!",freq:"3×"},
+  {section:"Core Nursing",term:"Health",def:"A state of complete physical, mental, and social well-being and not merely the absence of disease or infirmity (WHO).",mem:"Health = Physical + Mental + Social well-being. Not just 'no disease'!",freq:"3×"},
+  {section:"Core Nursing",term:"Hospital",def:"An institution established for the diagnosis, treatment, and care of sick and injured persons.",mem:"HOSPITAL = hosts sick people. Institution for diagnosis and treatment!",freq:"2×"},
+  {section:"Core Nursing",term:"Ethics / Code of Ethics",def:"A set of moral principles that govern the conduct and behavior of individuals in a profession.",mem:"ETHICS = moral rulebook of nursing. Governs RIGHT behavior in practice!",freq:"2×"},
+  {section:"Core Nursing",term:"Comprehensive Nursing Care",def:"Total care provided to a patient including physical, psychological, social, and spiritual aspects.",mem:"COMPREHENSIVE = ALL aspects. Body + Mind + Spirit + Social = complete care!",freq:"1×"},
+  {section:"Core Nursing",term:"Nursing Diagnosis",def:"A clinical judgment about individual, family, or community responses to actual or potential health problems.",mem:"Nursing Diagnosis = nurse's OWN clinical judgment. Different from medical diagnosis!",freq:"1×"},
+  {section:"Core Nursing",term:"Observation",def:"The systematic use of senses to collect information about a patient's condition.",mem:"OBSERVation = all senses. See + Hear + Smell + Touch = systematic patient assessment!",freq:"1×"},
+  {section:"Core Nursing",term:"Procedure",def:"A systematic method of performing nursing activities according to scientific principles.",mem:"PROCEDURE = step-by-step method. Follow the steps = safe nursing!",freq:"1×"},
+  {section:"Core Nursing",term:"Hygiene",def:"The practice of maintaining cleanliness to preserve health and prevent disease.",mem:"HYGIENE from Greek goddess Hygieia. Cleanliness = disease prevention!",freq:"1×"},
+  {section:"Core Nursing",term:"Communication",def:"The process of exchanging information, ideas, feelings, and thoughts between individuals.",mem:"COMMUNICATION = two-way exchange. Share information both ways!",freq:"1×"},
+  {section:"Infection Control",term:"Asepsis",def:"The practice of preventing the spread of microorganisms and maintaining freedom from infection.",mem:"A + SEPSIS = without infection. Zero germs = aseptic environment!",freq:"5×"},
+  {section:"Infection Control",term:"Infection",def:"The invasion and multiplication of pathogenic microorganisms in the body.",mem:"INfection = INvaders multiply. Germs invade → multiply → disease!",freq:"2×"},
+  {section:"Infection Control",term:"Nosocomial Infection",def:"An infection acquired by a patient during hospital stay and not present at the time of admission.",mem:"NOSOcomial = hospital-acquired. Irony — got sick inside the hospital!",freq:"2×"},
+  {section:"Infection Control",term:"Cross Infection",def:"The transmission of infection from one person to another.",mem:"CROSS infection = crosses from one person to another person!",freq:"1×"},
+  {section:"Infection Control",term:"Communicable Disease",def:"A disease that can be transmitted from one person to another.",mem:"COMMUNIcable = can communicate to others. Spreads person to person!",freq:"1×"},
+  {section:"Infection Control",term:"Disinfection",def:"The process of destroying pathogenic microorganisms excluding spores.",mem:"DISinfection = destroys most germs. Kills pathogens but NOT spores!",freq:"1×"},
+  {section:"Clinical Measurements",term:"Pulse",def:"The rhythmic expansion of an artery produced by the contraction of the heart.",mem:"PULSE = heartbeat in arteries. Count at wrist = heart rate!",freq:"3×"},
+  {section:"Clinical Measurements",term:"Respiration",def:"The process of inhalation and exhalation by which oxygen is taken in and carbon dioxide is expelled.",mem:"RESPIRATION = O2 IN + CO2 OUT. Fundamental life exchange!",freq:"1×"},
+  {section:"Clinical Measurements",term:"Pyrexia",def:"An abnormal rise in body temperature — fever.",mem:"PYRexia = PYRO = fire/heat. Body on fire = fever = Pyrexia!",freq:"1×"},
+  {section:"Clinical Measurements",term:"Afebrile",def:"Absence of fever or normal body temperature.",mem:"A + FEBRILE = without fever. No fever = afebrile = normal temp!",freq:"1×"},
+  {section:"Clinical Measurements",term:"Intermittent Fever",def:"A fever that rises and falls, returning to normal at intervals.",mem:"INTERMITTENT = comes and goes. Malaria = classic intermittent fever!",freq:"1×"},
+  {section:"Clinical Measurements",term:"Crisis",def:"The sudden drop of body temperature to normal or below during fever.",mem:"CRISIS = sudden fall. Fever suddenly drops to normal = crisis!",freq:"1×"},
+  {section:"Clinical Measurements",term:"Rigor",def:"A sudden attack of shivering with rise in body temperature.",mem:"RIGOR = sudden chill. Cold shivering then temperature rises = Rigor!",freq:"1×"},
+  {section:"Clinical Measurements",term:"Hyperglycaemia",def:"A condition characterized by increased blood glucose level.",mem:"HYPER + GLYCAEMIA = high blood sugar. Classic sign of uncontrolled diabetes!",freq:"1×"},
+  {section:"Patient Conditions",term:"Dyspnoea/Dyspnea",def:"Difficulty or labored breathing.",mem:"DYS + PNEA = difficult breathing. Struggling to breathe = Dyspnea!",freq:"3×"},
+  {section:"Patient Conditions",term:"Hypoxia",def:"A deficiency of oxygen in body tissues.",mem:"HYPO + OXIA = low oxygen in tissues. Tissues starving for O2!",freq:"1×"},
+  {section:"Patient Conditions",term:"Cyanosis",def:"A bluish discoloration of skin and mucous membranes due to lack of oxygen.",mem:"CYANO = blue (Greek). Blue lips = oxygen crisis = Cyanosis!",freq:"1×"},
+  {section:"Patient Conditions",term:"Asphyxia",def:"A condition caused by deprivation of oxygen leading to unconsciousness or death.",mem:"ASPHYXIA = suffocation. Complete O2 deprivation = life threatening!",freq:"1×"},
+  {section:"Patient Conditions",term:"Nausea",def:"An unpleasant sensation with an urge to vomit.",mem:"NAUSEA = seasick feeling. Greek 'naus' = ship. Queasy = nausea!",freq:"2×"},
+  {section:"Patient Conditions",term:"Anorexia",def:"Loss of appetite.",mem:"AN + OREXIA = without appetite. No desire to eat = Anorexia!",freq:"1×"},
+  {section:"Patient Conditions",term:"Stomatitis",def:"Inflammation of the mouth.",mem:"STOMATO + ITIS = mouth inflammation. Mouth ulcers/sores = Stomatitis!",freq:"2×"},
+  {section:"Patient Conditions",term:"Gingivitis",def:"Inflammation of the gums.",mem:"GINGIVA + ITIS = gum inflammation. Red bleeding gums = Gingivitis!",freq:"2×"},
+  {section:"Patient Conditions",term:"Parotitis",def:"Inflammation of the parotid salivary gland.",mem:"PAROTID + ITIS = parotid gland inflamed. Mumps = viral parotitis!",freq:"3×"},
+  {section:"Patient Conditions",term:"Oliguria",def:"Decreased urine output (less than 400 ml/day in adults).",mem:"OLIGO + URIA = little urine. Under 400ml/day = kidney alarm!",freq:"4×"},
+  {section:"Patient Conditions",term:"Decubitus Ulcer/Bed Sore",def:"A localized injury to skin and tissues due to prolonged pressure.",mem:"DECUBITUS = lying down (Latin). Lying too long = pressure = bed sore!",freq:"5×"},
+  {section:"Patient Conditions",term:"Insomnia",def:"Difficulty in falling asleep or staying asleep.",mem:"IN + SOMNIA = without sleep. Can't sleep = Insomnia!",freq:"1×"},
+  {section:"Patient Conditions",term:"Edema",def:"Abnormal accumulation of fluid in body tissues.",mem:"EDEMA = puffy swelling. Fluid leaked into tissues = edema!",freq:"1×"},
+  {section:"Patient Conditions",term:"Dehydration",def:"A condition caused by excessive loss of body fluids.",mem:"DE + HYDRATION = losing water. Output > Input = Dehydration!",freq:"2×"},
+  {section:"Patient Conditions",term:"Myopia",def:"Short-sightedness in which distant objects appear blurred.",mem:"MYOPIA = near-sighted. Can see NEAR but not far. Elongated eyeball!",freq:"1×"},
+  {section:"Patient Conditions",term:"Foot Drop",def:"Inability to dorsiflex the foot.",mem:"FOOT DROP = foot drops down. Cannot lift foot upward = foot drop!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Laxatives",def:"Agents that promote bowel evacuation and relieve constipation.",mem:"LAXatives = LAXen (loosen) bowels. Relieves constipation!",freq:"2×"},
+  {section:"Procedures & Treatments",term:"First Aid",def:"The immediate and temporary care given to an injured or ill person before medical help arrives.",mem:"FIRST AID = FIRST help before doctor comes!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Hot Application",def:"The use of heat to relieve pain and improve circulation.",mem:"HEAT therapy = pain relief + blood flow. Warmth heals!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Infusion",def:"The slow introduction of fluid into the body, usually intravenously.",mem:"INFUSION = slowly flowing IN. IV drip = fluid infusing into vein!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Gavage",def:"The administration of food directly into the stomach through a tube.",mem:"GAVAGE = tube feeding. Food through NG tube when patient can't swallow!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Suppository",def:"A solid medication inserted into the rectum, vagina, or urethra for local or systemic effect.",mem:"SUPPOSITORY = solid medication that melts inside body at body temperature!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Proctoclysis",def:"The administration of fluids into the rectum for hydration.",mem:"PROCTO = rectum, CLYSIS = washing. Rectal fluid administration!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Anticoagulants",def:"Drugs that prevent blood clotting.",mem:"ANTI + COAGULANT = against clotting. Blood thinners prevent dangerous clots!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Immunization",def:"The process of making a person immune to disease by administering vaccines.",mem:"IMMUNIzation = giving IMMUNIty. Vaccines train body to fight disease!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Splint",def:"A device used to immobilize and support a fractured or injured limb.",mem:"SPLINT = immobilizer. Keeps broken bones STILL so they can heal!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Body Mechanics",def:"The proper use of body posture and movement to prevent injury and fatigue.",mem:"Body MECHANICS = use body efficiently. Lift with legs not back!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Exercise",def:"Planned physical activity performed to improve or maintain health.",mem:"EXERCISE = planned movement for health. Regular exercise = healthy body!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Comfort Devices",def:"Articles used to support the body and promote patient comfort.",mem:"Comfort DEVICES = tools for patient comfort. Pillows, cushions, supports!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Hot Application",def:"The use of heat to relieve pain and improve circulation.",mem:"HOT APPLICATION = heat therapy. Increases blood flow, reduces pain!",freq:"1×"},
+  {section:"Procedures & Treatments",term:"Emollient",def:"A substance that softens and moisturizes the skin.",mem:"EMOLLIENT = softener. Makes skin SOFT and moist!",freq:"1×"},
+  {section:"End of Life",term:"Euthanasia",def:"The intentional ending of life to relieve suffering.",mem:"EU = good/easy, THANATOS = death. Euthanasia = merciful/easy death.",freq:"2×"},
+  {section:"End of Life",term:"Autopsy",def:"A post-mortem examination to determine the cause of death.",mem:"AUTO + OPSY = self-examine. Post-mortem to find cause of death!",freq:"1×"},
+  {section:"End of Life",term:"Embalming",def:"Preservation of a dead body by chemical treatment.",mem:"EMBALM = preserve. Chemical treatment slows body decomposition!",freq:"1×"},
+  {section:"End of Life",term:"Humidity",def:"The amount of moisture present in the air.",mem:"HUMIDity = how wet the air is. Humid = moist air!",freq:"1×"},
 ];
 
 let currentTab='fill';
-const fillState={};
-function getScore(){let c=0,w=0,t=0;Object.values(fillState).forEach(s=>{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;});return{correct:c,wrong:w,total:t};}
+const fillState={},tfState={};
+function getScore(){let c=0,w=0,t=0;Object.values(fillState).forEach(s=>{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;});Object.values(tfState).forEach(s=>{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;});return{correct:c,wrong:w,total:t};}
 function getGrade(p){if(p>=90)return{g:'A+',c:'#4ddd80'};if(p>=80)return{g:'A',c:'#4ddd80'};if(p>=70)return{g:'B',c:'#f5c842'};if(p>=60)return{g:'C',c:'#f5a623'};if(p>=50)return{g:'D',c:'#ff9f43'};return{g:'F',c:'#ff6b6b'};}
 function updateScore(){const{correct,wrong,total}=getScore();document.getElementById('sc-total').textContent=total;document.getElementById('sc-correct').textContent=correct;document.getElementById('sc-wrong').textContent=wrong;const p=total>0?Math.round(correct/total*100):null;document.getElementById('sc-pct').textContent=p!==null?p+'%':'—';document.getElementById('progress-bar').style.width=(p||0)+'%';const gb=document.getElementById('sc-grade');if(p!==null){const{g,c}=getGrade(p);gb.textContent=g;gb.style.color=c;gb.style.borderColor=c;}else{gb.textContent='—';gb.style.color='#7a82a0';gb.style.borderColor='#7a82a0';}}
-function resetAll(){if(!confirm('Reset all?'))return;Object.keys(fillState).forEach(k=>delete fillState[k]);updateScore();renderAll();}
+function resetAll(){if(!confirm('Reset all?'))return;Object.keys(fillState).forEach(k=>delete fillState[k]);Object.keys(tfState).forEach(k=>delete tfState[k]);updateScore();renderAll();}
 function checkFill(id,ans,alts){const inp=document.getElementById('input-'+id);const u=inp.value.trim();if(!u)return;const n=s=>s.toLowerCase().replace(/[^a-z0-9]/g,'');const ok=[n(ans),...alts.map(n)].some(a=>n(u).includes(a)||a.includes(n(u)));fillState[id]={status:ok?'correct':'incorrect',userAns:u};updateScore();refreshFill(id);}
 function skipFill(id){fillState[id]={status:'skipped'};updateScore();refreshFill(id);}
-function refreshFill(id){const card=document.getElementById('fcard-'+id);if(!card)return;const s=fillState[id];const item=fillData[parseInt(id)];card.classList.remove('correct','incorrect','skipped');if(s)card.classList.add(s.status);const aa=card.querySelector('.answer-area');if(s){let h='';if(s.status==='correct')h=`<div class="result-ans ok">✅ Correct! "${s.userAns}"</div>`;else if(s.status==='incorrect')h=`<div class="result-ans bad">❌ Wrong: "${s.userAns}"</div><div class="correct-ans">✅ Answer: ${item.ans}</div>`;else h=`<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;h+=`<div class="mnemonic">💡 ${item.mem}</div>`;aa.innerHTML=h;}}
-function switchTab(t){currentTab=t;document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['fill','meanings','desc'][i]===t));renderAll();}
+function refreshFill(id){const card=document.getElementById('fcard-'+id);if(!card)return;const s=fillState[id];const item=fillData[parseInt(id)];card.classList.remove('correct','incorrect','skipped');if(s)card.classList.add(s.status);const aa=card.querySelector('.answer-area');if(s){let h='';if(s.status==='correct'){h=`<div class="result-ans ok">✅ Correct! "${s.userAns}"</div><div class="mnemonic">💡 ${item.mem}</div>`;}else if(s.status==='incorrect'){h=`<div class="result-ans bad">❌ Your answer: "${s.userAns}"</div><div class="correct-ans">✅ Correct Answer: <strong>${item.ans}</strong></div><div class="explanation">📖 ${item.exp}</div><div class="mnemonic">💡 ${item.mem}</div>`;}else{h=`<div class="correct-ans">⏭ Skipped — Answer: <strong>${item.ans}</strong></div><div class="explanation">📖 ${item.exp}</div><div class="mnemonic">💡 ${item.mem}</div>`;}aa.innerHTML=h;}}
+function checkTF(id,chosen){const item=tfData[parseInt(id)];if(!item)return;tfState[id]={status:(chosen===item.ans)?'correct':'incorrect',chosen};updateScore();refreshTF(id);}
+function refreshTF(id){const card=document.getElementById('tfcard-'+id);if(!card)return;const s=tfState[id];const item=tfData[parseInt(id)];card.classList.remove('correct','incorrect');if(s){card.classList.add(s.status);card.querySelector('.true-btn').disabled=true;card.querySelector('.false-btn').disabled=true;card.querySelector('.true-btn').classList.toggle('selected-true',s.chosen===true);card.querySelector('.false-btn').classList.toggle('selected-false',s.chosen===false);const rd=card.querySelector('.tf-result');if(rd)rd.innerHTML=s.status==='correct'?`<span style="color:var(--green)">✅ Correct!</span>`:`<span style="color:var(--red)">❌ Wrong — Correct Answer: <strong style="color:var(--accent)">${item.ans?'TRUE ✓':'FALSE ✗'}</strong></span>`;const td=card.querySelector('.tf-tip');if(td)td.style.display='block';}}
+function switchTab(t){currentTab=t;document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['fill','tf','meanings'][i]===t));renderAll();}
 function getQ(){return document.getElementById('searchBox').value.toLowerCase().trim();}
-function renderAll(){const q=getQ();const c=document.getElementById('content');c.innerHTML='';if(currentTab==='fill')renderFill(q,c);else if(currentTab==='meanings')renderMeanings(q,c);else renderDesc(q,c);}
-function renderFill(q,container){const secs={};let t=0;fillData.forEach((item,i)=>{if(q&&!item.q.toLowerCase().includes(q)&&!item.ans.toLowerCase().includes(q)&&!item.section.toLowerCase().includes(q)&&!item.mem.toLowerCase().includes(q))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} questions`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} questions</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item,i})=>{const s=fillState[i];const card=document.createElement('div');card.className=`fill-card ${s?s.status:''}`;card.id='fcard-'+i;let aa='';if(s){if(s.status==='correct')aa=`<div class="result-ans ok">✅ Correct! "${s.userAns}"</div>`;else if(s.status==='incorrect')aa=`<div class="result-ans bad">❌ Wrong: "${s.userAns}"</div><div class="correct-ans">✅ Answer: ${item.ans}</div>`;else aa=`<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;aa+=`<div class="mnemonic">💡 ${item.mem}</div>`;}else{aa=`<input class="ans-input" id="input-${i}" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkFill(${i},'${item.ans.replace(/'/g,"\\'")}',${JSON.stringify(item.alts)})"><button class="btn-check" onclick="checkFill(${i},'${item.ans.replace(/'/g,"\\'")}',${JSON.stringify(item.alts)})">Check ✓</button><button class="btn-skip" onclick="skipFill(${i})">Skip</button>`;}card.innerHTML=`<div class="card-top"><div class="q-text">${item.q}</div><div class="freq">🔁 ${item.freq}</div></div><div class="answer-area">${aa}</div>`;g.appendChild(card);});container.appendChild(g);});}
-function renderMeanings(q,container){const secs={};let t=0;meaningsData.forEach((item,i)=>{if(q&&!item.term.toLowerCase().includes(q)&&!item.def.toLowerCase().includes(q)&&!item.section.toLowerCase().includes(q)&&!item.mem.toLowerCase().includes(q))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} definitions`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} terms</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item})=>{const card=document.createElement('div');card.className='def-card';card.innerHTML=`<div class="def-term">${item.term}</div><div class="def-text">${item.def}</div><div class="def-mem">💡 ${item.mem}</div><div class="def-freq">🔁 ${item.freq}</div>`;g.appendChild(card);});container.appendChild(g);});}
-function renderDesc(q,container){let t=0;const g=document.createElement('div');g.className='grid';descData.forEach(item=>{if(q&&!item.q.toLowerCase().includes(q)&&!item.years.toLowerCase().includes(q))return;const card=document.createElement('div');card.className='desc-card';card.innerHTML=`<div class="desc-q">📋 ${item.q}</div><div class="desc-years">📅 ${item.years}</div><div class="desc-freq">🔁 Asked ${item.freq}</div>`;g.appendChild(card);t++;});document.getElementById('countLine').textContent=`Showing ${t} descriptive topics`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}container.appendChild(g);}
+function renderAll(){const q=getQ();const c=document.getElementById('content');c.innerHTML='';if(currentTab==='fill')renderFill(q,c);else if(currentTab==='tf')renderTF(q,c);else renderMeanings(q,c);}
+function renderFill(q,container){const secs={};let t=0;fillData.forEach((item,i)=>{if(q&&![item.q,item.ans,item.section,item.mem].some(s=>s.toLowerCase().includes(q)))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} questions`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} questions</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item,i})=>{const s=fillState[i];const card=document.createElement('div');card.className=`fill-card ${s?s.status:''}`;card.id='fcard-'+i;let aa='';if(s){if(s.status==='correct'){aa=`<div class="result-ans ok">✅ Correct! "${s.userAns}"</div><div class="mnemonic">💡 ${item.mem}</div>`;}else if(s.status==='incorrect'){aa=`<div class="result-ans bad">❌ Your answer: "${s.userAns}"</div><div class="correct-ans">✅ Correct Answer: <strong>${item.ans}</strong></div><div class="explanation">📖 ${item.exp}</div><div class="mnemonic">💡 ${item.mem}</div>`;}else{aa=`<div class="correct-ans">⏭ Skipped — Answer: <strong>${item.ans}</strong></div><div class="explanation">📖 ${item.exp}</div><div class="mnemonic">💡 ${item.mem}</div>`;}}else{aa=`<input class="ans-input" id="input-${i}" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkFill(${i},'${item.ans.replace(/'/g,"\\'")}',${JSON.stringify(item.alts)})"><div class="btn-row"><button class="btn-check" onclick="checkFill(${i},'${item.ans.replace(/'/g,"\\'")}',${JSON.stringify(item.alts)})">Check ✓</button><button class="btn-skip" onclick="skipFill(${i})">Skip</button></div>`;}card.innerHTML=`<div class="card-top"><div class="q-text">${item.q}</div><div class="freq">🔁 ${item.freq}</div></div><div class="answer-area">${aa}</div>`;g.appendChild(card);});container.appendChild(g);});}
+function renderTF(q,container){const secs={};let t=0;tfData.forEach((item,i)=>{if(q&&![item.q,item.tip,item.section].some(s=>s.toLowerCase().includes(q)))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} statements`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} statements</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item,i})=>{const s=tfState[i];const card=document.createElement('div');card.className=`tf-card ${s?s.status:''}`;card.id='tfcard-'+i;const rh=s?(s.status==='correct'?`<span style="color:var(--green)">✅ Correct!</span>`:`<span style="color:var(--red)">❌ Wrong — Correct Answer: <strong style="color:var(--accent)">${item.ans?'TRUE ✓':'FALSE ✗'}</strong></span>`):'';card.innerHTML=`<div class="tf-q">${item.q}</div><div class="tf-buttons"><button class="tf-btn true-btn ${s&&s.chosen===true?'selected-true':''}" onclick="checkTF(${i},true)" ${s?'disabled':''}>✓ TRUE</button><button class="tf-btn false-btn ${s&&s.chosen===false?'selected-false':''}" onclick="checkTF(${i},false)" ${s?'disabled':''}>✗ FALSE</button></div><div class="tf-result">${rh}</div><div class="tf-tip" style="display:${s?'block':'none'}">💡 ${item.tip}</div><div class="tf-freq">🔁 ${item.freq}</div>`;g.appendChild(card);});container.appendChild(g);});}
+function renderMeanings(q,container){const secs={};let t=0;meaningsData.forEach((item,i)=>{if(q&&![item.term,item.def,item.section,item.mem].some(s=>s.toLowerCase().includes(q)))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} definitions`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} terms</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item})=>{const card=document.createElement('div');card.className='def-card';card.innerHTML=`<div class="def-term">${item.term}</div><div class="def-text">${item.def}</div><div class="def-mem">💡 ${item.mem}</div><div class="def-freq">🔁 ${item.freq}</div>`;g.appendChild(card);});container.appendChild(g);});}
 updateScore();renderAll();
 </script>
 </body>

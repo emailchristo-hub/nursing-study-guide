@@ -682,7 +682,7 @@ function refreshFillCard(id, correctAns) {
     if (s.status === 'correct') {
       html = `<div class="result-row"><span class="result-ans ok">✅ Correct! "${s.userAns}"</span></div>`;
     } else if (s.status === 'incorrect') {
-      html = `<div class="result-row"><span class="result-ans bad">❌ Wrong: "${s.userAns}"</span></div><div class="correct-ans">✅ Answer: ${item.ans}</div>`;
+      html = `<div class="result-row"><span class="result-ans bad">❌ Your answer: "${s.userAns}"</span></div><div class="correct-ans">✅ Correct Answer: <strong>${item.ans}</strong></div><div class="mnemonic">💡 ${item.mem}</div>`;
     } else {
       html = `<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;
     }
@@ -715,7 +715,7 @@ function refreshTFCard(id) {
     const resultDiv = card.querySelector('.tf-result');
     if (resultDiv) {
       if (s.status === 'correct') resultDiv.innerHTML = `<span style="color:var(--green)">✅ Correct!</span>`;
-      else resultDiv.innerHTML = `<span style="color:var(--red)">❌ Wrong — Answer: <strong style="color:var(--teal)">${item.ans ? 'TRUE' : 'FALSE'}</strong></span>`;
+      else resultDiv.innerHTML = `<span style="color:var(--red)">❌ Wrong — Correct Answer: <strong style="color:var(--green)">${item.ans ? 'TRUE ✓' : 'FALSE ✗'}</strong></span>`;
       const tipDiv = card.querySelector('.tf-tip');
       if (tipDiv) tipDiv.style.display = 'block';
     }
