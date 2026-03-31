@@ -598,136 +598,126 @@ const meaningsData = [
   { section:"Microbiology Terms", term:"Zygote", def:"Single cell formed by fusion of sperm + egg. Contains full diploid chromosome set. First cell of new life.", mem:"ZYGOTE = ZYG = joined (Greek). The very FIRST cell of a new human!", freq:"1× (July 2025)" },
 ];
 
-// ===================== STATE =====================
+
 let currentTab = 'fill';
-const fillState = {}; // id -> { status: 'correct'|'incorrect'|'skipped', userAns }
-const tfState = {};   // id -> { status, chosen }
+const fillState = {};
+const tfState = {};
 
 function getScore() {
-  let correct = 0, wrong = 0, total = 0;
-  Object.values(fillState).forEach(s => { total++; if (s.status === 'correct') correct++; else if (s.status === 'incorrect') wrong++; });
-  Object.values(tfState).forEach(s => { total++; if (s.status === 'correct') correct++; else if (s.status === 'incorrect') wrong++; });
-  return { correct, wrong, total };
+  let c=0,w=0,t=0;
+  Object.values(fillState).forEach(s=>{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;});
+  Object.values(tfState).forEach(s=>{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;});
+  return {correct:c,wrong:w,total:t};
 }
 
-function getGrade(pct) {
-  if (pct >= 90) return { g: 'A+', c: '#4ddd80' };
-  if (pct >= 80) return { g: 'A', c: '#4ddd80' };
-  if (pct >= 70) return { g: 'B', c: '#f5c842' };
-  if (pct >= 60) return { g: 'C', c: '#f5a623' };
-  if (pct >= 50) return { g: 'D', c: '#ff9f43' };
-  return { g: 'F', c: '#ff6b6b' };
+function getGrade(p) {
+  if(p>=90)return{g:'A+',c:'#4ddd80'};
+  if(p>=80)return{g:'A',c:'#4ddd80'};
+  if(p>=70)return{g:'B',c:'#f5c842'};
+  if(p>=60)return{g:'C',c:'#f5a623'};
+  if(p>=50)return{g:'D',c:'#ff9f43'};
+  return{g:'F',c:'#ff6b6b'};
 }
 
 function updateScore() {
-  const { correct, wrong, total } = getScore();
+  const {correct,wrong,total} = getScore();
   document.getElementById('sc-total').textContent = total;
   document.getElementById('sc-correct').textContent = correct;
   document.getElementById('sc-wrong').textContent = wrong;
-  const pct = total > 0 ? Math.round((correct / total) * 100) : null;
-  document.getElementById('sc-pct').textContent = pct !== null ? pct + '%' : '—';
-  document.getElementById('progress-bar').style.width = (pct || 0) + '%';
+  const p = total > 0 ? Math.round(correct/total*100) : null;
+  document.getElementById('sc-pct').textContent = p !== null ? p+'%' : '—';
+  document.getElementById('progress-bar').style.width = (p||0)+'%';
   const gb = document.getElementById('sc-grade');
-  if (pct !== null) {
-    const { g, c } = getGrade(pct);
-    gb.textContent = g;
-    gb.style.color = c;
-    gb.style.borderColor = c;
+  if(p !== null) {
+    const {g,c} = getGrade(p);
+    gb.textContent = g; gb.style.color = c; gb.style.borderColor = c;
   } else {
-    gb.textContent = '—';
-    gb.style.color = '#7a82a0';
-    gb.style.borderColor = '#7a82a0';
+    gb.textContent = '—'; gb.style.color = '#7a82a0'; gb.style.borderColor = '#7a82a0';
   }
 }
 
 function resetAll() {
-  if (!confirm('Reset all answers and scores?')) return;
+  if(!confirm('Reset all answers?')) return;
   Object.keys(fillState).forEach(k => delete fillState[k]);
   Object.keys(tfState).forEach(k => delete tfState[k]);
-  updateScore();
-  renderAll();
+  updateScore(); renderAll();
 }
 
-function checkFill(id, correctAns, alts) {
-  const input = document.getElementById('input-' + id);
-  const userAns = input.value.trim();
-  if (!userAns) return;
-  const normalUser = userAns.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const normalCorrect = correctAns.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const allAlts = [normalCorrect, ...alts.map(a => a.toLowerCase().replace(/[^a-z0-9]/g, ''))];
-  const isCorrect = allAlts.some(a => normalUser.includes(a) || a.includes(normalUser));
-  fillState[id] = { status: isCorrect ? 'correct' : 'incorrect', userAns };
+function checkFill(id) {
+  const inp = document.getElementById('input-'+id);
+  if(!inp) return;
+  const u = inp.value.trim();
+  if(!u) return;
+  const item = fillData[parseInt(id)];
+  if(!item) return;
+  const n = s => s.toLowerCase().replace(/[^a-z0-9]/g,'');
+  const nu = n(u);
+  const allAns = [n(item.ans), ...(item.alts||[]).map(n)];
+  const ok = allAns.some(a => nu.includes(a) || a.includes(nu));
+  fillState[id] = {status: ok ? 'correct' : 'incorrect', userAns: u};
   updateScore();
-  refreshFillCard(id, correctAns);
+  refreshFill(id);
 }
 
 function skipFill(id) {
-  fillState[id] = { status: 'skipped' };
+  fillState[id] = {status:'skipped'};
   updateScore();
-  refreshFillCard(id);
+  refreshFill(id);
 }
 
-function refreshFillCard(id, correctAns) {
-  const card = document.getElementById('fcard-' + id);
-  if (!card) return;
+function refreshFill(id) {
+  const card = document.getElementById('fcard-'+id);
+  if(!card) return;
   const s = fillState[id];
-  card.classList.remove('correct', 'incorrect', 'skipped');
-  if (s) card.classList.add(s.status);
-
-  const aa = card.querySelector('.answer-area');
   const item = fillData[parseInt(id)];
-  if (!item) return;
-  if (s && s.status !== undefined) {
-    let html = '';
-    if (s.status === 'correct') {
-      html = `<div class="result-row"><span class="result-ans ok">✅ Correct! "${s.userAns}"</span></div>`;
-    } else if (s.status === 'incorrect') {
-      html = `<div class="result-row"><span class="result-ans bad">❌ Your answer: "${s.userAns}"</span></div><div class="correct-ans">✅ Correct Answer: <strong>${item.ans}</strong></div><div class="mnemonic">💡 ${item.mem}</div>`;
-    } else {
-      html = `<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;
-    }
-    html += `<div class="mnemonic">💡 ${item.mem}</div>`;
-    aa.innerHTML = html;
+  if(!item) return;
+  card.classList.remove('correct','incorrect','skipped');
+  if(s) card.classList.add(s.status);
+  const aa = card.querySelector('.answer-area');
+  if(!aa || !s) return;
+  let h = '';
+  if(s.status === 'correct') {
+    h = `<div class="result-ans ok">✅ Correct! "${s.userAns}"</div><div class="mnemonic">💡 ${item.mem}</div>`;
+  } else if(s.status === 'incorrect') {
+    h = `<div class="result-ans bad">❌ Your answer: "${s.userAns}"</div><div class="correct-ans">✅ Correct Answer: <strong>${item.ans}</strong></div><div class="mnemonic">💡 ${item.mem}</div>`;
+  } else {
+    h = `<div class="correct-ans">⏭ Skipped — Answer: <strong>${item.ans}</strong></div><div class="mnemonic">💡 ${item.mem}</div>`;
   }
+  aa.innerHTML = h;
 }
 
 function checkTF(id, chosen) {
   const item = tfData[parseInt(id)];
-  if (!item) return;
-  const isCorrect = (chosen === item.ans);
-  tfState[id] = { status: isCorrect ? 'correct' : 'incorrect', chosen };
+  if(!item) return;
+  tfState[id] = {status: (chosen === item.ans) ? 'correct' : 'incorrect', chosen};
   updateScore();
-  refreshTFCard(id);
+  refreshTF(id);
 }
 
-function refreshTFCard(id) {
-  const card = document.getElementById('tfcard-' + id);
-  if (!card) return;
+function refreshTF(id) {
+  const card = document.getElementById('tfcard-'+id);
+  if(!card) return;
   const s = tfState[id];
   const item = tfData[parseInt(id)];
-  card.classList.remove('correct', 'incorrect');
-  if (s) {
+  card.classList.remove('correct','incorrect');
+  if(s) {
     card.classList.add(s.status);
-    const trueBtn = card.querySelector('.true-btn');
-    const falseBtn = card.querySelector('.false-btn');
-    if (trueBtn) { trueBtn.disabled = true; trueBtn.classList.toggle('selected-true', s.chosen === true); }
-    if (falseBtn) { falseBtn.disabled = true; falseBtn.classList.toggle('selected-false', s.chosen === false); }
-    const resultDiv = card.querySelector('.tf-result');
-    if (resultDiv) {
-      if (s.status === 'correct') resultDiv.innerHTML = `<span style="color:var(--green)">✅ Correct!</span>`;
-      else resultDiv.innerHTML = `<span style="color:var(--red)">❌ Wrong — Correct Answer: <strong style="color:var(--green)">${item.ans ? 'TRUE ✓' : 'FALSE ✗'}</strong></span>`;
-      const tipDiv = card.querySelector('.tf-tip');
-      if (tipDiv) tipDiv.style.display = 'block';
-    }
+    const tb = card.querySelector('.true-btn');
+    const fb = card.querySelector('.false-btn');
+    if(tb){tb.disabled=true; tb.classList.toggle('selected-true', s.chosen===true);}
+    if(fb){fb.disabled=true; fb.classList.toggle('selected-false', s.chosen===false);}
+    const rd = card.querySelector('.tf-result');
+    if(rd) rd.innerHTML = s.status==='correct'
+      ? `<span style="color:var(--green)">✅ Correct!</span>`
+      : `<span style="color:var(--red)">❌ Wrong — Correct Answer: <strong style="color:var(--green)">${item.ans?'TRUE ✓':'FALSE ✗'}</strong></span>`;
+    const td = card.querySelector('.tf-tip');
+    if(td) td.style.display = 'block';
   }
 }
 
-// ===================== RENDER =====================
 function switchTab(tab) {
   currentTab = tab;
-  document.querySelectorAll('.tab').forEach((t, i) => {
-    t.classList.toggle('active', ['fill','tf','meanings'][i] === tab);
-  });
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['fill','tf','meanings'][i] === tab));
   renderAll();
 }
 
@@ -735,136 +725,108 @@ function getQ() { return document.getElementById('searchBox').value.toLowerCase(
 
 function renderAll() {
   const q = getQ();
-  const container = document.getElementById('content');
-  container.innerHTML = '';
-  if (currentTab === 'fill') renderFill(q, container);
-  else if (currentTab === 'tf') renderTF(q, container);
-  else renderMeanings(q, container);
+  const c = document.getElementById('content');
+  c.innerHTML = '';
+  if(currentTab==='fill') renderFill(q,c);
+  else if(currentTab==='tf') renderTF(q,c);
+  else renderMeanings(q,c);
 }
 
 function renderFill(q, container) {
-  const sections = {};
-  let total = 0;
-  fillData.forEach((item, i) => {
-    if (q && !item.q.toLowerCase().includes(q) && !item.ans.toLowerCase().includes(q) && !item.section.toLowerCase().includes(q) && !item.mem.toLowerCase().includes(q)) return;
-    if (!sections[item.section]) sections[item.section] = [];
-    sections[item.section].push({ item, i });
-    total++;
+  const secs = {}; let t = 0;
+  fillData.forEach((item,i) => {
+    if(q && ![item.q,item.ans,item.section,item.mem].some(s=>s.toLowerCase().includes(q))) return;
+    if(!secs[item.section]) secs[item.section]=[];
+    secs[item.section].push({item,i}); t++;
   });
-  document.getElementById('countLine').textContent = `Showing ${total} questions`;
-  if (!total) { container.innerHTML = '<p class="no-results">No results found.</p>'; return; }
-
-  Object.entries(sections).forEach(([sec, entries]) => {
-    container.insertAdjacentHTML('beforeend', `<div class="section-header">${sec} <span class="section-count">${entries.length} questions</span></div>`);
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-    entries.forEach(({ item, i }) => {
+  document.getElementById('countLine').textContent = `Showing ${t} questions`;
+  if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}
+  Object.entries(secs).forEach(([sec,entries]) => {
+    container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} questions</span></div>`);
+    const g = document.createElement('div'); g.className='grid';
+    entries.forEach(({item,i}) => {
       const s = fillState[i];
-      const stateClass = s ? s.status : '';
-      let innerHtml = `
-        <div class="card-top">
-          <div class="q-text">${item.q}</div>
-          <div class="freq">🔁 ${item.freq}</div>
-        </div>
-        <div class="answer-area">`;
-      if (s) {
-        if (s.status === 'correct') innerHtml += `<div class="result-row"><span class="result-ans ok">✅ Correct! "${s.userAns}"</span></div>`;
-        else if (s.status === 'incorrect') innerHtml += `<div class="result-row"><span class="result-ans bad">❌ Wrong: "${s.userAns}"</span></div><div class="correct-ans">✅ Answer: ${item.ans}</div>`;
-        else innerHtml += `<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;
-        innerHtml += `<div class="mnemonic">💡 ${item.mem}</div>`;
-      } else {
-        innerHtml += `
-          <input class="ans-input" id="input-${i}" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter') checkFill(${i}, '${item.ans.replace(/'/g,"\\'")}', ${JSON.stringify(item.alts)})">
-          <button class="btn-check" onclick="checkFill(${i}, '${item.ans.replace(/'/g,"\\'")}', ${JSON.stringify(item.alts)})">Check ✓</button>
-          <button class="btn-skip" onclick="skipFill(${i})">Skip</button>`;
-      }
-      innerHtml += `</div>`;
       const card = document.createElement('div');
-      card.className = `fill-card ${stateClass}`;
-      card.id = 'fcard-' + i;
-      card.innerHTML = innerHtml;
-      grid.appendChild(card);
+      card.className = `fill-card ${s?s.status:''}`;
+      card.id = 'fcard-'+i;
+      let aa = '';
+      if(s) {
+        if(s.status==='correct') {
+          aa = `<div class="result-ans ok">✅ Correct! "${s.userAns}"</div><div class="mnemonic">💡 ${item.mem}</div>`;
+        } else if(s.status==='incorrect') {
+          aa = `<div class="result-ans bad">❌ Your answer: "${s.userAns}"</div><div class="correct-ans">✅ Correct Answer: <strong>${item.ans}</strong></div><div class="mnemonic">💡 ${item.mem}</div>`;
+        } else {
+          aa = `<div class="correct-ans">⏭ Skipped — Answer: <strong>${item.ans}</strong></div><div class="mnemonic">💡 ${item.mem}</div>`;
+        }
+      } else {
+        aa = `<input class="ans-input" id="input-${i}" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkFill(${i})">
+        <div class="btn-row"><button class="btn-check" onclick="checkFill(${i})">Check ✓</button><button class="btn-skip" onclick="skipFill(${i})">Skip</button></div>`;
+      }
+      card.innerHTML = `<div class="card-top"><div class="q-text">${item.q}</div><div class="freq">🔁 ${item.freq}</div></div><div class="answer-area">${aa}</div>`;
+      g.appendChild(card);
     });
-    container.appendChild(grid);
+    container.appendChild(g);
   });
 }
 
 function renderTF(q, container) {
-  const sections = {};
-  let total = 0;
-  tfData.forEach((item, i) => {
-    if (q && !item.q.toLowerCase().includes(q) && !item.section.toLowerCase().includes(q) && !item.tip.toLowerCase().includes(q)) return;
-    if (!sections[item.section]) sections[item.section] = [];
-    sections[item.section].push({ item, i });
-    total++;
+  const secs = {}; let t = 0;
+  tfData.forEach((item,i) => {
+    if(q && ![item.q,item.tip,item.section].some(s=>s.toLowerCase().includes(q))) return;
+    if(!secs[item.section]) secs[item.section]=[];
+    secs[item.section].push({item,i}); t++;
   });
-  document.getElementById('countLine').textContent = `Showing ${total} statements`;
-  if (!total) { container.innerHTML = '<p class="no-results">No results found.</p>'; return; }
-
-  Object.entries(sections).forEach(([sec, entries]) => {
-    container.insertAdjacentHTML('beforeend', `<div class="section-header">${sec} <span class="section-count">${entries.length} statements</span></div>`);
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-    entries.forEach(({ item, i }) => {
+  document.getElementById('countLine').textContent = `Showing ${t} statements`;
+  if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}
+  Object.entries(secs).forEach(([sec,entries]) => {
+    container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} statements</span></div>`);
+    const g = document.createElement('div'); g.className='grid';
+    entries.forEach(({item,i}) => {
       const s = tfState[i];
-      const stateClass = s ? s.status : '';
-      const tipDisplay = s ? 'block' : 'none';
-      let resultHtml = '';
-      if (s) {
-        if (s.status === 'correct') resultHtml = `<span style="color:var(--green)">✅ Correct!</span>`;
-        else resultHtml = `<span style="color:var(--red)">❌ Wrong — Answer: <strong style="color:var(--teal)">${item.ans ? 'TRUE' : 'FALSE'}</strong></span>`;
-      }
       const card = document.createElement('div');
-      card.className = `tf-card ${stateClass}`;
-      card.id = 'tfcard-' + i;
-      card.innerHTML = `
-        <div class="tf-q">${item.q}</div>
+      card.className = `tf-card ${s?s.status:''}`;
+      card.id = 'tfcard-'+i;
+      const rh = s ? (s.status==='correct'
+        ? `<span style="color:var(--green)">✅ Correct!</span>`
+        : `<span style="color:var(--red)">❌ Wrong — Correct Answer: <strong style="color:var(--green)">${item.ans?'TRUE ✓':'FALSE ✗'}</strong></span>`) : '';
+      card.innerHTML = `<div class="tf-q">${item.q}</div>
         <div class="tf-buttons">
-          <button class="tf-btn true-btn ${s && s.chosen===true ? 'selected-true' : ''}" onclick="checkTF(${i}, true)" ${s ? 'disabled' : ''}>✓ TRUE</button>
-          <button class="tf-btn false-btn ${s && s.chosen===false ? 'selected-false' : ''}" onclick="checkTF(${i}, false)" ${s ? 'disabled' : ''}>✗ FALSE</button>
+          <button class="tf-btn true-btn ${s&&s.chosen===true?'selected-true':''}" onclick="checkTF(${i},true)" ${s?'disabled':''}>✓ TRUE</button>
+          <button class="tf-btn false-btn ${s&&s.chosen===false?'selected-false':''}" onclick="checkTF(${i},false)" ${s?'disabled':''}>✗ FALSE</button>
         </div>
-        <div class="tf-result">${resultHtml}</div>
-        <div class="tf-tip" style="display:${tipDisplay}">💡 ${item.tip}</div>
+        <div class="tf-result">${rh}</div>
+        <div class="tf-tip" style="display:${s?'block':'none'}">💡 ${item.tip}</div>
         <div class="tf-freq">🔁 ${item.freq}</div>`;
-      grid.appendChild(card);
+      g.appendChild(card);
     });
-    container.appendChild(grid);
+    container.appendChild(g);
   });
 }
 
 function renderMeanings(q, container) {
-  const sections = {};
-  let total = 0;
-  meaningsData.forEach((item, i) => {
-    if (q && !item.term.toLowerCase().includes(q) && !item.def.toLowerCase().includes(q) && !item.section.toLowerCase().includes(q) && !item.mem.toLowerCase().includes(q)) return;
-    if (!sections[item.section]) sections[item.section] = [];
-    sections[item.section].push({ item, i });
-    total++;
+  const secs = {}; let t = 0;
+  meaningsData.forEach((item,i) => {
+    if(q && ![item.term,item.def,item.section,item.mem].some(s=>s.toLowerCase().includes(q))) return;
+    if(!secs[item.section]) secs[item.section]=[];
+    secs[item.section].push({item,i}); t++;
   });
-  document.getElementById('countLine').textContent = `Showing ${total} definitions`;
-  if (!total) { container.innerHTML = '<p class="no-results">No results found.</p>'; return; }
-
-  Object.entries(sections).forEach(([sec, entries]) => {
-    container.insertAdjacentHTML('beforeend', `<div class="section-header">${sec} <span class="section-count">${entries.length} terms</span></div>`);
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-    entries.forEach(({ item }) => {
-      const card = document.createElement('div');
-      card.className = 'def-card';
-      card.innerHTML = `
-        <div class="def-term">${item.term}</div>
-        <div class="def-text">${item.def}</div>
-        <div class="def-mem">💡 ${item.mem}</div>
-        <div class="def-freq">🔁 ${item.freq}</div>`;
-      grid.appendChild(card);
+  document.getElementById('countLine').textContent = `Showing ${t} definitions`;
+  if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}
+  Object.entries(secs).forEach(([sec,entries]) => {
+    container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} terms</span></div>`);
+    const g = document.createElement('div'); g.className='grid';
+    entries.forEach(({item}) => {
+      const card = document.createElement('div'); card.className='def-card';
+      card.innerHTML = `<div class="def-term">${item.term}</div><div class="def-text">${item.def}</div><div class="def-mem">💡 ${item.mem}</div><div class="def-freq">🔁 ${item.freq}</div>`;
+      g.appendChild(card);
     });
-    container.appendChild(grid);
+    container.appendChild(g);
   });
 }
 
-// Init
 updateScore();
 renderAll();
+
 </script>
 </body>
 </html>

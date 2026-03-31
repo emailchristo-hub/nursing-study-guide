@@ -103,6 +103,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 </div>
 <div class="main"><p class="count-line" id="countLine"></p><div id="content"></div></div>
 <script>
+
 const fillData=[
   // Psychology
   {section:"Psychology — Introduction & History",q:"Wilhelm Wundt is the father of Psychology.",ans:"Wilhelm Wundt",alts:["wundt"],mem:"WUNDT = Wonder of psychology. He opened the FIRST psychology lab in 1879!",freq:"6× (May 2023, Nov 2022, Jan 2022, Feb 2019, Aug 2018, Aug 2016)"},
@@ -253,24 +254,229 @@ const meaningsData=[
   {section:"Sociology",term:"Urbanization",def:"The process by which an increasing proportion of people migrate from rural areas to urban areas, leading to urban growth.",mem:"URBANization = moving to URBAN areas. Rural to city migration = urbanization!",freq:"1× (Feb 2015)"},
 ];
 
+
 let currentTab='fill';
 const fillState={},tfState={};
-function getScore(){let c=0,w=0,t=0;Object.values(fillState).forEach(s=>{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;});Object.values(tfState).forEach(s=>{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;});return{correct:c,wrong:w,total:t};}
-function getGrade(p){if(p>=90)return{g:'A+',c:'#4ddd80'};if(p>=80)return{g:'A',c:'#4ddd80'};if(p>=70)return{g:'B',c:'#f5c842'};if(p>=60)return{g:'C',c:'#f5a623'};if(p>=50)return{g:'D',c:'#ff9f43'};return{g:'F',c:'#ff6b6b'};}
-function updateScore(){const{correct,wrong,total}=getScore();document.getElementById('sc-total').textContent=total;document.getElementById('sc-correct').textContent=correct;document.getElementById('sc-wrong').textContent=wrong;const p=total>0?Math.round(correct/total*100):null;document.getElementById('sc-pct').textContent=p!==null?p+'%':'—';document.getElementById('progress-bar').style.width=(p||0)+'%';const gb=document.getElementById('sc-grade');if(p!==null){const{g,c}=getGrade(p);gb.textContent=g;gb.style.color=c;gb.style.borderColor=c;}else{gb.textContent='—';gb.style.color='#7a82a0';gb.style.borderColor='#7a82a0';}}
-function resetAll(){if(!confirm('Reset all?'))return;Object.keys(fillState).forEach(k=>delete fillState[k]);Object.keys(tfState).forEach(k=>delete tfState[k]);updateScore();renderAll();}
-function checkFill(id,ans,alts){const inp=document.getElementById('input-'+id);const u=inp.value.trim();if(!u)return;const n=s=>s.toLowerCase().replace(/[^a-z0-9]/g,'');const ok=[n(ans),...alts.map(n)].some(a=>n(u).includes(a)||a.includes(n(u)));fillState[id]={status:ok?'correct':'incorrect',userAns:u};updateScore();refreshFill(id);}
-function skipFill(id){fillState[id]={status:'skipped'};updateScore();refreshFill(id);}
-function refreshFill(id){const card=document.getElementById('fcard-'+id);if(!card)return;const s=fillState[id];const item=fillData[parseInt(id)];card.classList.remove('correct','incorrect','skipped');if(s)card.classList.add(s.status);const aa=card.querySelector('.answer-area');if(s){let h='';if(s.status==='correct')h=`<div class="result-ans ok">✅ Correct! "${s.userAns}"</div>`;else if(s.status==='incorrect')h=`<div class="result-ans bad">❌ Your answer: "${s.userAns}"</div><div class="correct-ans">✅ Correct Answer: <strong>${item.ans}</strong></div><div class="mnemonic">💡 ${item.mem}</div>`;else h=`<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;h+=`<div class="mnemonic">💡 ${item.mem}</div>`;aa.innerHTML=h;}}
-function checkTF(id,chosen){const item=tfData[parseInt(id)];if(!item)return;tfState[id]={status:(chosen===item.ans)?'correct':'incorrect',chosen};updateScore();refreshTF(id);}
-function refreshTF(id){const card=document.getElementById('tfcard-'+id);if(!card)return;const s=tfState[id];const item=tfData[parseInt(id)];card.classList.remove('correct','incorrect');if(s){card.classList.add(s.status);card.querySelector('.true-btn').disabled=true;card.querySelector('.false-btn').disabled=true;card.querySelector('.true-btn').classList.toggle('selected-true',s.chosen===true);card.querySelector('.false-btn').classList.toggle('selected-false',s.chosen===false);const rd=card.querySelector('.tf-result');if(rd)rd.innerHTML=s.status==='correct'?`<span style="color:var(--green)">✅ Correct!</span>`:`<span style="color:var(--red)">❌ Wrong — Correct Answer: <strong style="color:var(--green)">${item.ans?'TRUE ✓':'FALSE ✗'}</strong></span>`;const td=card.querySelector('.tf-tip');if(td)td.style.display='block';}}
-function switchTab(t){currentTab=t;document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['fill','tf','meanings'][i]===t));renderAll();}
-function getQ(){return document.getElementById('searchBox').value.toLowerCase().trim();}
-function renderAll(){const q=getQ();const c=document.getElementById('content');c.innerHTML='';if(currentTab==='fill')renderFill(q,c);else if(currentTab==='tf')renderTF(q,c);else renderMeanings(q,c);}
-function renderFill(q,container){const secs={};let t=0;fillData.forEach((item,i)=>{if(q&&!item.q.toLowerCase().includes(q)&&!item.ans.toLowerCase().includes(q)&&!item.section.toLowerCase().includes(q)&&!item.mem.toLowerCase().includes(q))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} questions`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} questions</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item,i})=>{const s=fillState[i];const card=document.createElement('div');card.className=`fill-card ${s?s.status:''}`;card.id='fcard-'+i;let aa='';if(s){if(s.status==='correct')aa=`<div class="result-ans ok">✅ Correct! "${s.userAns}"</div>`;else if(s.status==='incorrect')aa=`<div class="result-ans bad">❌ Your answer: "${s.userAns}"</div><div class="correct-ans">✅ Correct Answer: <strong>${item.ans}</strong></div><div class="mnemonic">💡 ${item.mem}</div>`;else aa=`<div class="correct-ans">⏭ Skipped — Answer: ${item.ans}</div>`;aa+=`<div class="mnemonic">💡 ${item.mem}</div>`;}else{aa=`<input class="ans-input" id="input-${i}" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkFill(${i},'${item.ans.replace(/'/g,"\\'")}',${JSON.stringify(item.alts)})"><button class="btn-check" onclick="checkFill(${i},'${item.ans.replace(/'/g,"\\'")}',${JSON.stringify(item.alts)})">Check ✓</button><button class="btn-skip" onclick="skipFill(${i})">Skip</button>`;}card.innerHTML=`<div class="card-top"><div class="q-text">${item.q}</div><div class="freq">🔁 ${item.freq}</div></div><div class="answer-area">${aa}</div>`;g.appendChild(card);});container.appendChild(g);});}
-function renderTF(q,container){const secs={};let t=0;tfData.forEach((item,i)=>{if(q&&!item.q.toLowerCase().includes(q)&&!item.section.toLowerCase().includes(q)&&!item.tip.toLowerCase().includes(q))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} statements`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} statements</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item,i})=>{const s=tfState[i];const card=document.createElement('div');card.className=`tf-card ${s?s.status:''}`;card.id='tfcard-'+i;const rh=s?(s.status==='correct'?`<span style="color:var(--green)">✅ Correct!</span>`:`<span style="color:var(--red)">❌ Wrong — Correct Answer: <strong style="color:var(--green)">${item.ans?'TRUE ✓':'FALSE ✗'}</strong></span>`):'';card.innerHTML=`<div class="tf-q">${item.q}</div><div class="tf-buttons"><button class="tf-btn true-btn ${s&&s.chosen===true?'selected-true':''}" onclick="checkTF(${i},true)" ${s?'disabled':''}>✓ TRUE</button><button class="tf-btn false-btn ${s&&s.chosen===false?'selected-false':''}" onclick="checkTF(${i},false)" ${s?'disabled':''}>✗ FALSE</button></div><div class="tf-result">${rh}</div><div class="tf-tip" style="display:${s?'block':'none'}">💡 ${item.tip}</div><div class="tf-freq">🔁 ${item.freq}</div>`;g.appendChild(card);});container.appendChild(g);});}
-function renderMeanings(q,container){const secs={};let t=0;meaningsData.forEach((item,i)=>{if(q&&!item.term.toLowerCase().includes(q)&&!item.def.toLowerCase().includes(q)&&!item.section.toLowerCase().includes(q)&&!item.mem.toLowerCase().includes(q))return;if(!secs[item.section])secs[item.section]=[];secs[item.section].push({item,i});t++;});document.getElementById('countLine').textContent=`Showing ${t} definitions`;if(!t){container.innerHTML='<p class="no-results">No results found.</p>';return;}Object.entries(secs).forEach(([sec,entries])=>{container.insertAdjacentHTML('beforeend',`<div class="section-header">${sec} <span class="section-count">${entries.length} terms</span></div>`);const g=document.createElement('div');g.className='grid';entries.forEach(({item})=>{const card=document.createElement('div');card.className='def-card';card.innerHTML=`<div class="def-term">${item.term}</div><div class="def-text">${item.def}</div><div class="def-mem">💡 ${item.mem}</div><div class="def-freq">🔁 ${item.freq}</div>`;g.appendChild(card);});container.appendChild(g);});}
+
+function getScore(){{
+  let c=0,w=0,t=0;
+  Object.values(fillState).forEach(s=>{{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;}});
+  Object.values(tfState).forEach(s=>{{t++;if(s.status==='correct')c++;else if(s.status==='incorrect')w++;}});
+  return{{correct:c,wrong:w,total:t}};
+}}
+
+function getGrade(p){{
+  if(p>=90)return{{g:'A+',c:'#4ddd80'}};
+  if(p>=80)return{{g:'A',c:'#4ddd80'}};
+  if(p>=70)return{{g:'B',c:'#f5c842'}};
+  if(p>=60)return{{g:'C',c:'#f5a623'}};
+  if(p>=50)return{{g:'D',c:'#ff9f43'}};
+  return{{g:'F',c:'#ff6b6b'}};
+}}
+
+function updateScore(){{
+  const{{correct,wrong,total}}=getScore();
+  document.getElementById('sc-total').textContent=total;
+  document.getElementById('sc-correct').textContent=correct;
+  document.getElementById('sc-wrong').textContent=wrong;
+  const p=total>0?Math.round(correct/total*100):null;
+  document.getElementById('sc-pct').textContent=p!==null?p+'%':'—';
+  document.getElementById('progress-bar').style.width=(p||0)+'%';
+  const gb=document.getElementById('sc-grade');
+  if(p!==null){{const{{g,c}}=getGrade(p);gb.textContent=g;gb.style.color=c;gb.style.borderColor=c;}}
+  else{{gb.textContent='—';gb.style.color='#7a82a0';gb.style.borderColor='#7a82a0';}}
+}}
+
+function resetAll(){{
+  if(!confirm('Reset all answers?'))return;
+  Object.keys(fillState).forEach(k=>delete fillState[k]);
+  Object.keys(tfState).forEach(k=>delete tfState[k]);
+  updateScore();renderAll();
+}}
+
+function checkFill(id){{
+  const inp=document.getElementById('input-'+id);
+  if(!inp)return;
+  const u=inp.value.trim();
+  if(!u)return;
+  const item=fillData[parseInt(id)];
+  if(!item)return;
+  const n=s=>s.toLowerCase().replace(/[^a-z0-9]/g,'');
+  const nu=n(u);
+  const allAns=[n(item.ans),...(item.alts||[]).map(n)];
+  const ok=allAns.some(a=>nu.includes(a)||a.includes(nu));
+  fillState[id]={{status:ok?'correct':'incorrect',userAns:u}};
+  updateScore();
+  refreshFill(id);
+}}
+
+function skipFill(id){{
+  fillState[id]={{status:'skipped'}};
+  updateScore();
+  refreshFill(id);
+}}
+
+function refreshFill(id){{
+  const card=document.getElementById('fcard-'+id);
+  if(!card)return;
+  const s=fillState[id];
+  const item=fillData[parseInt(id)];
+  if(!item)return;
+  card.classList.remove('correct','incorrect','skipped');
+  if(s)card.classList.add(s.status);
+  const aa=card.querySelector('.answer-area');
+  if(!aa||!s)return;
+  let h='';
+  if(s.status==='correct'){{
+    h=`<div class="result-ans ok">✅ Correct! "${{s.userAns}}"</div><div class="mnemonic">💡 ${{item.mem}}</div>`;
+  }}else if(s.status==='incorrect'){{
+    h=`<div class="result-ans bad">❌ Your answer: "${{s.userAns}}"</div><div class="correct-ans">✅ Correct Answer: <strong>${{item.ans}}</strong></div><div class="mnemonic">💡 ${{item.mem}}</div>`;
+  }}else{{
+    h=`<div class="correct-ans">⏭ Skipped — Answer: <strong>${{item.ans}}</strong></div><div class="mnemonic">💡 ${{item.mem}}</div>`;
+  }}
+  aa.innerHTML=h;
+}}
+
+function checkTF(id,chosen){{
+  const item=tfData[parseInt(id)];
+  if(!item)return;
+  tfState[id]={{status:(chosen===item.ans)?'correct':'incorrect',chosen}};
+  updateScore();
+  refreshTF(id);
+}}
+
+function refreshTF(id){{
+  const card=document.getElementById('tfcard-'+id);
+  if(!card)return;
+  const s=tfState[id];
+  const item=tfData[parseInt(id)];
+  card.classList.remove('correct','incorrect');
+  if(s){{
+    card.classList.add(s.status);
+    const tb=card.querySelector('.true-btn');
+    const fb=card.querySelector('.false-btn');
+    if(tb){{tb.disabled=true;tb.classList.toggle('selected-true',s.chosen===true);}}
+    if(fb){{fb.disabled=true;fb.classList.toggle('selected-false',s.chosen===false);}}
+    const rd=card.querySelector('.tf-result');
+    if(rd)rd.innerHTML=s.status==='correct'
+      ?`<span style="color:var(--green)">✅ Correct!</span>`
+      :`<span style="color:var(--red)">❌ Wrong — Correct Answer: <strong style="color:var(--green)">${{item.ans?'TRUE ✓':'FALSE ✗'}}</strong></span>`;
+    const td=card.querySelector('.tf-tip');
+    if(td)td.style.display='block';
+  }}
+}}
+
+function switchTab(t){{
+  currentTab=t;
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['fill','tf','meanings'][i]===t));
+  renderAll();
+}}
+
+function getQ(){{return document.getElementById('searchBox').value.toLowerCase().trim();}}
+
+function renderAll(){{
+  const q=getQ();
+  const c=document.getElementById('content');
+  c.innerHTML='';
+  if(currentTab==='fill')renderFill(q,c);
+  else if(currentTab==='tf')renderTF(q,c);
+  else renderMeanings(q,c);
+}}
+
+function renderFill(q,container){{
+  const secs={{}};let t=0;
+  fillData.forEach((item,i)=>{{
+    if(q&&![item.q,item.ans,item.section,item.mem].some(s=>s.toLowerCase().includes(q)))return;
+    if(!secs[item.section])secs[item.section]=[];
+    secs[item.section].push({{item,i}});t++;
+  }});
+  document.getElementById('countLine').textContent=`Showing ${{t}} questions`;
+  if(!t){{container.innerHTML='<p class="no-results">No results found.</p>';return;}}
+  Object.entries(secs).forEach(([sec,entries])=>{{
+    container.insertAdjacentHTML('beforeend',`<div class="section-header">${{sec}} <span class="section-count">${{entries.length}} questions</span></div>`);
+    const g=document.createElement('div');g.className='grid';
+    entries.forEach(({{item,i}})=>{{
+      const s=fillState[i];
+      const card=document.createElement('div');
+      card.className=`fill-card ${{s?s.status:''}}`;
+      card.id='fcard-'+i;
+      let aa='';
+      if(s){{
+        if(s.status==='correct'){{
+          aa=`<div class="result-ans ok">✅ Correct! "${{s.userAns}}"</div><div class="mnemonic">💡 ${{item.mem}}</div>`;
+        }}else if(s.status==='incorrect'){{
+          aa=`<div class="result-ans bad">❌ Your answer: "${{s.userAns}}"</div><div class="correct-ans">✅ Correct Answer: <strong>${{item.ans}}</strong></div><div class="mnemonic">💡 ${{item.mem}}</div>`;
+        }}else{{
+          aa=`<div class="correct-ans">⏭ Skipped — Answer: <strong>${{item.ans}}</strong></div><div class="mnemonic">💡 ${{item.mem}}</div>`;
+        }}
+      }}else{{
+        aa=`<input class="ans-input" id="input-${{i}}" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkFill(${{i}})">
+        <div class="btn-row"><button class="btn-check" onclick="checkFill(${{i}})">Check ✓</button><button class="btn-skip" onclick="skipFill(${{i}})">Skip</button></div>`;
+      }}
+      card.innerHTML=`<div class="card-top"><div class="q-text">${{item.q}}</div><div class="freq">🔁 ${{item.freq}}</div></div><div class="answer-area">${{aa}}</div>`;
+      g.appendChild(card);
+    }});
+    container.appendChild(g);
+  }});
+}}
+
+function renderTF(q,container){{
+  const secs={{}};let t=0;
+  tfData.forEach((item,i)=>{{
+    if(q&&![item.q,item.tip,item.section].some(s=>s.toLowerCase().includes(q)))return;
+    if(!secs[item.section])secs[item.section]=[];
+    secs[item.section].push({{item,i}});t++;
+  }});
+  document.getElementById('countLine').textContent=`Showing ${{t}} statements`;
+  if(!t){{container.innerHTML='<p class="no-results">No results found.</p>';return;}}
+  Object.entries(secs).forEach(([sec,entries])=>{{
+    container.insertAdjacentHTML('beforeend',`<div class="section-header">${{sec}} <span class="section-count">${{entries.length}} statements</span></div>`);
+    const g=document.createElement('div');g.className='grid';
+    entries.forEach(({{item,i}})=>{{
+      const s=tfState[i];
+      const card=document.createElement('div');
+      card.className=`tf-card ${{s?s.status:''}}`;
+      card.id='tfcard-'+i;
+      const rh=s?(s.status==='correct'
+        ?`<span style="color:var(--green)">✅ Correct!</span>`
+        :`<span style="color:var(--red)">❌ Wrong — Correct Answer: <strong style="color:var(--green)">${{item.ans?'TRUE ✓':'FALSE ✗'}}</strong></span>`):'';
+      card.innerHTML=`<div class="tf-q">${{item.q}}</div>
+        <div class="tf-buttons">
+          <button class="tf-btn true-btn ${{s&&s.chosen===true?'selected-true':''}}" onclick="checkTF(${{i}},true)" ${{s?'disabled':''}}>✓ TRUE</button>
+          <button class="tf-btn false-btn ${{s&&s.chosen===false?'selected-false':''}}" onclick="checkTF(${{i}},false)" ${{s?'disabled':''}}>✗ FALSE</button>
+        </div>
+        <div class="tf-result">${{rh}}</div>
+        <div class="tf-tip" style="display:${{s?'block':'none'}}">💡 ${{item.tip}}</div>
+        <div class="tf-freq">🔁 ${{item.freq}}</div>`;
+      g.appendChild(card);
+    }});
+    container.appendChild(g);
+  }});
+}}
+
+function renderMeanings(q,container){{
+  const secs={{}};let t=0;
+  meaningsData.forEach((item,i)=>{{
+    if(q&&![item.term,item.def,item.section,item.mem].some(s=>s.toLowerCase().includes(q)))return;
+    if(!secs[item.section])secs[item.section]=[];
+    secs[item.section].push({{item,i}});t++;
+  }});
+  document.getElementById('countLine').textContent=`Showing ${{t}} definitions`;
+  if(!t){{container.innerHTML='<p class="no-results">No results found.</p>';return;}}
+  Object.entries(secs).forEach(([sec,entries])=>{{
+    container.insertAdjacentHTML('beforeend',`<div class="section-header">${{sec}} <span class="section-count">${{entries.length}} terms</span></div>`);
+    const g=document.createElement('div');g.className='grid';
+    entries.forEach(({{item}})=>{{
+      const card=document.createElement('div');card.className='def-card';
+      card.innerHTML=`<div class="def-term">${{item.term}}</div><div class="def-text">${{item.def}}</div><div class="def-mem">💡 ${{item.mem}}</div><div class="def-freq">🔁 ${{item.freq}}</div>`;
+      g.appendChild(card);
+    }});
+    container.appendChild(g);
+  }});
+}}
+
 updateScore();renderAll();
+
 </script>
 </body>
 </html>
