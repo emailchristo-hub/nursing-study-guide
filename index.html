@@ -8,13 +8,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#0a1628;--blue:#1a4fd6;--blue-light:#3b6ef8;
-  --accent:#f0c040;--white:#fff;--off:#f4f6fb;
-  --text:#1a2340;--muted:#6b7a99;--border:#e2e8f8;--card:#fff;
+--navy:#0a1628;--blue:#1a4fd6;--blue-light:#3b6ef8;
+--accent:#f0c040;--white:#fff;--off:#f4f6fb;
+--text:#1a2340;--muted:#6b7a99;--border:#e2e8f8;--card:#fff;
 }
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--text);min-height:100vh}
-
 .hero{background:var(--navy);position:relative;overflow:hidden;padding:4rem 2rem 3.5rem;text-align:center}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(26,79,214,0.35) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(240,192,64,0.12) 0%,transparent 55%);pointer-events:none}
 .hero-inner{position:relative;z-index:1;max-width:700px;margin:0 auto}
@@ -27,15 +26,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--text);mi
 .stat{text-align:center}
 .stat-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--accent);line-height:1}
 .stat-label{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px}
-
 .divider{height:3px;background:linear-gradient(90deg,var(--blue) 0%,var(--accent) 50%,var(--blue) 100%)}
-
 .container{max-width:900px;margin:0 auto;padding:3rem 1.5rem 4rem}
 .section-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;color:var(--text);margin-bottom:0.4rem}
 .section-sub{font-size:14px;color:var(--muted);margin-bottom:2rem}
-
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem}
-
 .card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s;box-shadow:0 2px 8px rgba(10,22,40,0.06)}
 .card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(10,22,40,0.14);border-color:#b8caf8}
 .card-top{height:7px}
@@ -49,7 +44,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--text);mi
 .tag{font-size:11px;font-weight:500;padding:3px 9px;border-radius:100px;background:var(--off);color:var(--muted);border:1px solid var(--border)}
 .card-arrow{font-size:18px;color:var(--muted);transition:color 0.2s,transform 0.2s}
 .card:hover .card-arrow{color:var(--blue);transform:translateX(3px)}
-
 .theme-blue .card-top{background:linear-gradient(90deg,#1a4fd6,#3b6ef8)}
 .theme-blue .card-icon{background:#e8effd;color:#1a4fd6}
 .theme-blue .card-subject{color:#1a4fd6}
@@ -65,11 +59,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--text);mi
 .theme-green .card-top{background:linear-gradient(90deg,#059669,#10b981)}
 .theme-green .card-icon{background:#ecfdf5;color:#059669}
 .theme-green .card-subject{color:#059669}
-
+.theme-orange .card-top{background:linear-gradient(90deg,#d97706,#f59e0b)}
+.theme-orange .card-icon{background:#fffbeb;color:#d97706}
+.theme-orange .card-subject{color:#d97706}
 .card.featured{border-color:#b8caf8;background:linear-gradient(135deg,#f8faff 0%,#eef2fd 100%)}
 .card.featured .card-top{background:linear-gradient(90deg,#0a1628,#1a4fd6,#f0c040)}
 .new-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(90deg,#1a4fd6,#3b6ef8);color:#fff;font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:100px;margin-bottom:8px}
-
 footer{background:var(--navy);color:rgba(255,255,255,0.4);text-align:center;padding:2rem 1rem;font-size:13px;line-height:1.8}
 footer strong{color:rgba(255,255,255,0.75)}
 </style>
@@ -82,13 +77,14 @@ footer strong{color:rgba(255,255,255,0.75)}
     <h1>Your Complete<br><em>Nursing Study Hub</em></h1>
     <p>Interactive study guides covering every subject in your GNM 1st Year curriculum. Click any subject to open your guide.</p>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num">5</div><div class="stat-label">Subjects</div></div>
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Subjects</div></div>
       <div class="stat"><div class="stat-num">75+</div><div class="stat-label">Topics</div></div>
       <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Mnemonics</div></div>
       <div class="stat"><div class="stat-num">1st</div><div class="stat-label">Year GNM</div></div>
     </div>
   </div>
 </div>
+
 <div class="divider"></div>
 
 <div class="container">
@@ -173,6 +169,22 @@ footer strong{color:rgba(255,255,255,0.75)}
       </div>
       <div class="card-footer">
         <div class="card-tags"><span class="tag">1st Year</span><span class="tag">GNM</span></div>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- ✅ NEW: Admission Viva -->
+    <a class="card theme-orange" href="admission_viva.html">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="new-badge">&#10003; New</div>
+        <div class="card-icon">🏨</div>
+        <div class="card-subject">Fundamentals of Nursing</div>
+        <h2>Hospital Admission – Viva Questions</h2>
+        <p>44 interactive viva Q&amp;As covering definition, purposes, types, OPD/IPD procedure, nursing care, and care of valuables.</p>
+      </div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="tag">44 Questions</span><span class="tag">6 Topics</span><span class="tag">Viva Prep</span></div>
         <span class="card-arrow">→</span>
       </div>
     </a>
