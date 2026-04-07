@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Admission – Viva Questions</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #222; min-height: 100vh; }
+  header { background: #1a5276; color: #fff; padding: 1.5rem 2rem; }
+  header h1 { font-size: 1.5rem; font-weight: 600; }
+  header p { font-size: 0.9rem; opacity: 0.8; margin-top: 4px; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; padding: 1.2rem 2rem; background: #fff; border-bottom: 1px solid #ddd; align-items: center; }
+  .controls label { font-size: 0.85rem; color: #555; }
+  select, button { font-size: 0.85rem; padding: 6px 14px; border-radius: 6px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
+  button.primary { background: #1a5276; color: #fff; border: none; }
+  button.primary:hover { background: #154360; }
+  button.secondary { background: #fff; color: #1a5276; border: 1.5px solid #1a5276; }
+  button.secondary:hover { background: #eaf1f8; }
+
+  .stats { display: flex; gap: 12px; padding: 1rem 2rem; flex-wrap: wrap; }
+  .stat { background: #fff; border-radius: 8px; border: 1px solid #ddd; padding: 0.7rem 1.2rem; min-width: 110px; text-align: center; }
+  .stat .num { font-size: 1.6rem; font-weight: 700; color: #1a5276; }
+  .stat .lbl { font-size: 0.75rem; color: #777; margin-top: 2px; }
+
+  .qa-section { padding: 1rem 2rem 2rem; }
+  .section-title { font-size: 1rem; font-weight: 600; color: #1a5276; margin: 1.5rem 0 0.6rem; padding-left: 8px; border-left: 4px solid #1a5276; }
+
+  .card { background: #fff; border: 1px solid #dde; border-radius: 10px; margin-bottom: 12px; overflow: hidden; transition: box-shadow 0.2s; }
+  .card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.09); }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 1rem 1.2rem; cursor: pointer; gap: 10px; }
+  .card-header .q-text { font-size: 0.95rem; font-weight: 500; flex: 1; line-height: 1.5; }
+  .badge { font-size: 0.72rem; padding: 3px 9px; border-radius: 99px; white-space: nowrap; flex-shrink: 0; font-weight: 600; }
+  .badge.easy { background: #d5f5e3; color: #1e8449; }
+  .badge.medium { background: #fef9e7; color: #9a7d0a; }
+  .badge.hard { background: #fdf2f8; color: #884ea0; }
+
+  .card-answer { display: none; padding: 0 1.2rem 1rem; border-top: 1px solid #eee; }
+  .card-answer.open { display: block; }
+  .card-answer p { font-size: 0.9rem; color: #333; line-height: 1.7; margin-top: 0.8rem; }
+  .card-answer ul { margin: 0.5rem 0 0 1.2rem; font-size: 0.9rem; color: #333; line-height: 1.7; }
+
+  .toggle-icon { font-size: 1.1rem; color: #1a5276; transition: transform 0.2s; flex-shrink: 0; }
+  .toggle-icon.open { transform: rotate(45deg); }
+
+  .mark-row { display: flex; gap: 8px; margin-top: 10px; }
+  .mark-btn { font-size: 0.78rem; padding: 4px 12px; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; }
+  .mark-btn.correct { background: #d5f5e3; color: #1e8449; border-color: #a9dfbf; }
+  .mark-btn.incorrect { background: #fdecea; color: #c0392b; border-color: #f5b7b1; }
+
+  .progress-bar-wrap { height: 6px; background: #eee; border-radius: 3px; margin: 0 2rem 0.5rem; }
+  .progress-bar { height: 100%; background: #1a5276; border-radius: 3px; transition: width 0.4s; }
+
+  @media (max-width: 600px) {
+    header, .controls, .stats, .qa-section { padding-left: 1rem; padding-right: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Hospital Admission – Viva Questions</h1>
+  <p>Nursing fundamentals | Click a question to reveal the answer</p>
+</header>
+
+<div class="controls">
+  <label>Filter by topic:</label>
+  <select id="topicFilter" onchange="filterCards()">
+    <option value="all">All Topics</option>
+    <option value="Definition & Purpose">Definition & Purpose</option>
+    <option value="Types of Admission">Types of Admission</option>
+    <option value="Admission Procedure – OPD">Admission Procedure – OPD</option>
+    <option value="Admission Procedure – IPD">Admission Procedure – IPD</option>
+    <option value="Nursing Care on Admission">Nursing Care on Admission</option>
+    <option value="Care of Valuables & Clothing">Care of Valuables &amp; Clothing</option>
+  </select>
+  <label>Difficulty:</label>
+  <select id="diffFilter" onchange="filterCards()">
+    <option value="all">All</option>
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+  </select>
+  <button class="secondary" onclick="expandAll()">Expand All</button>
+  <button class="secondary" onclick="collapseAll()">Collapse All</button>
+  <button class="primary" onclick="resetScores()">Reset Scores</button>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="num" id="totalQ">0</div><div class="lbl">Total</div></div>
+  <div class="stat"><div class="num" id="answeredQ">0</div><div class="lbl">Answered</div></div>
+  <div class="stat"><div class="num" id="correctQ" style="color:#1e8449">0</div><div class="lbl">Correct</div></div>
+  <div class="stat"><div class="num" id="incorrectQ" style="color:#c0392b">0</div><div class="lbl">Incorrect</div></div>
+</div>
+<div class="progress-bar-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+
+<div class="qa-section" id="qaContainer"></div>
+
+<script>
+const data = [
+  {
+    topic: "Definition & Purpose",
+    questions: [
+      { q: "What is the definition of hospital admission?", a: "Admission of a client means allowing a client to stay in the hospital for observation, investigation, and treatment of the disease they are suffering from.", diff: "easy" },
+      { q: "List all the purposes of hospital admission.", a: "<ul><li>Observation</li><li>Investigation</li><li>Treatment</li><li>Meet needs</li><li>Surgical intervention</li><li>Emergency basis</li></ul>", diff: "easy" },
+      { q: "Why might a patient require round-the-clock supervision (observation purpose)?", a: "On the basis of the patient's condition, some patients may require 24-hour supervision which can only be done by admitting them to the hospital. Example: a patient with chest pain.", diff: "medium" },
+      { q: "Explain the investigation purpose of admission with an example.", a: "Before starting treatment, confirmation of the particular disease condition is required. For example, in coronavirus, a prior detection and confirmation of the condition is done through diagnostic tests like biopsy, CT scan, and histopathological studies.", diff: "medium" },
+      { q: "What is meant by 'meet need' as a purpose of admission?", a: "Admission is required for patients who are suffering from chronic disease conditions and terminally ill patients, to meet their ongoing care needs.", diff: "easy" },
+      { q: "Why is admission essential during surgical interventions?", a: "Admission is a must for patients undergoing or suffering from any surgical procedure such as total knee replacement or cholecystectomy, as some patients require a long hospital stay to recover from surgeries.", diff: "medium" },
+      { q: "Give two examples of emergency conditions requiring immediate admission.", a: "Cardiac arrest and respiratory arrest are emergency conditions where immediate hospital admission is required.", diff: "easy" },
+    ]
+  },
+  {
+    topic: "Types of Admission",
+    questions: [
+      { q: "What are the three main bases on which types of admission are classified?", a: "<ul><li>On the basis of purpose</li><li>On the basis of duration of hospital stay</li><li>On the basis of planning</li></ul>", diff: "easy" },
+      { q: "What are the two types of admission based on duration of hospital stay?", a: "<ul><li>Long-term admission</li><li>Short-term admission</li></ul>", diff: "easy" },
+      { q: "Name the types of admission classified on the basis of purpose.", a: "<ul><li>Diagnosis admission</li><li>Therapeutic admission</li></ul>", diff: "medium" },
+      { q: "Name the types of admission classified on the basis of planning.", a: "<ul><li>Emergency admission</li><li>Routine admission</li><li>Elective admission</li></ul>", diff: "medium" },
+      { q: "What are the four principles of admission that nurses must remember?", a: "<ul><li>Sudden change or strangeness in the environment produces fear and anxiety</li><li>Entering the hospital is a threat to one's personal identity</li><li>People have diversity of habits and modes of behaviour</li><li>Illness can be a novel experience causing stress on physical and mental health</li></ul>", diff: "hard" },
+    ]
+  },
+  {
+    topic: "Admission Procedure – OPD",
+    questions: [
+      { q: "What is the first step in the OPD admission procedure regarding reception?", a: "The personnel in the admitting department should greet the patient and make them feel at ease. In emergency conditions, no time should be lost in initiating treatment.", diff: "easy" },
+      { q: "What social and medical data is collected during OPD admission?", a: "Name, address, age, sex, religion, occupation, income, marital status, business address, telephone numbers, name and address of nearest relatives, diagnosis or suspected diagnosis, duration of illness, and the name of the physician to whom the patient is referred.", diff: "medium" },
+      { q: "What is the outpatient number and its purpose?", a: "The client is given an outpatient number which serves as a future reference for the client's records.", diff: "easy" },
+      { q: "What information is collected during the medical examination in OPD?", a: "<ul><li>Detailed social and medical history of the client is taken by the physician and recorded</li><li>Temperature, pulse, respirations, and blood pressure are recorded</li><li>Thorough head-to-foot examination is done</li><li>Necessary investigations like X-ray and laboratory tests are ordered</li></ul>", diff: "medium" },
+      { q: "What is the nurse's role regarding the relatives of the patient during OPD admission?", a: "Relatives or friends who bring the client often want to meet and talk to the physician. The nurses should make arrangements for the relatives to meet the physician as far as facilities of the institution allow.", diff: "medium" },
+      { q: "What happens to the client after OPD assessment in the IPD department?", a: "Clients suffering from mild ailments are sent home with necessary treatment. Others are admitted to the hospital for further investigations and treatment.", diff: "easy" },
+    ]
+  },
+  {
+    topic: "Admission Procedure – IPD",
+    questions: [
+      { q: "How should clients be transported from OPD to IPD?", a: "<ul><li>Clients who are not very ill and allowed to walk are escorted by a nurse or attender</li><li>Wheelchairs should be available for those who are too sick, weak, or lame to walk</li><li>Clients brought by ambulance should be carried to their respective wards on stretchers</li><li>A seriously ill client should never be left with a male attender</li></ul>", diff: "medium" },
+      { q: "What is the role of the ward sister upon receiving the client?", a: "<ul><li>Introduce herself and greet the client and relatives with friendliness</li><li>Her behaviour should gain the confidence and cooperation of the client</li><li>If the client is very sick, put them into bed immediately</li><li>Relatives should be treated with courtesy and special consideration</li></ul>", diff: "medium" },
+      { q: "How should the nurse orientate the newly admitted client to the ward?", a: "<ul><li>Take the client on a round of the ward</li><li>Introduce other clients and nursing personnel</li><li>Orientate to the whole ward, duty room, toilets, and the unit</li><li>Explain meal serving times, doctors' visit, visiting hours, prayer service, and hospital routines</li><li>Make arrangements for paying hospital bills</li></ul>", diff: "hard" },
+      { q: "What should relatives receive when the client is settled in the ward?", a: "Relatives may be permitted to remain until the client is comfortably settled. Diet pass or stay pass if any should be given to relatives and renewed in time.", diff: "medium" },
+      { q: "What should a nurse explain to a client on a self-diet?", a: "The client on a self-diet should be explained about the type of diet to be taken.", diff: "easy" },
+    ]
+  },
+  {
+    topic: "Nursing Care on Admission",
+    questions: [
+      { q: "What does the nurse observe in the preliminary observation of the newly admitted client?", a: "<ul><li>General facial expression – indicates emotional reactions, presence of pain or fatigue</li><li>Any discolouration of skin such as jaundice or cyanosis</li><li>Nourishment status</li><li>Further observations are made while giving care</li></ul>", diff: "medium" },
+      { q: "What is the significance of converting a closed bed to an open bed on admission?", a: "A closed bed is converted to an open bed on admission of the client to receive the patient and allow them to get into bed.", diff: "easy" },
+      { q: "What vital signs are recorded at the time of admission?", a: "Temperature, pulse, respirations, and blood pressure are recorded at the time of admission and later at regular intervals.", diff: "easy" },
+      { q: "What should be done immediately after the client is admitted to bed?", a: "<ul><li>Check the doctor's orders that are to be carried out immediately</li><li>Record in the inpatient chart the date and time of admission, condition of the client, and observations made</li></ul>", diff: "medium" },
+      { q: "When should a bed bath be given on admission, and what is its advantage?", a: "A bed bath should be given to any client who is not fit for a bathroom bath. It gives the nurse the opportunity to examine the client carefully and note abnormalities such as pressure sores, injuries, rashes, swelling, oral complications, and mental disorders.", diff: "hard" },
+      { q: "What should the nurse do if a client requires a bath on admission?", a: "If the client is to have a bath on admission and their condition permits, a bathroom bath should be given, the hair should be washed and checked for pediculosis. If the client is weak, the nurse will assist in changing dress and getting into bed.", diff: "medium" },
+      { q: "What action must be taken regarding the doctor in-charge after a new admission?", a: "Inform the doctor in-charge of the unit about the newly admitted client through the proper channel.", diff: "easy" },
+      { q: "What is the procedure for collecting a urine specimen on admission?", a: "A specimen of urine is taken as soon as possible after admission and tested either by the nurse or sent to the laboratory department.", diff: "easy" },
+    ]
+  },
+  {
+    topic: "Care of Valuables & Clothing",
+    questions: [
+      { q: "What is done with dirty clothing after admission?", a: "Dirty clothing should be sent home with the relatives for washing.", diff: "easy" },
+      { q: "How should clean clothing be managed for admitted clients?", a: "Clean clothing should be kept safely for daily use.", diff: "easy" },
+      { q: "What is done with clothing in the absence of relatives?", a: "In the absence of relatives, clothes are numbered, labelled, and kept in store until such time that they are handed over to the relatives.", diff: "medium" },
+      { q: "What should be done when it is impossible to remove clothes in the usual manner?", a: "If clothes cannot be removed normally, they should be cut along the seams.", diff: "medium" },
+      { q: "How should clothing be handled in case of a communicable disease?", a: "In case of communicable disease, clothing should be disinfected in an appropriate manner.", diff: "medium" },
+      { q: "What are the nurse's responsibilities regarding the client's valuables?", a: "<ul><li>Never throw anything away – it should be taken great care of and kept safe</li><li>Every care should be taken to protect the client's articles from loss</li><li>Encourage the client to send jewellery, money, mobile, watch, etc. home with a responsible person</li><li>On discharge, death, or transfer, the nurse should ensure all clothes and valuables are returned to the client or relatives</li><li>Get the receipt from the client or nearest relative and keep it safe</li></ul>", diff: "hard" },
+    ]
+  }
+];
+
+let scores = {};
+
+function buildCards() {
+  const container = document.getElementById('qaContainer');
+  container.innerHTML = '';
+  let qNum = 0;
+  data.forEach(section => {
+    const title = document.createElement('div');
+    title.className = 'section-title';
+    title.textContent = section.topic;
+    container.appendChild(title);
+
+    section.questions.forEach(item => {
+      qNum++;
+      const id = `q${qNum}`;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.topic = section.topic;
+      card.dataset.diff = item.diff;
+
+      card.innerHTML = `
+        <div class="card-header" onclick="toggleCard('${id}')">
+          <span class="q-text">${qNum}. ${item.q}</span>
+          <span class="badge ${item.diff}">${item.diff}</span>
+          <span class="toggle-icon" id="icon-${id}">+</span>
+        </div>
+        <div class="card-answer" id="ans-${id}">
+          <p>${item.a}</p>
+          <div class="mark-row">
+            <span style="font-size:0.8rem;color:#777;align-self:center;">Mark yourself:</span>
+            <button class="mark-btn correct" onclick="markAnswer('${id}','correct',event)">✓ Got it</button>
+            <button class="mark-btn incorrect" onclick="markAnswer('${id}','incorrect',event)">✗ Missed</button>
+          </div>
+        </div>`;
+      container.appendChild(card);
+    });
+  });
+  updateStats();
+}
+
+function toggleCard(id) {
+  const ans = document.getElementById('ans-' + id);
+  const icon = document.getElementById('icon-' + id);
+  ans.classList.toggle('open');
+  icon.classList.toggle('open');
+  icon.textContent = ans.classList.contains('open') ? '×' : '+';
+}
+
+function markAnswer(id, result, e) {
+  e.stopPropagation();
+  scores[id] = result;
+  updateStats();
+  const btns = e.target.parentElement.querySelectorAll('.mark-btn');
+  btns.forEach(b => b.style.fontWeight = '400');
+  e.target.style.fontWeight = '700';
+}
+
+function updateStats() {
+  const cards = document.querySelectorAll('.card:not([style*="none"])');
+  const total = cards.length;
+  let correct = 0, incorrect = 0;
+  cards.forEach(card => {
+    const id = card.querySelector('.card-answer').id.replace('ans-', '');
+    if (scores[id] === 'correct') correct++;
+    if (scores[id] === 'incorrect') incorrect++;
+  });
+  const answered = correct + incorrect;
+  document.getElementById('totalQ').textContent = total;
+  document.getElementById('answeredQ').textContent = answered;
+  document.getElementById('correctQ').textContent = correct;
+  document.getElementById('incorrectQ').textContent = incorrect;
+  document.getElementById('progressBar').style.width = total ? Math.round((answered / total) * 100) + '%' : '0%';
+}
+
+function filterCards() {
+  const topic = document.getElementById('topicFilter').value;
+  const diff = document.getElementById('diffFilter').value;
+  document.querySelectorAll('.card').forEach(card => {
+    const tMatch = topic === 'all' || card.dataset.topic === topic;
+    const dMatch = diff === 'all' || card.dataset.diff === diff;
+    card.style.display = (tMatch && dMatch) ? '' : 'none';
+  });
+  document.querySelectorAll('.section-title').forEach(title => {
+    const hasVisible = [...document.querySelectorAll('.card')].some(
+      c => c.dataset.topic === title.textContent && c.style.display !== 'none'
+    );
+    title.style.display = hasVisible ? '' : 'none';
+  });
+  updateStats();
+}
+
+function expandAll() {
+  document.querySelectorAll('.card:not([style*="none"]) .card-answer').forEach(a => { a.classList.add('open'); });
+  document.querySelectorAll('.card:not([style*="none"]) .toggle-icon').forEach(i => { i.classList.add('open'); i.textContent = '×'; });
+}
+
+function collapseAll() {
+  document.querySelectorAll('.card-answer').forEach(a => { a.classList.remove('open'); });
+  document.querySelectorAll('.toggle-icon').forEach(i => { i.classList.remove('open'); i.textContent = '+'; });
+}
+
+function resetScores() {
+  scores = {};
+  document.querySelectorAll('.mark-btn').forEach(b => b.style.fontWeight = '400');
+  updateStats();
+}
+
+buildCards();
+</script>
+</body>
+</html>
