@@ -1,197 +1,473 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GNM Nursing Study Guides — Karnataka Board</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
---navy:#0a1628;--blue:#1a4fd6;--blue-light:#3b6ef8;
---accent:#f0c040;--white:#fff;--off:#f4f6fb;
---text:#1a2340;--muted:#6b7a99;--border:#e2e8f8;--card:#fff;
-}
-html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--text);min-height:100vh}
-.hero{background:var(--navy);position:relative;overflow:hidden;padding:4rem 2rem 3.5rem;text-align:center}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(26,79,214,0.35) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(240,192,64,0.12) 0%,transparent 55%);pointer-events:none}
-.hero-inner{position:relative;z-index:1;max-width:700px;margin:0 auto}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.7);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:1.5rem}
-.hero-eyebrow span{width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--white);line-height:1.2;margin-bottom:1rem;letter-spacing:-0.02em}
-.hero h1 em{font-style:normal;color:var(--accent)}
-.hero p{font-size:1rem;color:rgba(255,255,255,0.6);line-height:1.7;max-width:480px;margin:0 auto 2rem}
-.hero-stats{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap}
-.stat{text-align:center}
-.stat-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--accent);line-height:1}
-.stat-label{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px}
-.divider{height:3px;background:linear-gradient(90deg,var(--blue) 0%,var(--accent) 50%,var(--blue) 100%)}
-.container{max-width:900px;margin:0 auto;padding:3rem 1.5rem 4rem}
-.section-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;color:var(--text);margin-bottom:0.4rem}
-.section-sub{font-size:14px;color:var(--muted);margin-bottom:2rem}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s;box-shadow:0 2px 8px rgba(10,22,40,0.06)}
-.card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(10,22,40,0.14);border-color:#b8caf8}
-.card-top{height:7px}
-.card-body{padding:1.4rem 1.5rem 1rem;flex:1}
-.card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:1rem}
-.card-subject{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px}
-.card h2{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;line-height:1.35;margin-bottom:8px;color:var(--text)}
-.card p{font-size:13px;color:var(--muted);line-height:1.6}
-.card-footer{padding:0.9rem 1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.card-tags{display:flex;gap:6px;flex-wrap:wrap}
-.tag{font-size:11px;font-weight:500;padding:3px 9px;border-radius:100px;background:var(--off);color:var(--muted);border:1px solid var(--border)}
-.card-arrow{font-size:18px;color:var(--muted);transition:color 0.2s,transform 0.2s}
-.card:hover .card-arrow{color:var(--blue);transform:translateX(3px)}
-.theme-blue .card-top{background:linear-gradient(90deg,#1a4fd6,#3b6ef8)}
-.theme-blue .card-icon{background:#e8effd;color:#1a4fd6}
-.theme-blue .card-subject{color:#1a4fd6}
-.theme-teal .card-top{background:linear-gradient(90deg,#0891b2,#06b6d4)}
-.theme-teal .card-icon{background:#e0f7fa;color:#0891b2}
-.theme-teal .card-subject{color:#0891b2}
-.theme-violet .card-top{background:linear-gradient(90deg,#7c3aed,#a855f7)}
-.theme-violet .card-icon{background:#f3e8ff;color:#7c3aed}
-.theme-violet .card-subject{color:#7c3aed}
-.theme-rose .card-top{background:linear-gradient(90deg,#e11d48,#f43f5e)}
-.theme-rose .card-icon{background:#fff1f2;color:#e11d48}
-.theme-rose .card-subject{color:#e11d48}
-.theme-green .card-top{background:linear-gradient(90deg,#059669,#10b981)}
-.theme-green .card-icon{background:#ecfdf5;color:#059669}
-.theme-green .card-subject{color:#059669}
-.theme-orange .card-top{background:linear-gradient(90deg,#d97706,#f59e0b)}
-.theme-orange .card-icon{background:#fffbeb;color:#d97706}
-.theme-orange .card-subject{color:#d97706}
-.card.featured{border-color:#b8caf8;background:linear-gradient(135deg,#f8faff 0%,#eef2fd 100%)}
-.card.featured .card-top{background:linear-gradient(90deg,#0a1628,#1a4fd6,#f0c040)}
-.new-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(90deg,#1a4fd6,#3b6ef8);color:#fff;font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:100px;margin-bottom:8px}
-footer{background:var(--navy);color:rgba(255,255,255,0.4);text-align:center;padding:2rem 1rem;font-size:13px;line-height:1.8}
-footer strong{color:rgba(255,255,255,0.75)}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GNM Nursing Study Guides — Karnataka Board</title>
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --surface2:  #22263a;
+      --border:    rgba(255,255,255,0.08);
+      --accent:    #6c63ff;
+      --accent2:   #a78bfa;
+      --text:      #e8eaf6;
+      --muted:     #8b92b8;
+      --tag-bg:    rgba(108,99,255,0.15);
+      --tag-color: #a78bfa;
+      --new-bg:    #10b981;
+      --new-color: #fff;
+      --card-hover: rgba(108,99,255,0.12);
+      --radius:    16px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ─── HEADER ────────────────────────────────────────────── */
+    header {
+      text-align: center;
+      padding: 4rem 1.5rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -120px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(108,99,255,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .institution {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 0.35rem 1rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 1.8rem;
+    }
+
+    .institution::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--new-bg);
+      flex-shrink: 0;
+      box-shadow: 0 0 6px var(--new-bg);
+    }
+
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    header h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #6c63ff, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* ─── STATS ROW ─────────────────────────────────────────── */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 1.1rem;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .stat-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent2);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    /* ─── GRID SECTION ──────────────────────────────────────── */
+    .section-label {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.6rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.1rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.2rem 4rem;
+    }
+
+    /* ─── CARD ──────────────────────────────────────────────── */
+    .card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--card-hover);
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      border-radius: var(--radius);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(108,99,255,0.4);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(108,99,255,0.15);
+    }
+
+    .card:hover::after { opacity: 1; }
+
+    /* New badge */
+    .badge-new {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: var(--new-bg);
+      color: var(--new-color);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 20px;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .card-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .card-subject {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    /* Tag row */
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: auto;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      color: var(--tag-color);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.22rem 0.6rem;
+      border-radius: 20px;
+      letter-spacing: 0.03em;
+    }
+
+    /* Arrow */
+    .card-arrow {
+      position: absolute;
+      bottom: 1.4rem;
+      right: 1.4rem;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: rgba(108,99,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent2);
+      font-size: 0.9rem;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .card:hover .card-arrow {
+      background: var(--accent);
+      color: #fff;
+      transform: translateX(2px);
+    }
+
+    /* Special accent card (first / featured) */
+    .card.featured {
+      background: linear-gradient(135deg, #1e1b4b 0%, #1a1d27 100%);
+      border-color: rgba(108,99,255,0.3);
+    }
+
+    /* New card accent */
+    .card.card-new {
+      background: linear-gradient(135deg, #0d2e22 0%, #1a1d27 100%);
+      border-color: rgba(16,185,129,0.25);
+    }
+
+    .card.card-new:hover {
+      border-color: rgba(16,185,129,0.5);
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem 2.5rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer strong { color: var(--text); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      header { padding: 3rem 1rem 1.5rem; }
+      .grid { padding: 0 0.8rem 3rem; gap: 0.8rem; }
+      .stats { gap: 0.4rem; }
+      .stat { min-width: 80px; padding: 0.4rem 0.8rem; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="hero-inner">
-    <div class="hero-eyebrow"><span></span>Karnataka Nursing Board · GNM Programme</div>
-    <h1>Your Complete<br><em>Nursing Study Hub</em></h1>
-    <p>Interactive study guides covering every subject in your GNM 1st Year curriculum. Click any subject to open your guide.</p>
-    <div class="hero-stats">
-      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Subjects</div></div>
-      <div class="stat"><div class="stat-num">75+</div><div class="stat-label">Topics</div></div>
-      <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Mnemonics</div></div>
-      <div class="stat"><div class="stat-num">1st</div><div class="stat-label">Year GNM</div></div>
-    </div>
+<!-- ─── HEADER ────────────────────────────────────────────────── -->
+<header>
+  <div class="institution">Karnataka Nursing Board · GNM Programme</div>
+
+  <h1>Your Complete <em>Nursing Study Hub</em></h1>
+  <p>Interactive study guides covering every subject in your GNM 1st Year curriculum. Click any subject to open your guide.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">7</div><div class="stat-label">Subjects</div></div>
+    <div class="stat"><div class="stat-num">75+</div><div class="stat-label">Topics</div></div>
+    <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Mnemonics</div></div>
+    <div class="stat"><div class="stat-num">1st</div><div class="stat-label">Year GNM</div></div>
   </div>
-</div>
+</header>
 
-<div class="divider"></div>
+<!-- ─── CARD GRID ─────────────────────────────────────────────── -->
+<p class="section-label">Study Guides — Tap any card to open the full interactive guide for that subject.</p>
 
-<div class="container">
-  <div class="section-title">Study Guides</div>
-  <div class="section-sub">Tap any card to open the full interactive guide for that subject.</div>
+<div class="grid">
 
-  <div class="cards">
-
-    <!-- Bio-Science FEATURED -->
-    <a class="card featured" href="index_biosci.html">
-      <div class="card-top"></div>
-      <div class="card-body">
-        <div class="new-badge">&#10003; New</div>
-        <div class="card-icon" style="background:#e8effd;color:#1a4fd6">🔬</div>
-        <div class="card-subject" style="color:#1a4fd6">Bio-Science · Paper I</div>
+  <!-- 1 · Anatomy Physiology & Microbiology -->
+  <a class="card featured" href="https://emailchristo-hub.github.io/nursing-study-guide/index_biosci.html">
+    <span class="badge-new">✓ New</span>
+    <div class="card-top">
+      <div class="card-icon">🔬</div>
+      <div class="card-meta">
+        <span class="card-subject">Bio-Science · Paper I</span>
         <h2>Anatomy, Physiology &amp; Microbiology</h2>
-        <p>Immunity, cardiac cycle, vision, carbohydrate metabolism, sterilization, urine formation and more — with full mnemonics.</p>
       </div>
-      <div class="card-footer">
-        <div class="card-tags">
-          <span class="tag">75 marks</span>
-          <span class="tag">3 hrs</span>
-          <span class="tag">Q.P. 9111</span>
-        </div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
+    </div>
+    <p class="card-desc">Immunity, cardiac cycle, vision, carbohydrate metabolism, sterilization, urine formation and more — with full mnemonics.</p>
+    <div class="card-tags">
+      <span class="tag">75 marks</span>
+      <span class="tag">3 hrs</span>
+      <span class="tag">Q.P. 9111</span>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
 
-    <!-- Anatomy -->
-    <a class="card theme-teal" href="anatomy_study_guide.html">
-      <div class="card-top"></div>
-      <div class="card-body">
-        <div class="card-icon">🦴</div>
-        <div class="card-subject">Anatomy</div>
+  <!-- 2 · Human Anatomy -->
+  <a class="card" href="https://emailchristo-hub.github.io/nursing-study-guide/anatomy_study_guide.html">
+    <div class="card-top">
+      <div class="card-icon">🦴</div>
+      <div class="card-meta">
+        <span class="card-subject">Anatomy</span>
         <h2>Human Anatomy Study Guide</h2>
-        <p>Bones, muscles, organ systems, body cavities, and anatomical structures with labelled diagram notes.</p>
       </div>
-      <div class="card-footer">
-        <div class="card-tags"><span class="tag">1st Year</span><span class="tag">GNM</span></div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
+    </div>
+    <p class="card-desc">Bones, muscles, organ systems, body cavities, and anatomical structures with labelled diagram notes.</p>
+    <div class="card-tags">
+      <span class="tag">1st Year</span>
+      <span class="tag">GNM</span>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
 
-    <!-- CHN -->
-    <a class="card theme-green" href="chn_study_guide.html">
-      <div class="card-top"></div>
-      <div class="card-body">
-        <div class="card-icon">🏥</div>
-        <div class="card-subject">Community Health Nursing</div>
+  <!-- 3 · Community Health Nursing -->
+  <a class="card" href="https://emailchristo-hub.github.io/nursing-study-guide/chn_study_guide.html">
+    <div class="card-top">
+      <div class="card-icon">🏥</div>
+      <div class="card-meta">
+        <span class="card-subject">Community Health Nursing</span>
         <h2>CHN Study Guide</h2>
-        <p>Public health, epidemiology, primary health care, immunization schedules, community nursing roles and programmes.</p>
       </div>
-      <div class="card-footer">
-        <div class="card-tags"><span class="tag">1st Year</span><span class="tag">GNM</span></div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
+    </div>
+    <p class="card-desc">Public health, epidemiology, primary health care, immunization schedules, community nursing roles and programmes.</p>
+    <div class="card-tags">
+      <span class="tag">1st Year</span>
+      <span class="tag">GNM</span>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
 
-    <!-- FON -->
-    <a class="card theme-violet" href="fon_study_guide.html">
-      <div class="card-top"></div>
-      <div class="card-body">
-        <div class="card-icon">💊</div>
-        <div class="card-subject">Fundamentals of Nursing</div>
+  <!-- 4 · Fundamentals of Nursing -->
+  <a class="card" href="https://emailchristo-hub.github.io/nursing-study-guide/fon_study_guide.html">
+    <div class="card-top">
+      <div class="card-icon">💊</div>
+      <div class="card-meta">
+        <span class="card-subject">Fundamentals of Nursing</span>
         <h2>FON Study Guide</h2>
-        <p>Nursing process, vital signs, patient care, wound management, drug administration, and basic nursing procedures.</p>
       </div>
-      <div class="card-footer">
-        <div class="card-tags"><span class="tag">1st Year</span><span class="tag">GNM</span></div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
+    </div>
+    <p class="card-desc">Nursing process, vital signs, patient care, wound management, drug administration, and basic nursing procedures.</p>
+    <div class="card-tags">
+      <span class="tag">1st Year</span>
+      <span class="tag">GNM</span>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
 
-    <!-- Psych / Socio -->
-    <a class="card theme-rose" href="psych_socio_study_guide.html">
-      <div class="card-top"></div>
-      <div class="card-body">
-        <div class="card-icon">🧠</div>
-        <div class="card-subject">Psychology &amp; Sociology</div>
+  <!-- 5 · Psychology & Sociology -->
+  <a class="card" href="https://emailchristo-hub.github.io/nursing-study-guide/psych_socio_study_guide.html">
+    <div class="card-top">
+      <div class="card-icon">🧠</div>
+      <div class="card-meta">
+        <span class="card-subject">Psychology &amp; Sociology</span>
         <h2>Psych &amp; Socio Study Guide</h2>
-        <p>Human behavior, mental health, defense mechanisms, social structure, culture, family, and community concepts.</p>
       </div>
-      <div class="card-footer">
-        <div class="card-tags"><span class="tag">1st Year</span><span class="tag">GNM</span></div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
+    </div>
+    <p class="card-desc">Human behavior, mental health, defense mechanisms, social structure, culture, family, and community concepts.</p>
+    <div class="card-tags">
+      <span class="tag">1st Year</span>
+      <span class="tag">GNM</span>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
 
-    <!-- ✅ NEW: Admission Viva -->
-    <a class="card theme-orange" href="admission_viva.html">
-      <div class="card-top"></div>
-      <div class="card-body">
-        <div class="new-badge">&#10003; New</div>
-        <div class="card-icon">🏨</div>
-        <div class="card-subject">Fundamentals of Nursing</div>
+  <!-- 6 · Hospital Admission Viva -->
+  <a class="card card-new" href="https://emailchristo-hub.github.io/nursing-study-guide/admission_viva.html">
+    <span class="badge-new">✓ New</span>
+    <div class="card-top">
+      <div class="card-icon">🏨</div>
+      <div class="card-meta">
+        <span class="card-subject">Fundamentals of Nursing</span>
         <h2>Hospital Admission – Viva Questions</h2>
-        <p>44 interactive viva Q&amp;As covering definition, purposes, types, OPD/IPD procedure, nursing care, and care of valuables.</p>
       </div>
-      <div class="card-footer">
-        <div class="card-tags"><span class="tag">44 Questions</span><span class="tag">6 Topics</span><span class="tag">Viva Prep</span></div>
-        <span class="card-arrow">→</span>
-      </div>
-    </a>
+    </div>
+    <p class="card-desc">44 interactive viva Q&amp;As covering definition, purposes, types, OPD/IPD procedure, nursing care, and care of valuables.</p>
+    <div class="card-tags">
+      <span class="tag">44 Questions</span>
+      <span class="tag">6 Topics</span>
+      <span class="tag">Viva Prep</span>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
 
-  </div>
+  <!-- 7 · Medication Administration ★ NEW ★ -->
+  <a class="card card-new" href="Medication_Administration_Study_Guide.html">
+    <span class="badge-new">✓ New</span>
+    <div class="card-top">
+      <div class="card-icon">💉</div>
+      <div class="card-meta">
+        <span class="card-subject">Fundamentals of Nursing</span>
+        <h2>Medication Administration</h2>
+      </div>
+    </div>
+    <p class="card-desc">Routes of administration, 7 rights, injection angles, dosage calculations, IV complications, flashcards and quiz.</p>
+    <div class="card-tags">
+      <span class="tag">7 Rights</span>
+      <span class="tag">Routes</span>
+      <span class="tag">Dosage Calc</span>
+      <span class="tag">Viva + Quiz</span>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
+
 </div>
 
+<!-- ─── FOOTER ─────────────────────────────────────────────────── -->
 <footer>
   <strong>GNM Nursing Study Hub</strong> · Karnataka Nursing &amp; Paramedical Sciences Education (Regulation) Authority<br>
   Karnataka State Diploma in Nursing Examination Board · 1st Year
