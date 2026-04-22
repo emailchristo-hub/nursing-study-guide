@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medication Administration – GNM Study Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+  :root {
+    --crimson: #C0392B;
+    --rose: #E8A0A0;
+    --blush: #FDF0F0;
+    --deep: #1A0A0A;
+    --ink: #2C1810;
+    --muted: #7A5C5C;
+    --white: #FFFFFF;
+    --gold: #D4A017;
+    --teal: #0D6E6E;
+    --green: #1A6B3C;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--blush);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #8B1A1A 0%, #C0392B 50%, #8B1A1A 100%);
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.03) 20px, rgba(255,255,255,0.03) 40px);
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    letter-spacing: 0.02em;
+    position: relative;
+  }
+  header p {
+    color: rgba(255,255,255,0.8);
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    position: relative;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--gold);
+    color: #1A0A0A;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    margin-top: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    position: relative;
+  }
+
+  /* NAVIGATION TABS */
+  nav {
+    background: var(--deep);
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    padding: 0.9rem 1.3rem;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    letter-spacing: 0.05em;
+  }
+  .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .tab-btn.active { color: var(--rose); border-bottom-color: var(--crimson); background: rgba(192,57,43,0.15); }
+
+  /* MAIN CONTENT */
+  main { max-width: 900px; margin: 0 auto; padding: 2rem 1.2rem; }
+
+  .section { display: none; animation: fadeIn 0.3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--crimson);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--rose);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-title .icon { font-size: 1.5rem; }
+
+  /* CARDS */
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1.4rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--crimson);
+  }
+  .card h3 {
+    font-weight: 700;
+    color: var(--crimson);
+    margin-bottom: 0.6rem;
+    font-size: 1.05rem;
+  }
+  .card p, .card li { color: var(--ink); font-size: 0.95rem; }
+  .card ul, .card ol { padding-left: 1.4rem; }
+  .card li { margin-bottom: 0.3rem; }
+
+  .card.teal { border-left-color: var(--teal); }
+  .card.teal h3 { color: var(--teal); }
+  .card.green { border-left-color: var(--green); }
+  .card.green h3 { color: var(--green); }
+  .card.gold { border-left-color: var(--gold); }
+  .card.gold h3 { color: #9A7010; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.2rem; }
+  @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* RIGHTS CARDS */
+  .right-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .right-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+  .right-num {
+    width: 44px; height: 44px;
+    background: var(--crimson);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 auto 0.7rem;
+  }
+  .right-card h4 { font-weight: 700; color: var(--crimson); font-size: 0.95rem; }
+  .right-card p { font-size: 0.82rem; color: var(--muted); margin-top: 0.3rem; }
+
+  /* ROUTES TABLE */
+  .routes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1rem; margin-bottom: 1.2rem; }
+  .route-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s;
+  }
+  .route-card:hover { transform: translateY(-3px); }
+  .route-header {
+    padding: 0.8rem 1rem;
+    font-weight: 700;
+    color: white;
+    font-size: 0.9rem;
+  }
+  .route-header.oral { background: #E67E22; }
+  .route-header.sublingual { background: #8E44AD; }
+  .route-header.iv { background: #C0392B; }
+  .route-header.im { background: #2980B9; }
+  .route-header.sc { background: #27AE60; }
+  .route-header.id { background: #16A085; }
+  .route-header.topical { background: #D35400; }
+  .route-header.inhalation { background: #2C3E50; }
+  .route-header.rectal { background: #6C3483; }
+  .route-header.epidural { background: #922B21; }
+  .route-body { padding: 0.9rem 1rem; font-size: 0.85rem; color: var(--ink); }
+  .route-body .angle { font-weight: 700; color: var(--crimson); }
+
+  /* ACCORDION */
+  .accordion { margin-bottom: 0.8rem; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+  .accordion-header {
+    background: var(--white);
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition: background 0.2s;
+    border-left: 4px solid var(--crimson);
+  }
+  .accordion-header:hover { background: #FEF5F5; }
+  .accordion-header .arrow { transition: transform 0.3s; color: var(--crimson); font-size: 1.1rem; }
+  .accordion-header.open .arrow { transform: rotate(180deg); }
+  .accordion-body {
+    background: #FFFAFA;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    border-left: 4px solid var(--rose);
+  }
+  .accordion-body.open { max-height: 2000px; padding: 1rem 1.2rem; }
+  .accordion-body p, .accordion-body li { font-size: 0.9rem; }
+  .accordion-body ul, .accordion-body ol { padding-left: 1.3rem; }
+  .accordion-body li { margin-bottom: 0.3rem; }
+
+  /* QUIZ */
+  .quiz-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.4rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .quiz-q { font-weight: 700; color: var(--ink); margin-bottom: 1rem; font-size: 1rem; }
+  .quiz-q span { display: inline-block; background: var(--crimson); color: white; font-size: 0.75rem; padding: 0.1rem 0.5rem; border-radius: 8px; margin-right: 0.4rem; vertical-align: middle; }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+  .quiz-opt {
+    padding: 0.75rem 1rem;
+    border: 2px solid #E8D5D5;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    background: white;
+    text-align: left;
+  }
+  .quiz-opt:hover:not(.disabled) { border-color: var(--crimson); background: #FEF5F5; }
+  .quiz-opt.correct { border-color: #27AE60; background: #EAFAF1; color: #145A32; }
+  .quiz-opt.wrong { border-color: #E74C3C; background: #FDEDEC; color: #922B21; }
+  .quiz-opt.disabled { cursor: not-allowed; opacity: 0.7; }
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    display: none;
+  }
+  .quiz-feedback.correct { background: #EAFAF1; color: #145A32; border-left: 3px solid #27AE60; display: block; }
+  .quiz-feedback.wrong { background: #FDEDEC; color: #922B21; border-left: 3px solid #E74C3C; display: block; }
+  .quiz-score {
+    background: linear-gradient(135deg, var(--crimson), #8B1A1A);
+    color: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    margin-top: 1.5rem;
+    display: none;
+  }
+  .quiz-score h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; }
+  .quiz-score p { opacity: 0.9; margin-top: 0.3rem; }
+  .btn {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    background: var(--crimson);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+    margin-top: 1rem;
+  }
+  .btn:hover { background: #A93226; }
+  .btn.secondary { background: var(--deep); }
+
+  /* FLASHCARD */
+  .flashcard-area { perspective: 1000px; margin-bottom: 1.5rem; }
+  .flashcard {
+    width: 100%;
+    min-height: 200px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    cursor: pointer;
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute;
+    width: 100%;
+    min-height: 200px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    backface-visibility: hidden;
+  }
+  .card-front { background: linear-gradient(135deg, var(--crimson), #8B1A1A); color: white; }
+  .card-front h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; }
+  .card-front p { opacity: 0.8; margin-top: 0.5rem; font-size: 0.9rem; }
+  .card-back { background: var(--white); color: var(--ink); transform: rotateY(180deg); border: 2px solid var(--rose); }
+  .card-back p { font-size: 1rem; line-height: 1.7; }
+  .fc-controls { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+  .fc-counter { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
+
+  /* MNEMONIC BOX */
+  .mnemonic {
+    background: linear-gradient(135deg, #FFF3CD, #FFEAA0);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+  .mnemonic h4 { color: #8B6914; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
+  .mnemonic p { color: #5D4E00; font-size: 0.95rem; }
+  .mnemonic .letters { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #C77700; letter-spacing: 0.15em; font-weight: 900; }
+
+  /* ALERT BOX */
+  .alert {
+    background: #FDEDEC;
+    border: 2px solid #E74C3C;
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+  }
+  .alert .icon { font-size: 1.3rem; flex-shrink: 0; }
+  .alert p { font-size: 0.9rem; color: #922B21; font-weight: 600; }
+
+  /* INJECTION COMPARISON */
+  .injection-table { width: 100%; border-collapse: collapse; margin-bottom: 1.2rem; font-size: 0.88rem; }
+  .injection-table th { background: var(--crimson); color: white; padding: 0.7rem 0.8rem; text-align: left; }
+  .injection-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #F0D5D5; }
+  .injection-table tr:nth-child(even) td { background: #FDF5F5; }
+
+  /* PROGRESS BAR */
+  .progress-wrap { margin-bottom: 1.5rem; }
+  .progress-label { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.3rem; display: flex; justify-content: space-between; }
+  .progress-bar { height: 8px; background: #E8D5D5; border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--crimson); border-radius: 4px; transition: width 0.5s; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>💊 Medication Administration</h1>
+  <p>GNM 1st Year · Fundamentals of Nursing · Interactive Study Guide</p>
+  <div class="badge">Kannada Nursing Classes</div>
+</header>
+
+<nav id="mainNav">
+  <button class="tab-btn active" onclick="showSection('basics', this)">📖 Basics</button>
+  <button class="tab-btn" onclick="showSection('rights', this)">✅ Rights</button>
+  <button class="tab-btn" onclick="showSection('routes', this)">💉 Routes</button>
+  <button class="tab-btn" onclick="showSection('injections', this)">🩹 Injections</button>
+  <button class="tab-btn" onclick="showSection('dosage', this)">🧮 Dosage</button>
+  <button class="tab-btn" onclick="showSection('flashcards', this)">🃏 Flashcards</button>
+  <button class="tab-btn" onclick="showSection('quiz', this)">🧠 Quiz</button>
+</nav>
+
+<main>
+
+<!-- ===== BASICS ===== -->
+<div class="section active" id="basics">
+  <h2 class="section-title"><span class="icon">📖</span> Basics of Medication</h2>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>What is Medication?</h3>
+      <p>A substance administered for the <strong>diagnosis, cure, treatment, or relief</strong> of a symptom or for prevention of disease.</p>
+    </div>
+    <div class="card teal">
+      <h3>Pharmacology</h3>
+      <p>The <strong>study of the effect of drugs</strong> on living organisms.</p>
+    </div>
+  </div>
+
+  <div class="card gold">
+    <h3>Prescription</h3>
+    <p>The written direction for the preparation and administration of a drug.</p>
+  </div>
+
+  <h3 style="margin:1.2rem 0 0.8rem; color:var(--ink); font-size:1.1rem;">Purpose of Medication</h3>
+  <div class="grid-3">
+    <div class="card"><h3>Diagnostic</h3><p>To identify any disease (e.g. radio contrast dye, Mantoux test)</p></div>
+    <div class="card teal"><h3>Prophylaxis</h3><p>To prevent disease (e.g. heparin for thrombosis, antibiotics)</p></div>
+    <div class="card green"><h3>Therapeutic</h3><p>To cure the disease</p></div>
+    <div class="card"><h3>Treatment</h3><p>Alleviate symptoms (e.g. anti-asthmatic drugs)</p></div>
+    <div class="card gold"><h3>Cure</h3><p>Complete eradication (e.g. antibiotics, anthelmintics)</p></div>
+    <div class="card teal"><h3>Enhancement</h3><p>Best health state (e.g. vitamins, minerals)</p></div>
+  </div>
+
+  <h3 style="margin:1.2rem 0 0.8rem; color:var(--ink); font-size:1.1rem;">Drug Names</h3>
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAcc(this)">
+      Generic Name <span class="arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>Given by the manufacturer who first develops the drug. It is the name by which the drug will be known <strong>throughout the world</strong>, agreed upon by the WHO. Usually derived from the chemical name.</p>
+      <p><strong>Example:</strong> acetaminophen</p>
+    </div>
+  </div>
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAcc(this)">
+      Brand / Trade Name <span class="arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>The name given by the pharmaceutical company that manufactures the drug. It is <strong>copyrighted</strong> — only that company can use that name.</p>
+      <p><strong>Example:</strong> Panadol, Tylenol (both are acetaminophen)</p>
+    </div>
+  </div>
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAcc(this)">
+      Chemical Name <span class="arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>The precise chemical composition of the drug. Usually complex and not commonly used in clinical practice.</p>
+      <p><strong>Example:</strong> N-(4-hydroxyphenyl)acetamide</p>
+    </div>
+  </div>
+
+  <h3 style="margin:1.2rem 0 0.8rem; color:var(--ink); font-size:1.1rem;">Legal Aspects</h3>
+  <div class="card">
+    <h3>⚖️ Dangerous Drug Act – 1930</h3>
+    <p>Governs the procurement and use of some drugs especially <strong>narcotics</strong> (e.g. morphine, pethidine, cocaine). Prescription only — cannot be bought without a prescription. Kept under lock and key in the <strong>Dangerous Drug Cupboard</strong> under trusted senior nurses.</p>
+  </div>
+  <div class="card teal">
+    <h3>⚖️ Narcotic Drugs & Psychotropic Substances Act – 1985</h3>
+    <p>Controls psychotropic substances. Strict documentation required for all controlled substances.</p>
+  </div>
+
+  <h3 style="margin:1.2rem 0 0.8rem; color:var(--ink); font-size:1.1rem;">Medication Order – 7 Essential Parts</h3>
+  <div class="card green">
+    <h3>A drug order must contain:</h3>
+    <ol>
+      <li>Patient's full name</li>
+      <li>Date and time</li>
+      <li>Drug name</li>
+      <li>Dosage</li>
+      <li>Route of administration</li>
+      <li>Time and frequency of administration</li>
+      <li>Signature of physician</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ===== RIGHTS ===== -->
+<div class="section" id="rights">
+  <h2 class="section-title"><span class="icon">✅</span> Rights of Medication Administration</h2>
+
+  <div class="alert">
+    <span class="icon">⚠️</span>
+    <p>Medication errors can be detrimental to patients. Always verify ALL rights before administering any medication.</p>
+  </div>
+
+  <div class="mnemonic">
+    <h4>💡 Mnemonic – Remember the Rights</h4>
+    <div class="letters">P · D · D · R · T · D · R</div>
+    <p><strong>P</strong>atient · <strong>D</strong>rug · <strong>D</strong>ose · <strong>R</strong>oute · <strong>T</strong>ime · <strong>D</strong>ocumentation · <strong>R</strong>eason</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="right-card">
+      <div class="right-num">1</div>
+      <h4>Right Patient</h4>
+      <p>Ask client to state full name. Compare with ID bracelet and medication chart.</p>
+    </div>
+    <div class="right-card">
+      <div class="right-num">2</div>
+      <h4>Right Drug</h4>
+      <p>Check label 3 times: when removing, preparing, and administering.</p>
+    </div>
+    <div class="right-card">
+      <div class="right-num">3</div>
+      <h4>Right Dose</h4>
+      <p>Calculate carefully. When in doubt, consult another nurse or pharmacist.</p>
+    </div>
+    <div class="right-card">
+      <div class="right-num">4</div>
+      <h4>Right Route</h4>
+      <p>Ensure the ordered route is appropriate and the patient can tolerate it.</p>
+    </div>
+    <div class="right-card">
+      <div class="right-num">5</div>
+      <h4>Right Time</h4>
+      <p>Administer at the scheduled time. Check frequency (OD, BD, TDS, QID).</p>
+    </div>
+    <div class="right-card">
+      <div class="right-num">6</div>
+      <h4>Right Documentation</h4>
+      <p>Record immediately after administration — never before.</p>
+    </div>
+    <div class="right-card" style="grid-column: 1 / -1;">
+      <div class="right-num">7</div>
+      <h4>Right Reason / Education</h4>
+      <p>Know why the patient is receiving the medication. Educate the patient about their medication.</p>
+    </div>
+  </div>
+
+  <div class="card gold">
+    <h3>📋 The "Three Checks" Rule</h3>
+    <ul>
+      <li><strong>Check 1:</strong> When removing the medication from the shelf/drawer</li>
+      <li><strong>Check 2:</strong> When preparing the medication (drawing up, calculating)</li>
+      <li><strong>Check 3:</strong> Before actually administering to the patient</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Types of Medication Orders</h3>
+    <ul>
+      <li><strong>Standing/Routine Order:</strong> Carried out as specified until cancelled (e.g. Tab. Paracetamol 500mg TDS)</li>
+      <li><strong>PRN Order (Pro re nata):</strong> Given only when required by the patient</li>
+      <li><strong>Single/One-time Order:</strong> Given only once at a specific time</li>
+      <li><strong>Stat Order:</strong> Given immediately (emergency)</li>
+      <li><strong>Verbal Order:</strong> Given by phone/verbally — must be written and countersigned within 24 hours</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== ROUTES ===== -->
+<div class="section" id="routes">
+  <h2 class="section-title"><span class="icon">💉</span> Routes of Administration</h2>
+
+  <div class="routes-grid">
+    <div class="route-card">
+      <div class="route-header oral">Oral (PO)</div>
+      <div class="route-body">
+        <p>Swallowed through the mouth. Most common and safest route.</p>
+        <p class="angle">Angle: N/A</p>
+        <p><strong>Forms:</strong> Tablets, capsules, liquids, syrups</p>
+        <p><strong>Advantages:</strong> Convenient, economical, safe</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-header sublingual">Sublingual (SL)</div>
+      <div class="route-body">
+        <p>Placed <strong>under the tongue</strong>. Rapid absorption directly into bloodstream.</p>
+        <p><strong>Example:</strong> Glyceryl trinitrate (GTN) for angina</p>
+        <p>Do NOT swallow or chew the tablet.</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-header iv">Intravenous (IV)</div>
+      <div class="route-body">
+        <p>Into a vein. Fastest route — immediate effect.</p>
+        <p class="angle">Angle: 15–30°</p>
+        <p>Used for emergencies, fluids, antibiotics.</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-header im">Intramuscular (IM)</div>
+      <div class="route-body">
+        <p>Into the muscle tissue.</p>
+        <p class="angle">Angle: 90°</p>
+        <p><strong>Volume:</strong> 2–5 ml (adult)<br><strong>Sites:</strong> Deltoid, vastus lateralis, gluteus</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-header sc">Subcutaneous (SC)</div>
+      <div class="route-body">
+        <p>Into the subcutaneous fat tissue, just below skin.</p>
+        <p class="angle">Angle: 45°</p>
+        <p><strong>Volume:</strong> 0.5–1 ml<br><strong>Example:</strong> Insulin, heparin</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-header id">Intradermal (ID)</div>
+      <div class="route-body">
+        <p>Into the dermis (just below skin surface).</p>
+        <p class="angle">Angle: 10–15°</p>
+        <p><strong>Volume:</strong> 0.01–0.1 ml<br><strong>Example:</strong> Mantoux (TB) test, allergy testing</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-header topical">Topical</div>
+      <div class="route-body">
+        <p>Applied to skin or mucous membranes.</p>
+        <p><strong>Forms:</strong> Creams, ointments, patches, drops</p>
+        <p>Local effect. Minimal systemic absorption.</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-header inhalation">Inhalation</div>
+      <div class="route-body">
+        <p>Inhaled through mouth/nose into respiratory tract.</p>
+        <p><strong>Example:</strong> Bronchodilators, anaesthetic gases</p>
+        <p>Rapid absorption via large lung surface.</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-header rectal">Rectal / Suppository</div>
+      <div class="route-body">
+        <p>Inserted into the rectum.</p>
+        <p>Used when patient is NPO, vomiting, or unconscious.</p>
+        <p><strong>Example:</strong> Paracetamol suppository</p>
+      </div>
+    </div>
+    <div class="route-card">
+      <div class="route-header epidural">Epidural / Intrathecal</div>
+      <div class="route-body">
+        <p><strong>Epidural:</strong> Into epidural space (spine)</p>
+        <p><strong>Intrathecal:</strong> Into subarachnoid space or brain ventricle</p>
+        <p>Used for spinal anaesthesia, pain relief.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mnemonic">
+    <h4>💡 Injection Angles Memory Aid</h4>
+    <p><strong>ID</strong> (into skin) = <strong>10–15°</strong> (almost flat, like barely entering) &nbsp;|&nbsp; <strong>SC</strong> (below skin) = <strong>45°</strong> (half angle) &nbsp;|&nbsp; <strong>IM</strong> (into muscle) = <strong>90°</strong> (straight in)</p>
+  </div>
+</div>
+
+<!-- ===== INJECTIONS ===== -->
+<div class="section" id="injections">
+  <h2 class="section-title"><span class="icon">🩹</span> Parenteral Injections</h2>
+
+  <h3 style="margin-bottom:0.8rem; font-size:1.05rem; color:var(--ink);">Quick Comparison</h3>
+  <div style="overflow-x:auto;">
+    <table class="injection-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Intradermal (ID)</th>
+          <th>Subcutaneous (SC)</th>
+          <th>Intramuscular (IM)</th>
+          <th>Intravenous (IV)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Angle</strong></td><td>10–15°</td><td>45°</td><td>90°</td><td>15–30°</td></tr>
+        <tr><td><strong>Volume</strong></td><td>0.01–0.1 ml</td><td>0.5–1 ml</td><td>2–5 ml</td><td>Variable</td></tr>
+        <tr><td><strong>Needle Size</strong></td><td>25–27G, short</td><td>25–27G</td><td>19–23G</td><td>18–22G</td></tr>
+        <tr><td><strong>Site</strong></td><td>Inner forearm</td><td>Abdomen, thigh</td><td>Deltoid, gluteus</td><td>Median cubital vein</td></tr>
+        <tr><td><strong>Absorption</strong></td><td>Slow</td><td>Slow–moderate</td><td>Moderate–rapid</td><td>Immediate</td></tr>
+        <tr><td><strong>Example</strong></td><td>Mantoux test</td><td>Insulin</td><td>Vaccines, antibiotics</td><td>Fluids, emergency drugs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin:1.2rem 0 0.8rem; font-size:1.05rem; color:var(--ink);">Syringe & Needle Parts</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3>🩺 Syringe Parts</h3>
+      <ul>
+        <li><strong>Barrel:</strong> Graduated cylinder that holds the medication</li>
+        <li><strong>Plunger:</strong> Piston that moves to draw or inject</li>
+        <li><strong>Tip:</strong> Where the needle attaches</li>
+      </ul>
+    </div>
+    <div class="card teal">
+      <h3>🪡 Needle Parts</h3>
+      <ul>
+        <li><strong>Hub:</strong> Fits onto the tip of the syringe</li>
+        <li><strong>Shaft:</strong> Connects to the hub</li>
+        <li><strong>Bevel:</strong> The slanted tip of the needle</li>
+      </ul>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">All needles are made of stainless steel and are disposable.</p>
+    </div>
+  </div>
+
+  <h3 style="margin:1.2rem 0 0.8rem; font-size:1.05rem; color:var(--ink);">IV Therapy – Complications to Watch</h3>
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAcc(this)">Infiltration <span class="arrow">▼</span></div>
+    <div class="accordion-body">
+      <p>Escape of fluid into subcutaneous tissue due to needle dislodgement. Causes <strong>swelling and pain</strong>. May cause nerve compression. <strong>Action:</strong> Stop infusion and change site immediately.</p>
+    </div>
+  </div>
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAcc(this)">Phlebitis <span class="arrow">▼</span></div>
+    <div class="accordion-body">
+      <p>Inflammation of the vein. Signs: redness, warmth, swelling along the vein. <strong>Action:</strong> Discontinue IV, apply warm compress, restart at new site.</p>
+    </div>
+  </div>
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAcc(this)">Air Embolism <span class="arrow">▼</span></div>
+    <div class="accordion-body">
+      <p>Air enters the bloodstream. Can be life-threatening. <strong>Prevention:</strong> Always purge air from IV lines before connecting to patient.</p>
+    </div>
+  </div>
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAcc(this)">Speed Shock <span class="arrow">▼</span></div>
+    <div class="accordion-body">
+      <p>Systemic reaction when IV medication is given too rapidly. Signs: flushing, headache, irregular pulse, shock. <strong>Prevention:</strong> Always administer at prescribed rate.</p>
+    </div>
+  </div>
+
+  <h3 style="margin:1.2rem 0 0.8rem; font-size:1.05rem; color:var(--ink);">IM Injection – Safe Sites</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Deltoid</h3>
+      <p>Upper arm. Small muscle — limited to 1–2 ml. Used for vaccines in adults.</p>
+    </div>
+    <div class="card teal">
+      <h3>Vastus Lateralis</h3>
+      <p>Outer thigh. Preferred for infants and children. Safe (no major nerves or vessels).</p>
+    </div>
+    <div class="card green">
+      <h3>Ventrogluteal</h3>
+      <p>Hip area. Safest for adults — no major vessels or nerves nearby. Can take up to 3 ml.</p>
+    </div>
+    <div class="card">
+      <h3>Dorsogluteal</h3>
+      <p>Buttock. Risk of sciatic nerve injury — use with caution. Locate correctly using anatomical landmarks.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DOSAGE ===== -->
+<div class="section" id="dosage">
+  <h2 class="section-title"><span class="icon">🧮</span> Dosage Calculations</h2>
+
+  <div class="card">
+    <h3>Basic Formula</h3>
+    <p style="font-size:1.2rem; text-align:center; padding:1rem; background:#FDF5F5; border-radius:8px; margin-top:0.5rem;">
+      <strong>Dose Required ÷ Dose on Hand × Volume on Hand</strong>
+    </p>
+  </div>
+
+  <div class="card teal">
+    <h3>Ratio & Proportion Method</h3>
+    <p>A ratio indicates the relationship between two numbers separated by a colon (:).</p>
+    <p>Example: the ratio 1:2 is the same as 1/2</p>
+    <p style="margin-top:0.6rem;"><strong>Three ways to write a proportion:</strong></p>
+    <ul style="margin-top:0.3rem;">
+      <li>1:2 = 4:8</li>
+      <li>1:2 :: 4:8</li>
+      <li>1/2 = 4/8</li>
+    </ul>
+    <p style="margin-top:0.6rem;"><strong>Rule:</strong> Means × Means = Extremes × Extremes (cross-multiply)</p>
+  </div>
+
+  <h3 style="margin:1.2rem 0 0.8rem; font-size:1.05rem; color:var(--ink);">Practice Examples</h3>
+
+  <div class="card gold">
+    <h3>Example 1 – Tablet</h3>
+    <p><strong>Order:</strong> Paracetamol 1000 mg PO<br>
+    <strong>Available:</strong> Paracetamol 500 mg tablets</p>
+    <p style="margin-top:0.5rem;"><strong>Calculation:</strong> 1000 ÷ 500 × 1 = <strong>2 tablets</strong></p>
+  </div>
+
+  <div class="card gold">
+    <h3>Example 2 – Liquid</h3>
+    <p><strong>Order:</strong> Amoxicillin 250 mg PO<br>
+    <strong>Available:</strong> Amoxicillin 125 mg per 5 ml</p>
+    <p style="margin-top:0.5rem;"><strong>Calculation:</strong> 250 ÷ 125 × 5 = <strong>10 ml</strong></p>
+  </div>
+
+  <div class="card gold">
+    <h3>Example 3 – Injection</h3>
+    <p><strong>Order:</strong> Morphine 8 mg IM<br>
+    <strong>Available:</strong> Morphine 10 mg per 1 ml</p>
+    <p style="margin-top:0.5rem;"><strong>Calculation:</strong> 8 ÷ 10 × 1 = <strong>0.8 ml</strong></p>
+  </div>
+
+  <div class="card green">
+    <h3>Weight-Based Dosing</h3>
+    <p><strong>Formula:</strong> Dose per kg × Patient weight = Total dose</p>
+    <p style="margin-top:0.4rem;"><strong>Example:</strong> Amoxicillin 25 mg/kg for a 20 kg child<br>
+    = 25 × 20 = <strong>500 mg</strong></p>
+  </div>
+
+  <div class="card">
+    <h3>IV Drip Rate Calculation</h3>
+    <p style="font-size:1rem; padding:0.8rem; background:#FDF5F5; border-radius:8px; text-align:center; margin:0.5rem 0;">
+      <strong>Drops/min = (Volume in ml × Drop factor) ÷ Time in minutes</strong>
+    </p>
+    <p><strong>Common drop factors:</strong> 15 drops/ml (standard), 20 drops/ml, 60 drops/ml (microdrip)</p>
+    <p style="margin-top:0.4rem;"><strong>Example:</strong> 1000 ml over 8 hours, 15 drops/ml<br>
+    = (1000 × 15) ÷ (8 × 60) = 15000 ÷ 480 = <strong>31 drops/min</strong></p>
+  </div>
+</div>
+
+<!-- ===== FLASHCARDS ===== -->
+<div class="section" id="flashcards">
+  <h2 class="section-title"><span class="icon">🃏</span> Flashcards</h2>
+  <p style="color:var(--muted); margin-bottom:1.2rem; font-size:0.9rem;">Click the card to reveal the answer. Use arrows to navigate.</p>
+
+  <div class="fc-counter" id="fcCounter">Card 1 of 20</div>
+  <div class="flashcard-area">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="card-face card-front">
+        <h3 id="fcQuestion">Loading...</h3>
+        <p>Click to reveal answer</p>
+      </div>
+      <div class="card-face card-back">
+        <p id="fcAnswer">Loading...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-controls">
+    <button class="btn secondary" onclick="prevCard()">← Previous</button>
+    <button class="btn secondary" onclick="flipCard()">🔄 Flip</button>
+    <button class="btn" onclick="nextCard()">Next →</button>
+  </div>
+
+  <div class="progress-wrap" style="margin-top:1.2rem;">
+    <div class="progress-label"><span>Progress</span><span id="fcProgress">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="fcProgressBar" style="width:5%"></div></div>
+  </div>
+</div>
+
+<!-- ===== QUIZ ===== -->
+<div class="section" id="quiz">
+  <h2 class="section-title"><span class="icon">🧠</span> Quiz</h2>
+  <p style="color:var(--muted); margin-bottom:1.5rem; font-size:0.9rem;">Test your knowledge! Select the best answer for each question.</p>
+
+  <div id="quizContainer"></div>
+  <div class="quiz-score" id="quizScore">
+    <h3 id="scoreTitle">Your Score</h3>
+    <p id="scoreText"></p>
+    <button class="btn" style="margin-top:1rem; background:white; color:var(--crimson);" onclick="resetQuiz()">🔄 Retake Quiz</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ===== TAB NAVIGATION =====
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ===== ACCORDION =====
+function toggleAcc(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('open'));
+  if (!isOpen) {
+    body.classList.add('open');
+    header.classList.add('open');
+  }
+}
+
+// ===== FLASHCARDS =====
+const flashcards = [
+  { q: "What is a Medication?", a: "A substance administered for the diagnosis, cure, treatment, or relief of a symptom or for prevention of disease." },
+  { q: "What is Pharmacology?", a: "The study of the effect of drugs on living organisms." },
+  { q: "What is a Prescription?", a: "The written direction for the preparation and administration of a drug." },
+  { q: "List the 7 Rights of Medication Administration", a: "1. Right Patient\n2. Right Drug\n3. Right Dose\n4. Right Route\n5. Right Time\n6. Right Documentation\n7. Right Reason/Education" },
+  { q: "What is the angle of insertion for an IM injection?", a: "90 degrees. Volume: 2–5 ml for adults." },
+  { q: "What is the angle of insertion for a Subcutaneous (SC) injection?", a: "45 degrees. Volume: 0.5–1 ml. Example: Insulin, Heparin." },
+  { q: "What is the angle of insertion for an Intradermal (ID) injection?", a: "10–15 degrees (almost flat). Volume: 0.01–0.1 ml. Example: Mantoux test." },
+  { q: "What is the angle of insertion for an IV injection?", a: "15–30 degrees." },
+  { q: "What are the 7 essential parts of a medication order?", a: "1. Patient's full name\n2. Date and time\n3. Drug name\n4. Dosage\n5. Route of administration\n6. Time and frequency\n7. Signature of physician" },
+  { q: "What is the Dangerous Drug Act?", a: "Dangerous Drug Act – 1930. Governs procurement and use of narcotics (morphine, pethidine, cocaine). Kept under lock and key in Dangerous Drug Cupboard." },
+  { q: "What is infiltration in IV therapy?", a: "Escape of fluid into subcutaneous tissue due to needle dislodgement, causing swelling and pain. Action: Stop infusion and change site." },
+  { q: "What is the formula for dosage calculation?", a: "Dose Required ÷ Dose on Hand × Volume on Hand" },
+  { q: "What is the drip rate formula?", a: "Drops/min = (Volume in ml × Drop factor) ÷ Time in minutes" },
+  { q: "What is Sublingual administration?", a: "Medication placed under the tongue. Rapid absorption directly into bloodstream. Example: GTN (Glyceryl trinitrate) for angina." },
+  { q: "What are the three types of drug names?", a: "1. Generic Name – agreed by WHO, universal\n2. Brand/Trade Name – copyrighted by manufacturer\n3. Chemical Name – precise chemical composition" },
+  { q: "What is a PRN medication order?", a: "Pro re nata — given only when required by the patient (as needed)." },
+  { q: "What is a Stat order?", a: "A medication order that must be given immediately (in emergencies)." },
+  { q: "Name the 3 parts of a needle", a: "1. Hub – fits onto syringe tip\n2. Shaft – connects to hub\n3. Bevel – the slanted tip" },
+  { q: "What are the purposes of medication?", a: "Diagnostic, Prophylaxis, Therapeutic, Treatment, Cure, Enhancement of health" },
+  { q: "What is phlebitis?", a: "Inflammation of the vein during IV therapy. Signs: redness, warmth, swelling along the vein. Action: Discontinue IV, apply warm compress." },
+];
+
+let fcIndex = 0;
+let fcFlipped = false;
+
+function updateCard() {
+  const card = flashcards[fcIndex];
+  document.getElementById('fcQuestion').textContent = card.q;
+  document.getElementById('fcAnswer').textContent = card.a;
+  document.getElementById('fcCounter').textContent = `Card ${fcIndex+1} of ${flashcards.length}`;
+  const pct = Math.round(((fcIndex+1)/flashcards.length)*100);
+  document.getElementById('fcProgress').textContent = pct + '%';
+  document.getElementById('fcProgressBar').style.width = pct + '%';
+  // Reset flip
+  const fc = document.getElementById('flashcard');
+  fc.classList.remove('flipped');
+  fcFlipped = false;
+}
+
+function flipCard() {
+  const fc = document.getElementById('flashcard');
+  fcFlipped = !fcFlipped;
+  fc.classList.toggle('flipped', fcFlipped);
+}
+
+function nextCard() {
+  fcIndex = (fcIndex + 1) % flashcards.length;
+  updateCard();
+}
+
+function prevCard() {
+  fcIndex = (fcIndex - 1 + flashcards.length) % flashcards.length;
+  updateCard();
+}
+
+updateCard();
+
+// ===== QUIZ =====
+const questions = [
+  { q: "What is the correct angle of insertion for an Intramuscular (IM) injection?", opts: ["15°", "45°", "90°", "10°"], correct: 2, exp: "IM injections are given at 90 degrees, straight into the muscle. 2–5 ml can be given in adults." },
+  { q: "Which Act governs narcotic drugs in India?", opts: ["Food Safety Act 1968", "Dangerous Drug Act 1930", "Pharmacy Act 1948", "Drug Act 2001"], correct: 1, exp: "The Dangerous Drug Act 1930 (and NDPS Act 1985) govern narcotics like morphine, pethidine, cocaine." },
+  { q: "How many essential parts must a medication order contain?", opts: ["5", "6", "7", "8"], correct: 2, exp: "7 parts: Patient name, Date/time, Drug name, Dosage, Route, Time/frequency, Physician's signature." },
+  { q: "What volume can be administered via Subcutaneous (SC) injection?", opts: ["0.01–0.1 ml", "0.5–1 ml", "2–5 ml", "5–10 ml"], correct: 1, exp: "SC injections hold 0.5–1 ml. Given at 45 degrees. Example: Insulin, Heparin." },
+  { q: "GTN (Glyceryl trinitrate) for angina is given by which route?", opts: ["Oral", "Intravenous", "Sublingual", "Intramuscular"], correct: 2, exp: "Sublingual (SL) route — under the tongue — gives rapid absorption directly into the bloodstream." },
+  { q: "A medication ordered to be given ONLY ONCE immediately is called:", opts: ["Standing order", "PRN order", "Verbal order", "Stat order"], correct: 3, exp: "A STAT order means give immediately — used in emergencies." },
+  { q: "Which is the FIRST check when verifying medications?", opts: ["Before giving to patient", "When preparing the medication", "When removing from shelf/drawer", "After administration"], correct: 2, exp: "Three checks: (1) When removing from shelf, (2) When preparing, (3) Before administering." },
+  { q: "Infiltration during IV therapy means:", opts: ["Vein inflammation", "Fluid entering subcutaneous tissue", "Air in the bloodstream", "Drug reaction"], correct: 1, exp: "Infiltration is escape of fluid into subcutaneous tissue from needle dislodgement, causing swelling and pain." },
+  { q: "The Intradermal route is used for:", opts: ["Insulin injection", "Blood transfusion", "Mantoux (TB) test", "Adrenaline in emergency"], correct: 2, exp: "Intradermal (ID) at 10–15°, 0.01–0.1 ml. Used for Mantoux test and allergy testing." },
+  { q: "The dosage calculation formula is:", opts: ["Hand dose ÷ Required dose × Volume", "Required dose ÷ Hand dose × Volume", "Volume × Hand dose ÷ Required", "Required dose × Volume ÷ Hand dose"], correct: 1, exp: "Dose Required ÷ Dose on Hand × Volume on Hand = Dose to administer." },
+];
+
+let quizAnswered = 0;
+let quizScore = 0;
+let quizDone = false;
+
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = '';
+  quizAnswered = 0;
+  quizScore = 0;
+  questions.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-card';
+    div.innerHTML = `
+      <div class="quiz-q"><span>Q${qi+1}</span>${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((opt, oi) => `<button class="quiz-opt" onclick="answerQ(${qi},${oi},this)">${opt}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="fb${qi}"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function answerQ(qi, chosen, btn) {
+  if (quizDone) return;
+  const q = questions[qi];
+  const card = btn.closest('.quiz-card');
+  const opts = card.querySelectorAll('.quiz-opt');
+  const fb = document.getElementById(`fb${qi}`);
+  
+  if (opts[0].classList.contains('disabled')) return; // already answered
+  
+  opts.forEach(o => o.classList.add('disabled'));
+  opts[q.correct].classList.add('correct');
+  
+  if (chosen === q.correct) {
+    btn.classList.add('correct');
+    fb.className = 'quiz-feedback correct';
+    fb.textContent = '✅ Correct! ' + q.exp;
+    quizScore++;
+  } else {
+    btn.classList.add('wrong');
+    fb.className = 'quiz-feedback wrong';
+    fb.textContent = '❌ Incorrect. ' + q.exp;
+  }
+  
+  quizAnswered++;
+  if (quizAnswered === questions.length) showScore();
+}
+
+function showScore() {
+  const scoreDiv = document.getElementById('quizScore');
+  const pct = Math.round((quizScore/questions.length)*100);
+  let emoji = pct >= 80 ? '🏆' : pct >= 60 ? '👍' : '📚';
+  document.getElementById('scoreTitle').textContent = `${emoji} ${pct}% — ${quizScore}/${questions.length}`;
+  const msg = pct >= 80 ? 'Excellent! You are well prepared.' : pct >= 60 ? 'Good effort! Review the incorrect answers.' : 'Keep studying! Review the study notes and retry.';
+  document.getElementById('scoreText').textContent = msg;
+  scoreDiv.style.display = 'block';
+  quizDone = true;
+  scoreDiv.scrollIntoView({behavior:'smooth'});
+}
+
+function resetQuiz() {
+  quizDone = false;
+  document.getElementById('quizScore').style.display = 'none';
+  buildQuiz();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
