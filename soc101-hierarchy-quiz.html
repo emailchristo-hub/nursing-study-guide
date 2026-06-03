@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOC101 — Societal Hierarchy Module 4 Quiz | GNM Study Hub</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a1628;--blue:#1a4fd6;--blue-light:#3b6ef8;
+  --accent:#f0c040;--white:#fff;--off:#f4f6fb;
+  --text:#1a2340;--muted:#6b7a99;--border:#e2e8f8;--card:#fff;
+  --violet:#7c3aed;--violet-light:#a855f7;--violet-bg:#f3e8ff;--violet-border:#ddd6fe;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--text);min-height:100vh}
+.hero{background:var(--navy);position:relative;overflow:hidden;padding:3.5rem 2rem 3rem;text-align:center}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(124,58,237,0.3) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(240,192,64,0.12) 0%,transparent 55%);pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:700px;margin:0 auto}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.7);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:1.25rem}
+.hero-eyebrow span{width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:700;color:var(--white);line-height:1.2;margin-bottom:0.75rem;letter-spacing:-0.02em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.7;max-width:480px;margin:0 auto 2rem}
+.hero-stats{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:var(--accent);line-height:1}
+.stat-label{font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px}
+.divider{height:3px;background:linear-gradient(90deg,var(--violet) 0%,var(--accent) 50%,var(--violet) 100%)}
+.breadcrumb-bar{background:var(--card);border-bottom:1px solid var(--border);padding:10px 2rem;font-size:13px;color:var(--muted)}
+.breadcrumb-bar a{color:var(--blue);text-decoration:none}
+.breadcrumb-bar a:hover{text-decoration:underline}
+.container{max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+.progress-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(10,22,40,0.05)}
+.progress-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:10px}
+.progress-meta strong{color:var(--text)}
+.progress-track{height:6px;background:var(--off);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--violet-light));border-radius:3px;transition:width 0.5s cubic-bezier(.4,0,.2,1)}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(10,22,40,0.06);animation:fadeUp 0.3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.q-card-top{height:5px;background:linear-gradient(90deg,var(--violet),var(--violet-light),var(--accent))}
+.q-card-body{padding:2rem}
+.q-number{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:0.75rem}
+.q-text{font-family:'Playfair Display',serif;font-size:1.25rem;line-height:1.55;color:var(--text);margin-bottom:1.75rem}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:flex-start;gap:12px;background:var(--off);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;cursor:pointer;font-size:14px;line-height:1.55;color:var(--text);text-align:left;width:100%;font-family:'DM Sans',sans-serif;transition:border-color 0.15s,background 0.15s,transform 0.1s}
+.opt:hover:not(:disabled){border-color:var(--violet-border);background:var(--violet-bg);transform:translateX(3px)}
+.opt:disabled{cursor:default}
+.opt-letter{min-width:26px;height:26px;border-radius:7px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--muted);flex-shrink:0;margin-top:1px;transition:background 0.15s,color 0.15s}
+.opt.correct{border-color:#10b981;background:#ecfdf5}
+.opt.correct .opt-letter{background:#10b981;color:#fff}
+.opt.wrong{border-color:#f43f5e;background:#fff1f2}
+.opt.wrong .opt-letter{background:#f43f5e;color:#fff}
+.feedback{margin-top:1.25rem;padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.6;display:none}
+.feedback.show{display:block;animation:fadeUp 0.2s ease}
+.feedback.correct-fb{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
+.feedback.wrong-fb{background:#fff1f2;border:1px solid #fecdd3;color:#9f1239}
+.nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:1.25rem}
+.score-pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:7px 16px;font-size:13px;color:var(--muted)}
+.score-pill strong{color:var(--violet);font-weight:600}
+.btn-next{background:var(--navy);color:var(--white);border:none;border-radius:10px;padding:11px 28px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.15s,transform 0.1s,opacity 0.15s}
+.btn-next:hover:not(:disabled){background:var(--violet)}
+.btn-next:active:not(:disabled){transform:scale(0.98)}
+.btn-next:disabled{opacity:0.3;cursor:default}
+.best-bar{background:var(--violet-bg);border:1px solid var(--violet-border);border-radius:10px;padding:10px 16px;font-size:13px;color:var(--violet);text-align:center;margin-bottom:1.5rem;display:none}
+.best-bar.show{display:block}
+.score-screen{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(10,22,40,0.06);animation:fadeUp 0.4s ease}
+.score-screen-top{height:5px;background:linear-gradient(90deg,var(--violet),var(--violet-light),var(--accent))}
+.score-screen-body{padding:3rem 2rem;text-align:center}
+.score-ring{width:140px;height:140px;margin:0 auto 1.5rem;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-pct{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--text)}
+.score-pct-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.score-title{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:0.5rem}
+.score-sub{font-size:15px;color:var(--muted);margin-bottom:1.75rem}
+.badge-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:2rem}
+.badge{display:inline-block;padding:5px 16px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:0.04em}
+.badge-violet{background:var(--violet-bg);color:var(--violet);border:1px solid var(--violet-border)}
+.badge-green{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0}
+.badge-amber{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.badge-red{background:#fff1f2;color:#e11d48;border:1px solid #fecdd3}
+.btn-restart{background:transparent;color:var(--violet);border:1.5px solid var(--violet-border);border-radius:10px;padding:11px 32px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.15s}
+.btn-restart:hover{background:var(--violet-bg)}
+footer{background:var(--navy);color:rgba(255,255,255,0.4);text-align:center;padding:2rem 1rem;font-size:13px;line-height:1.8}
+footer strong{color:rgba(255,255,255,0.75)}
+footer a{color:rgba(255,255,255,0.55);text-decoration:none}
+footer a:hover{color:var(--accent)}
+@media(max-width:600px){.hero h1{font-size:1.6rem}.hero-stats{gap:1.25rem}.q-card-body{padding:1.25rem}.container{padding:1.5rem 1rem 3rem}.score-screen-body{padding:2rem 1.25rem}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span>SOC101 · Introduction to Sociology · Semester I</div>
+    <h1>Societal Hierarchy &amp;<br><em>Social Order</em></h1>
+    <p>Module 4 — Deviance, social stratification, caste, Marx, Weber, ascribed status, culture, and social institutions.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">17</div><div class="stat-label">Questions</div></div>
+      <div class="stat"><div class="stat-num">~10</div><div class="stat-label">Minutes</div></div>
+      <div class="stat"><div class="stat-num" id="best-num">—</div><div class="stat-label">Best score</div></div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+<div class="breadcrumb-bar">
+  <a href="index.html">← Study Hub</a> &nbsp;›&nbsp; SOC101 &nbsp;›&nbsp; Module 4 Quiz
+</div>
+<div class="container">
+  <div class="best-bar" id="best-bar">🏆 Your best score: <strong id="best-label"></strong></div>
+  <div id="quiz-root"></div>
+</div>
+<footer>
+  <strong>GNM Nursing Study Hub</strong> · Karnataka Nursing &amp; Paramedical Sciences Education (Regulation) Authority<br>
+  <a href="index.html">← Back to Study Hub</a> &nbsp;·&nbsp;
+  <a href="soc101-sociocultural-quiz.html">M2</a> &nbsp;·&nbsp;
+  <a href="soc101-socialization-quiz.html">M3</a>
+</footer>
+<script>
+const Q=[
+  {q:"Deviance is opposite to?",opts:["Interaction","Conflict","We feeling","Conformity"],ans:3},
+  {q:"Which of the following is true in relation to the nature of Sociology?",opts:["It is a positive science","It is a normative science","It is a concrete science","It is an applied science"],ans:0},
+  {q:"The status which is given to an individual on the basis of the situation in the society or by other members of the society is ____________.",opts:["Awarded Status","Attained Status","Ascribed Status","Achieved Status"],ans:2},
+  {q:"Socialization is also known as?",opts:["Learning","Modern learning","Social learning","Consciousness"],ans:2},
+  {q:"Which of the following is an essential characteristic of institution?",opts:["Abstractness","Universality","Interrelatedness","All of the above"],ans:3},
+  {q:"Which of the following is not true regarding society?",opts:["Society includes likeness and differences.","Society implies interdependence","Society implies on reciprocal awareness","Society includes only likeness and not differences"],ans:3},
+  {q:"The term socialization means:",opts:["The process of making cultural society","The process of making interactive","The process of making social","The process of making liberal society"],ans:2},
+  {q:"Which among the following is necessary to develop human personality?",opts:["Society","Family","Social control","Social interaction"],ans:3},
+  {q:"Which of the following is not a basic characteristic of Culture?",opts:["It is learned","It is shared","It is integrated","It is static"],ans:3},
+  {q:"According to which thinker do economic relations constitute the foundation of society?",opts:["Max Weber","Karl Marx","Auguste Comte","Emile Durkheim"],ans:1},
+  {q:"According to Karl Marx, what determines a person's class?",opts:["Status and prestige","Market situation and wealth","Relations to the forces of production","Caste and ascribed status"],ans:2},
+  {q:"What is the main basis of social hierarchy in India?",opts:["Achievement","Wealth","Caste","Power"],ans:2},
+  {q:"Which approach emphasizes on the 'social' criteria of status determination in pre-industrial societies?",opts:["Anthropological","Dialectical","Proletariat","Functionalist"],ans:0},
+  {q:"In Max Weber's theory of social stratification, what is the basis for the system of social stratification?",opts:["Interconnections between economic structure, status system, and political power","Inequalities in wealth and income","Dominance and subordination in social relations","Division of labour and specialization"],ans:0},
+  {q:"What is the main basis of social hierarchy in India? (Q15)",opts:["Occupation","Caste","Education","Wealth"],ans:1},
+  {q:"Which religion in India seems to have caste-like divisions similar to Hinduism?",opts:["Islam","Sikhism","Christianity","Buddhism"],ans:2},
+  {q:"According to Max Weber, social stratification in society is based on ____________.",opts:["The private ownership of the means of production and the exploitation of labor by capital","A system of interlinked class, status, and party","The recognition of social honor and prestige based on a range of symbols","The differential evaluation of different social positions and duties"],ans:1}
+];
+const LETTERS=['A','B','C','D'];
+let order=[],cur=0,score=0,answered=false;
+const root=document.getElementById('quiz-root');
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function getBest(){return localStorage.getItem('soc101_m4_best')}
+function saveBest(s){const p=getBest();if(!p||s>parseInt(p))localStorage.setItem('soc101_m4_best',s)}
+function initBestDisplay(){const b=getBest();if(b){document.getElementById('best-num').textContent=b+'/'+Q.length;document.getElementById('best-label').textContent=b+' / '+Q.length+' ('+Math.round(parseInt(b)/Q.length*100)+'%)';document.getElementById('best-bar').classList.add('show');}}
+function start(){order=shuffle([...Array(Q.length).keys()]);cur=0;score=0;renderQ()}
+function renderQ(){
+  const q=Q[order[cur]];const pct=Math.round((cur/Q.length)*100);answered=false;
+  root.innerHTML=`<div class="progress-wrap"><div class="progress-meta"><span>Question <strong>${cur+1}</strong> of ${Q.length}</span><span>Score: <strong>${score}</strong></span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div><div class="q-card"><div class="q-card-top"></div><div class="q-card-body"><div class="q-number">Question ${cur+1} &nbsp;·&nbsp; SOC101 Module 4</div><div class="q-text">${q.q}</div><div class="options" id="opts">${q.opts.map((o,i)=>`<button class="opt" id="opt-${i}" onclick="pick(${i})"><span class="opt-letter">${LETTERS[i]}</span><span>${o}</span></button>`).join('')}</div><div class="feedback" id="fb"></div></div></div><div class="nav-row"><div class="score-pill">Score: <strong id="sc">${score}</strong> / ${Q.length}</div><button class="btn-next" id="nb" disabled onclick="nextQ()">${cur===Q.length-1?'See results →':'Next →'}</button></div>`;
+}
+function pick(i){
+  if(answered)return;answered=true;
+  const q=Q[order[cur]];document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb');
+  if(i===q.ans){document.getElementById('opt-'+i).classList.add('correct');score++;document.getElementById('sc').textContent=score;fb.innerHTML='&#10003; Correct!';fb.className='feedback correct-fb show';}
+  else{document.getElementById('opt-'+i).classList.add('wrong');document.getElementById('opt-'+q.ans).classList.add('correct');fb.innerHTML='&#10007; Incorrect. Correct answer: <strong>'+q.opts[q.ans]+'</strong>';fb.className='feedback wrong-fb show';}
+  document.getElementById('nb').disabled=false;
+}
+function nextQ(){cur++;cur>=Q.length?showScore():renderQ()}
+function showScore(){
+  saveBest(score);initBestDisplay();
+  const pct=Math.round((score/Q.length)*100);const r=54,circ=2*Math.PI*r,fill=circ*(pct/100);
+  const color=pct>=75?'#10b981':pct>=50?'#d97706':'#f43f5e';
+  let title,badge;
+  if(pct>=85){title='Excellent work!';badge='<span class="badge badge-green">&#127942; Outstanding</span>'}
+  else if(pct>=75){title='Well done!';badge='<span class="badge badge-green">&#10003; Pass</span>'}
+  else if(pct>=50){title='Keep revising';badge='<span class="badge badge-amber">&#128214; Review needed</span>'}
+  else{title='Needs more study';badge='<span class="badge badge-red">&#9888; Revisit module</span>'}
+  root.innerHTML=`<div class="score-screen"><div class="score-screen-top"></div><div class="score-screen-body"><div class="score-ring"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="${r}" stroke="#e2e8f8" stroke-width="10" fill="none"/><circle cx="70" cy="70" r="${r}" stroke="${color}" stroke-width="10" fill="none" stroke-dasharray="${fill.toFixed(1)} ${circ.toFixed(1)}" stroke-linecap="round"/></svg><div class="score-ring-label"><div class="score-pct">${pct}%</div><div class="score-pct-sub">${score} / ${Q.length}</div></div></div><div class="score-title">${title}</div><div class="score-sub">You answered ${score} out of ${Q.length} questions correctly.</div><div class="badge-row">${badge}<span class="badge badge-violet">SOC101 Module 4</span></div><button class="btn-restart" onclick="start()">Try again ↺</button></div></div>`;
+}
+initBestDisplay();start();
+</script>
+</body>
+</html>
