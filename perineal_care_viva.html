@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perineal Care – Viva Questions</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #222; min-height: 100vh; }
+  header { background: #1a5276; color: #fff; padding: 1.5rem 2rem; }
+  header h1 { font-size: 1.5rem; font-weight: 600; }
+  header p { font-size: 0.9rem; opacity: 0.8; margin-top: 4px; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; padding: 1.2rem 2rem; background: #fff; border-bottom: 1px solid #ddd; align-items: center; }
+  .controls label { font-size: 0.85rem; color: #555; }
+  select, button { font-size: 0.85rem; padding: 6px 14px; border-radius: 6px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
+  button.primary { background: #1a5276; color: #fff; border: none; }
+  button.primary:hover { background: #154360; }
+  button.secondary { background: #fff; color: #1a5276; border: 1.5px solid #1a5276; }
+  button.secondary:hover { background: #eaf1f8; }
+
+  .stats { display: flex; gap: 12px; padding: 1rem 2rem; flex-wrap: wrap; }
+  .stat { background: #fff; border-radius: 8px; border: 1px solid #ddd; padding: 0.7rem 1.2rem; min-width: 110px; text-align: center; }
+  .stat .num { font-size: 1.6rem; font-weight: 700; color: #1a5276; }
+  .stat .lbl { font-size: 0.75rem; color: #777; margin-top: 2px; }
+
+  .qa-section { padding: 1rem 2rem 2rem; }
+  .section-title { font-size: 1rem; font-weight: 600; color: #1a5276; margin: 1.5rem 0 0.6rem; padding-left: 8px; border-left: 4px solid #1a5276; }
+
+  .card { background: #fff; border: 1px solid #dde; border-radius: 10px; margin-bottom: 12px; overflow: hidden; transition: box-shadow 0.2s; }
+  .card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.09); }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 1rem 1.2rem; cursor: pointer; gap: 10px; }
+  .card-header .q-text { font-size: 0.95rem; font-weight: 500; flex: 1; line-height: 1.5; }
+  .badge { font-size: 0.72rem; padding: 3px 9px; border-radius: 99px; white-space: nowrap; flex-shrink: 0; font-weight: 600; }
+  .badge.easy { background: #d5f5e3; color: #1e8449; }
+  .badge.medium { background: #fef9e7; color: #9a7d0a; }
+  .badge.hard { background: #fdf2f8; color: #884ea0; }
+
+  .card-answer { display: none; padding: 0 1.2rem 1rem; border-top: 1px solid #eee; }
+  .card-answer.open { display: block; }
+  .card-answer p { font-size: 0.9rem; color: #333; line-height: 1.7; margin-top: 0.8rem; }
+  .card-answer ul { margin: 0.5rem 0 0 1.2rem; font-size: 0.9rem; color: #333; line-height: 1.7; }
+
+  .toggle-icon { font-size: 1.1rem; color: #1a5276; transition: transform 0.2s; flex-shrink: 0; }
+  .toggle-icon.open { transform: rotate(45deg); }
+
+  .mark-row { display: flex; gap: 8px; margin-top: 10px; }
+  .mark-btn { font-size: 0.78rem; padding: 4px 12px; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; }
+  .mark-btn.correct { background: #d5f5e3; color: #1e8449; border-color: #a9dfbf; }
+  .mark-btn.incorrect { background: #fdecea; color: #c0392b; border-color: #f5b7b1; }
+
+  .progress-bar-wrap { height: 6px; background: #eee; border-radius: 3px; margin: 0 2rem 0.5rem; }
+  .progress-bar { height: 100%; background: #1a5276; border-radius: 3px; transition: width 0.4s; }
+
+  @media (max-width: 600px) {
+    header, .controls, .stats, .qa-section { padding-left: 1rem; padding-right: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Perineal Care – Viva Questions</h1>
+  <p>Fundamentals of Nursing | Click a question to reveal the answer</p>
+</header>
+
+<div class="controls">
+  <label>Filter by topic:</label>
+  <select id="topicFilter" onchange="filterCards()">
+    <option value="all">All Topics</option>
+    <option value="Definition, Purpose & Principles">Definition, Purpose & Principles</option>
+    <option value="Indications">Indications</option>
+    <option value="Nurse's Responsibility & Preliminary Assessment">Nurse's Responsibility & Preliminary Assessment</option>
+    <option value="Articles Required">Articles Required</option>
+    <option value="Preparation of Client & Unit">Preparation of Client &amp; Unit</option>
+    <option value="Procedure">Procedure</option>
+    <option value="Female Patient Care">Female Patient Care</option>
+    <option value="Male Patient Care">Male Patient Care</option>
+    <option value="After Care of the Client & Articles">After Care of the Client &amp; Articles</option>
+  </select>
+  <label>Difficulty:</label>
+  <select id="diffFilter" onchange="filterCards()">
+    <option value="all">All</option>
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+  </select>
+  <button class="secondary" onclick="expandAll()">Expand All</button>
+  <button class="secondary" onclick="collapseAll()">Collapse All</button>
+  <button class="primary" onclick="resetScores()">Reset Scores</button>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="num" id="totalQ">0</div><div class="lbl">Total</div></div>
+  <div class="stat"><div class="num" id="answeredQ">0</div><div class="lbl">Answered</div></div>
+  <div class="stat"><div class="num" id="correctQ" style="color:#1e8449">0</div><div class="lbl">Correct</div></div>
+  <div class="stat"><div class="num" id="incorrectQ" style="color:#c0392b">0</div><div class="lbl">Incorrect</div></div>
+</div>
+<div class="progress-bar-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+
+<div class="qa-section" id="qaContainer"></div>
+
+<script>
+const data = [
+  {
+    topic: "Definition, Purpose & Principles",
+    questions: [
+      { q: "Define perineal care.", a: "Perineal care is the procedure of cleaning of the patient's external genitalia and surrounding skin.", diff: "easy" },
+      { q: "List the purposes of perineal care.", a: "<ul><li>To promote healing</li><li>To remove secretions</li><li>To provide comfort</li><li>To prevent or eliminate infection</li></ul>", diff: "easy" },
+      { q: "What are the guiding principles of perineal care?", a: "<ul><li>Clean the perineum from the cleanest to the less clean area</li><li>Wipe from front to back on female patients to avoid contaminating the vagina</li><li>Maintain hand hygiene and use gloves</li></ul>", diff: "medium" },
+      { q: "Why must a female patient be wiped from front to back during perineal care?", a: "To avoid contaminating the vagina and urethra with organisms from the anal/rectal area.", diff: "medium" },
+    ]
+  },
+  {
+    topic: "Indications",
+    questions: [
+      { q: "List the indications for perineal care.", a: "<ul><li>Clients who are unable to do self-care</li><li>Clients with genito-urinary tract infection</li><li>Clients with incontinence of urine and stool</li><li>Clients with excessive vaginal discharges</li><li>Clients with indwelling catheters</li><li>Post-partum clients</li><li>Clients after surgery on the genito-urinary system</li><li>Clients with injury, ulcer, or surgery on the perineal or rectal area</li></ul>", diff: "medium" },
+      { q: "Why would a client with an indwelling catheter need perineal care?", a: "To reduce the risk of catheter-associated urinary tract infection by keeping the meatus and surrounding area clean of secretions and debris.", diff: "medium" },
+      { q: "Name two post-surgical indications for perineal care.", a: "Clients after surgery on the genito-urinary system, and clients with injury, ulcer, or surgery on the perineal or rectal area.", diff: "easy" },
+    ]
+  },
+  {
+    topic: "Nurse's Responsibility & Preliminary Assessment",
+    questions: [
+      { q: "What should the nurse assess regarding the perineal skin before starting the procedure?", a: "The condition of the perineal skin, including itching, irritation, ulcer, oedema, and drainage.", diff: "medium" },
+      { q: "What other factors must the nurse assess before performing perineal care?", a: "<ul><li>The need and frequency of perineal care</li><li>Whether it should be done under aseptic or clean technique</li><li>The physician's order for any specific instructions</li><li>The client's ability for self-care</li><li>The client's mental state to follow instructions</li><li>The articles available in the client's unit</li></ul>", diff: "hard" },
+      { q: "When should perineal care be performed using an aseptic technique rather than a clean technique?", a: "Remember: when there is a wound, the perineal care should be done under aseptic technique.", diff: "medium" },
+    ]
+  },
+  {
+    topic: "Articles Required",
+    questions: [
+      { q: "List the articles required for perineal care.", a: "<ul><li>Gloves (non-sterile) – 1 pair</li><li>Sponge cloth – 1</li><li>Jug with warm water – 1</li><li>Waterproof pad or gauze</li><li>Towels – 1</li><li>Mackintosh – 1</li><li>Soap with soap dish – 1</li><li>Wet cotton swabs</li><li>Long artery forceps in a kidney tray</li><li>Bedpan (as required)</li></ul>", diff: "medium" },
+      { q: "Why is a mackintosh placed under the patient during perineal care?", a: "To protect the bed linen from getting wet or soiled during the procedure.", diff: "easy" },
+      { q: "What is the purpose of the long artery forceps in a kidney tray?", a: "To hold the cotton swabs so the nurse can cleanse the perineal area without directly touching soiled swabs by hand.", diff: "medium" },
+    ]
+  },
+  {
+    topic: "Preparation of Client & Unit",
+    questions: [
+      { q: "How should the client and unit be prepared before perineal care?", a: "<ul><li>Explain the procedure to the client</li><li>Provide privacy by screens and drapes</li><li>Drape the client as for a vaginal examination</li><li>Fanfold the top linen to the end of the bed</li><li>Remove articles that may interfere with the procedure, e.g. air cushion, knee pillow</li><li>Give extra pillows to raise the head</li></ul>", diff: "medium" },
+      { q: "How is the draw sheet managed to prevent soiling when the bedpan is placed?", a: "Roll the draw sheet to the opposite side to prevent soiling when the bedpan is placed, or place a mackintosh under the buttocks over the draw sheet.", diff: "medium" },
+      { q: "Describe how the bedpan is positioned under the client.", a: "Open the bedpan, keeping the clean bedpan on the bed on the working side. Ask the client to flex the knees and lift the buttocks by pressing the feet against the mattress. Place the bedpan in position while the nurse slides her left arm under the client's waist and lowers the client gently over the pan. Adjust for comfort.", diff: "hard" },
+    ]
+  },
+  {
+    topic: "Procedure",
+    questions: [
+      { q: "What are the initial steps of the perineal care procedure?", a: "<ul><li>Gather all required equipment</li><li>Explain the procedure to the patient</li><li>Perform hand hygiene and wear gloves if available</li><li>Close the door of the room and provide privacy</li><li>Raise the bed to a comfortable height if possible</li></ul>", diff: "easy" },
+      { q: "What is done to prepare the patient's position for the procedure?", a: "Uncover the patient's perineal area, place a mackintosh and towel (or waterproof pad) under the patient's hips, and offer the bedpan.", diff: "medium" },
+      { q: "What must the nurse observe when untying and removing the pads?", a: "Untie the pads if any, and observe the discharges — its colour, odour, and amount, etc.", diff: "medium" },
+      { q: "How should used pads be disposed of?", a: "Discard the pads in the paper bags.", diff: "easy" },
+      { q: "What safety precaution must be followed when leaving the client alone to pass urine or stool?", a: "Never leave the client alone if she is too ill or weak and likely to faint.", diff: "hard" },
+      { q: "What is done after the client has passed urine or stool?", a: "Get the toilet tray and arrange the articles conveniently on the bedside table before proceeding with cleansing.", diff: "easy" },
+    ]
+  },
+  {
+    topic: "Female Patient Care",
+    questions: [
+      { q: "Describe the steps for cleansing a female patient during perineal care.", a: "<ul><li>Pour water over the perineum</li><li>Separate the labia, hold the swab with forceps, and cleanse downward from the pubic to anal area, using a separate swab for each stroke</li><li>Clean between the labia including the urethral meatus and vaginal area</li><li>Pat dry the area</li></ul>", diff: "medium" },
+      { q: "Why must a separate swab be used for each stroke in female perineal care?", a: "To avoid transferring organisms from an already-cleansed area to a clean area, and to prevent contaminating the vagina and urethra.", diff: "hard" },
+      { q: "In what direction should cleansing strokes move on a female patient, and why?", a: "Downward from the pubic area to the anal area — moving from the cleanest area to the less clean area to prevent contamination of the urinary and vaginal openings.", diff: "medium" },
+    ]
+  },
+  {
+    topic: "Male Patient Care",
+    questions: [
+      { q: "Describe the steps for cleansing a male patient during perineal care.", a: "<ul><li>Gently grasp the patient's penis</li><li>Cleanse in a circular motion, moving from the tip of the penis backwards towards the pubic area</li><li>In an uncircumcised male, carefully retract the foreskin prior to washing the penis</li><li>Return the foreskin to its former position</li></ul>", diff: "medium" },
+      { q: "Why must the foreskin be returned to its original position after cleansing an uncircumcised male?", a: "Failing to reposition the foreskin can cause it to constrict the penis, leading to pain, swelling, and impaired circulation (paraphimosis).", diff: "hard" },
+      { q: "In what direction should cleansing strokes move on a male patient, and why?", a: "In a circular motion from the tip of the penis backwards towards the pubic area — moving from the cleanest area (meatus) to the less clean area, to avoid introducing organisms into the urethra.", diff: "medium" },
+    ]
+  },
+  {
+    topic: "After Care of the Client & Articles",
+    questions: [
+      { q: "What are the first steps in the after-care of the client?", a: "<ul><li>Apply the medicine and pad if necessary</li><li>Remove the mackintosh if an extra one is used</li><li>Change the linen if necessary, straighten the bed clothes, and arrange the bed linen</li><li>Make the client comfortable</li></ul>", diff: "easy" },
+      { q: "What is done with the bedpan after the procedure?", a: "Take the bedpan to the sanitary annex, remove the cotton swabs if any and empty the contents into the toilet, rinse the bedpan with cold water using a brush, immerse it in lotion to disinfect it, then wash and dry it well and keep it on the bedpan rack ready for the next use.", diff: "medium" },
+      { q: "Why is the bedpan rinsed with cold water before disinfection?", a: "Cold water is used first because hot water can coagulate protein matter (such as blood or albumin) in the contents, making it harder to clean the bedpan thoroughly.", diff: "hard" },
+      { q: "What are the final steps to complete the perineal care procedure?", a: "<ul><li>Clean all the articles, boil the forceps, and replace the articles</li><li>Remove the screen and tidy up the unit</li><li>Wash hands</li><li>Record the procedure with date and time, and the observations made</li></ul>", diff: "easy" },
+      { q: "Why is it important to record observations after perineal care, not just that the procedure was done?", a: "Observations such as skin condition, discharge colour/odour/amount, and any abnormalities must be documented so that changes can be tracked over time and reported promptly to the physician if needed.", diff: "hard" },
+    ]
+  }
+];
+
+let scores = {};
+
+function buildCards() {
+  const container = document.getElementById('qaContainer');
+  container.innerHTML = '';
+  let qNum = 0;
+  data.forEach(section => {
+    const title = document.createElement('div');
+    title.className = 'section-title';
+    title.textContent = section.topic;
+    container.appendChild(title);
+
+    section.questions.forEach(item => {
+      qNum++;
+      const id = `q${qNum}`;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.topic = section.topic;
+      card.dataset.diff = item.diff;
+
+      card.innerHTML = `
+        <div class="card-header" onclick="toggleCard('${id}')">
+          <span class="q-text">${qNum}. ${item.q}</span>
+          <span class="badge ${item.diff}">${item.diff}</span>
+          <span class="toggle-icon" id="icon-${id}">+</span>
+        </div>
+        <div class="card-answer" id="ans-${id}">
+          <p>${item.a}</p>
+          <div class="mark-row">
+            <span style="font-size:0.8rem;color:#777;align-self:center;">Mark yourself:</span>
+            <button class="mark-btn correct" onclick="markAnswer('${id}','correct',event)">✓ Got it</button>
+            <button class="mark-btn incorrect" onclick="markAnswer('${id}','incorrect',event)">✗ Missed</button>
+          </div>
+        </div>`;
+      container.appendChild(card);
+    });
+  });
+  updateStats();
+}
+
+function toggleCard(id) {
+  const ans = document.getElementById('ans-' + id);
+  const icon = document.getElementById('icon-' + id);
+  ans.classList.toggle('open');
+  icon.classList.toggle('open');
+  icon.textContent = ans.classList.contains('open') ? '×' : '+';
+}
+
+function markAnswer(id, result, e) {
+  e.stopPropagation();
+  scores[id] = result;
+  updateStats();
+  const btns = e.target.parentElement.querySelectorAll('.mark-btn');
+  btns.forEach(b => b.style.fontWeight = '400');
+  e.target.style.fontWeight = '700';
+}
+
+function updateStats() {
+  const cards = document.querySelectorAll('.card:not([style*="none"])');
+  const total = cards.length;
+  let correct = 0, incorrect = 0;
+  cards.forEach(card => {
+    const id = card.querySelector('.card-answer').id.replace('ans-', '');
+    if (scores[id] === 'correct') correct++;
+    if (scores[id] === 'incorrect') incorrect++;
+  });
+  const answered = correct + incorrect;
+  document.getElementById('totalQ').textContent = total;
+  document.getElementById('answeredQ').textContent = answered;
+  document.getElementById('correctQ').textContent = correct;
+  document.getElementById('incorrectQ').textContent = incorrect;
+  document.getElementById('progressBar').style.width = total ? Math.round((answered / total) * 100) + '%' : '0%';
+}
+
+function filterCards() {
+  const topic = document.getElementById('topicFilter').value;
+  const diff = document.getElementById('diffFilter').value;
+  document.querySelectorAll('.card').forEach(card => {
+    const tMatch = topic === 'all' || card.dataset.topic === topic;
+    const dMatch = diff === 'all' || card.dataset.diff === diff;
+    card.style.display = (tMatch && dMatch) ? '' : 'none';
+  });
+  document.querySelectorAll('.section-title').forEach(title => {
+    const hasVisible = [...document.querySelectorAll('.card')].some(
+      c => c.dataset.topic === title.textContent && c.style.display !== 'none'
+    );
+    title.style.display = hasVisible ? '' : 'none';
+  });
+  updateStats();
+}
+
+function expandAll() {
+  document.querySelectorAll('.card:not([style*="none"]) .card-answer').forEach(a => { a.classList.add('open'); });
+  document.querySelectorAll('.card:not([style*="none"]) .toggle-icon').forEach(i => { i.classList.add('open'); i.textContent = '×'; });
+}
+
+function collapseAll() {
+  document.querySelectorAll('.card-answer').forEach(a => { a.classList.remove('open'); });
+  document.querySelectorAll('.toggle-icon').forEach(i => { i.classList.remove('open'); i.textContent = '+'; });
+}
+
+function resetScores() {
+  scores = {};
+  document.querySelectorAll('.mark-btn').forEach(b => b.style.fontWeight = '400');
+  updateStats();
+}
+
+buildCards();
+</script>
+</body>
+</html>
