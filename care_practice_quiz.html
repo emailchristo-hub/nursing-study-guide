@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Care Practice Quiz — Units 212, 231 & 233</title>
+<style>
+  :root{
+    --bg:#eef3f2;
+    --panel:#ffffff;
+    --ink:#1b2b2a;
+    --muted:#5b6f6d;
+    --teal:#1f6f6b;
+    --teal-dark:#134b48;
+    --gold:#c98a2b;
+    --good:#2f8f5b;
+    --good-bg:#e7f5ec;
+    --bad:#c1483a;
+    --bad-bg:#fbeae7;
+    --line:#d9e3e1;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+    background:linear-gradient(180deg,var(--bg),#e4ece9 70%);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px;}
+
+  header.top{
+    text-align:center;
+    padding:18px 0 8px;
+  }
+  header.top .eyebrow{
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--teal-dark);
+    font-weight:700;
+  }
+  header.top h1{
+    margin:.35em 0 .2em;
+    font-size:1.7rem;
+    color:var(--teal-dark);
+  }
+  header.top p{
+    margin:0;
+    color:var(--muted);
+    font-size:.95rem;
+  }
+
+  .unit-select{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin:22px 0 4px;
+  }
+  .unit-btn{
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--teal-dark);
+    padding:9px 16px;
+    border-radius:999px;
+    font-size:.85rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .unit-btn:hover{border-color:var(--teal);}
+  .unit-btn.active{background:var(--teal);border-color:var(--teal);color:#fff;}
+
+  .card{
+    background:var(--panel);
+    border-radius:var(--radius);
+    padding:26px 24px;
+    margin-top:20px;
+    box-shadow:0 6px 24px rgba(19,75,72,.08);
+    border:1px solid var(--line);
+  }
+
+  .progress-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  .progress-track{
+    flex:1;
+    height:6px;
+    border-radius:999px;
+    background:var(--line);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--teal);
+    width:0%;
+    transition:width .3s;
+  }
+  .progress-label{
+    font-size:.78rem;
+    color:var(--muted);
+    white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .qmeta{
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--gold);
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .qtext{
+    font-size:1.12rem;
+    line-height:1.45;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .opt{
+    text-align:left;
+    border:1.5px solid var(--line);
+    background:#fbfdfc;
+    border-radius:10px;
+    padding:13px 16px;
+    font-size:.98rem;
+    color:var(--ink);
+    cursor:pointer;
+    transition:.15s;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .opt:hover:not(.locked){border-color:var(--teal);background:#f2f8f7;}
+  .opt .letter{
+    flex:0 0 auto;
+    width:24px;height:24px;
+    border-radius:50%;
+    border:1.5px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.75rem;font-weight:700;color:var(--muted);
+  }
+  .opt.correct{background:var(--good-bg);border-color:var(--good);}
+  .opt.correct .letter{background:var(--good);border-color:var(--good);color:#fff;}
+  .opt.incorrect{background:var(--bad-bg);border-color:var(--bad);}
+  .opt.incorrect .letter{background:var(--bad);border-color:var(--bad);color:#fff;}
+  .opt.locked{cursor:default;}
+
+  .explain{
+    margin-top:16px;
+    padding:14px 16px;
+    border-radius:10px;
+    background:#f4f8f7;
+    border-left:3px solid var(--teal);
+    font-size:.92rem;
+    line-height:1.5;
+    color:var(--ink);
+    display:none;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--teal-dark);}
+
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:22px;
+  }
+  .btn{
+    border:none;
+    padding:11px 20px;
+    border-radius:999px;
+    font-size:.9rem;
+    font-weight:700;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .btn-primary{background:var(--teal);color:#fff;}
+  .btn-primary:hover{background:var(--teal-dark);}
+  .btn-primary:disabled{background:#a9c2c0;cursor:not-allowed;}
+  .btn-ghost{background:transparent;color:var(--muted);}
+  .btn-ghost:hover{color:var(--ink);}
+
+  .score-pill{
+    font-size:.8rem;
+    color:var(--teal-dark);
+    font-weight:700;
+    background:#e2efec;
+    padding:6px 12px;
+    border-radius:999px;
+  }
+
+  .results{
+    text-align:center;
+  }
+  .results .big{
+    font-size:2.6rem;
+    font-weight:800;
+    color:var(--teal-dark);
+    margin:8px 0 2px;
+  }
+  .results .sub{color:var(--muted);margin-bottom:20px;}
+  .review-item{
+    text-align:left;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:10px;
+  }
+  .review-item .q{font-weight:700;margin-bottom:6px;font-size:.92rem;}
+  .review-item .tag{
+    display:inline-block;
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    padding:2px 9px;
+    border-radius:999px;
+    margin-bottom:8px;
+  }
+  .tag.right{background:var(--good-bg);color:var(--good);}
+  .tag.wrong{background:var(--bad-bg);color:var(--bad);}
+  .review-item .ans{font-size:.88rem;color:var(--muted);margin-bottom:4px;}
+  .review-item .exp{font-size:.86rem;line-height:1.45;color:var(--ink);}
+
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:.78rem;
+    margin-top:30px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">Care Practice Quiz</div>
+    <h1>Units 212 · 231 · 233</h1>
+    <p>Manual handling &amp; positioning · Supporting people at home · Dementia care</p>
+  </header>
+
+  <div class="unit-select" id="unitSelect"></div>
+
+  <div class="card" id="quizCard"></div>
+
+  <footer>45 questions · answers include a plain-language explanation</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+// ---------------- UNIT 212 ----------------
+{unit:"212", code:"1.1", q:"What is the main reason spinal discs can get damaged during manual handling?", opts:["They are naturally too small","Repeated pressure from bending, twisting or lifting awkwardly","Sitting for long periods","Cold weather"], a:1, exp:"The spine's discs act like shock absorbers between the bones. Bending, twisting or lifting awkwardly puts extra pressure on them, which over time can cause damage."},
+{unit:"212", code:"1.2", q:"Why is good posture important during moving and positioning?", opts:["It looks more professional","It spreads weight evenly and reduces strain on joints and the spine","It's only relevant for paperwork audits","It has no real physical benefit"], a:1, exp:"Good posture keeps the body aligned so weight is spread evenly, protecting joints and the spine from unnecessary strain — for both you and the person you support."},
+{unit:"212", code:"1.3", q:"What does MSD stand for?", opts:["Manual Support Device","Musculoskeletal Disorder","Medical Safety Directive","Muscle Strength Development"], a:1, exp:"MSD stands for musculoskeletal disorder — an injury or condition affecting muscles, joints, tendons, ligaments or nerves."},
+{unit:"212", code:"1.3", q:"Which of these is a long-term implication of an MSD?", opts:["A common cold","Chronic pain and permanent damage","Improved flexibility","Better balance"], a:1, exp:"Left unaddressed, MSDs can lead to chronic, long-term pain, permanent damage, reduced mobility, and in some cases the inability to continue in physical care work."},
+{unit:"212", code:"1.4", q:"In the ergonomic (TILEE) approach to manual handling, what does the 'L' stand for?", opts:["Location","Load","Level","Lifting technique"], a:1, exp:"TILEE covers Task, Individual, Load, Environment and worker participation — 'L' is for Load, meaning the size, weight and shape of the person or object."},
+{unit:"212", code:"1.4", q:"Which of the following is NOT one of the ergonomic factors to consider before a move?", opts:["Task","Individual","Environment","Time of day"], a:3, exp:"The ergonomic approach considers the Task, the Individual, the Load, the Environment and worker participation — time of day isn't one of the core factors."},
+{unit:"212", code:"1.5", q:"What is a potential immediate risk to an individual if moving and positioning is done incorrectly?", opts:["Improved mobility","Skin tears, bruising or fractures","Weight gain","Better sleep"], a:1, exp:"Incorrect moving and positioning can cause immediate physical harm such as skin tears, bruising, dislocations or fractures."},
+{unit:"212", code:"1.5", q:"What is a potential risk to the care worker if a move is carried out incorrectly?", opts:["Promotion","Back or muscle injury","Pay increase","No risk — only the individual is affected"], a:1, exp:"Poor technique can cause back or muscle injuries to the care worker as well as harm to the individual — it's a risk to both people involved."},
+
+// ---------------- UNIT 231 ----------------
+{unit:"231", code:"2.1", q:"Which of the following is a potential impact on an individual of starting to receive care at home?", opts:["Increased privacy","A sense of loss of independence and control over routine","No emotional impact at all","Immediate financial gain"], a:1, exp:"Alongside relief that help has arrived, individuals can experience a loss of independence, privacy and control over their daily routine."},
+{unit:"231", code:"2.2", q:"What does 'maintaining personal identity' during a period of change mainly involve?", opts:["Changing the person's routine completely","Respecting preferences and routines, and involving the person in decisions","Ignoring the person's wishes for efficiency","Removing familiar objects from their home"], a:1, exp:"Helping someone stay 'themselves' means respecting their preferences and routines, involving them in decisions, and valuing their life story and familiar things."},
+{unit:"231", code:"3.2", q:"What is the main purpose of advocacy?", opts:["To make decisions for the person without asking them","To make sure the person's voice and rights are heard and respected","To replace the family's involvement entirely","To reduce the person's independence"], a:1, exp:"Advocacy exists to make sure a person's voice, wishes and rights are heard and respected, especially when they find it hard to speak up for themselves."},
+{unit:"231", code:"3.4", q:"How can negative perceptions of individuals needing care be challenged?", opts:["Avoiding the topic entirely","Educating others and highlighting the person's abilities","Agreeing with stereotypes to avoid conflict","Limiting the person's community involvement"], a:1, exp:"Negative perceptions can be challenged by educating others, modelling respectful attitudes, and focusing on what the person can do and contributes."},
+{unit:"231", code:"3.14", q:"If an individual with capacity disagrees with their family about their care, whose wishes should generally be prioritised?", opts:["The family's wishes, always","The individual's own wishes", "The care worker's personal opinion","Whichever is easiest to arrange"], a:1, exp:"Where the individual has the mental capacity to decide, their own wishes should generally come first, even if family members disagree."},
+{unit:"231", code:"4.4", q:"What should a care worker do if asked to do something outside their agreed role or care plan?", opts:["Do it immediately to be helpful","Check with a manager or senior colleague first","Refuse without explanation","Ignore the request"], a:1, exp:"Requests outside your agreed role should be checked with a manager first — not simply carried out or dismissed on the spot."},
+{unit:"231", code:"4.6", q:"Why is it important to contribute to reviewing an individual's personal plan?", opts:["To keep paperwork tidy only","So the plan reflects what currently matters to the individual","Because reviews are optional","To reduce staff involvement in care"], a:1, exp:"Sharing observations helps keep the personal plan accurate and up to date with what actually matters to the person now, not what was true when it was written."},
+{unit:"231", code:"5.2", q:"If a care worker cannot gain entry to an individual's home, what should they do first?", opts:["Leave immediately without reporting it","Try contacting the person and follow organisational procedure","Force entry","Wait a week before doing anything"], a:1, exp:"The correct first step is to try contacting the person and follow your organisation's procedure — escalating to a manager or emergency services if there's real concern."},
+{unit:"231", code:"5.4", q:"In an emergency situation, what is the first priority?", opts:["Completing paperwork","Ensuring safety and calling emergency services if needed","Contacting the family before anything else","Finishing the visit as planned"], a:1, exp:"Safety comes first — call emergency services if needed, then follow your organisation's procedures and report and record afterwards."},
+{unit:"231", code:"2.1", q:"Why might families/carers experience strain when paid care starts in the home?", opts:["They no longer need to be involved at all","Their role and relationships may shift as paid carers become part of daily life","There is no impact on families","It only ever affects the individual, never the family"], a:1, exp:"Families can feel their role changing, along with guilt, worry or strain on relationships as paid care becomes part of everyday life."},
+{unit:"231", code:"5.8", q:"What role does the wider community play in supporting individuals?", opts:["None — only paid carers matter","Helps individuals stay connected, included and supported","Increases isolation","Replaces family involvement entirely"], a:1, exp:"Community members, neighbours and local groups help people stay connected and included, contributing to their sense of belonging."},
+{unit:"231", code:"3.13", q:"Helping individuals/families 'explore other sources of support' mainly means:", opts:["Ignoring services outside the formal care package","Helping them find groups, charities or services that help them achieve what matters to them","Actively discouraging outside help","Referring only to social services"], a:1, exp:"It means knowing what's available locally — support groups, charities, respite services — and helping the person/family access it."},
+
+// ---------------- UNIT 233 ----------------
+{unit:"233", code:"1.3", q:"Is dementia a natural, unavoidable part of ageing?", opts:["Yes, everyone develops it eventually","No — it's caused by diseases that damage the brain","Only in men","Only after age 90"], a:1, exp:"Dementia is caused by diseases that damage the brain. It's more common in later life, but it is not an automatic or natural part of ageing."},
+{unit:"233", code:"1.3", q:"Which of these statements about dementia and age is correct?", opts:["Only people over 65 can develop dementia","Only people with a family history can develop it","Dementia can affect younger people too (young-onset dementia)","Only people living in care homes develop dementia"], a:2, exp:"Dementia can affect people under 65 — this is often called young-onset dementia — so age assumptions can be misleading."},
+{unit:"233", code:"1.5", q:"Which is an effective way to challenge negative perceptions about dementia?", opts:["Focus only on what the person has lost","Treat the person as an individual and highlight their remaining abilities","Avoid involving them in decisions","Use broad generalisations about the condition"], a:1, exp:"Treating each person as an individual and focusing on what they can still do helps challenge stereotypes and negative assumptions."},
+{unit:"233", code:"2.1", q:"Which of the following is commonly affected across most types of dementia as it progresses?", opts:["Height","Memory, judgement, language and orientation","Eyesight only","Blood type"], a:1, exp:"Across the different types of dementia, progression commonly affects memory, judgement, language, and orientation to time, place and person."},
+{unit:"233", code:"2.1", q:"Vascular dementia is often associated with which pattern of decline?", opts:["A gradual decline only, with no noticeable changes","A more sudden, step-like decline","No cognitive impact at all","Improved language skills over time"], a:1, exp:"Vascular dementia can show a more sudden, 'step-like' decline, compared to the gradual progression more typical of Alzheimer's disease."},
+{unit:"233", code:"2.2", q:"What can cause symptoms that look like dementia but are actually a different, sometimes treatable, condition?", opts:["Only the ageing process itself","Depression or delirium (acute confusion)","Regular exercise","Good nutrition"], a:1, exp:"Depression and delirium can cause confusion and memory problems similar to dementia but are often temporary or treatable — so it's important not to assume dementia automatically."},
+{unit:"233", code:"2.3.1", q:"Which lifestyle factor is linked to dementia risk?", opts:["Diet, exercise and managing blood pressure/cholesterol","Hair colour","Height","Shoe size"], a:0, exp:"Diet, exercise, not smoking, and managing conditions like blood pressure, cholesterol and diabetes can all influence dementia risk and may help delay onset."},
+{unit:"233", code:"2.4", q:"How can dementia 'mask' other health issues?", opts:["It has no effect on how other conditions present","The person may struggle to communicate pain or symptoms clearly","It improves the person's ability to communicate","It cures unrelated illnesses"], a:1, exp:"Because dementia affects communication, a person may not be able to explain pain, infection or discomfort, so care workers must watch for behaviour changes as clues."},
+{unit:"233", code:"2.5", q:"A sudden worsening of confusion in someone with dementia could indicate:", opts:["The dementia has permanently worsened, with no other explanation needed","A treatable physical illness, such as a urinary tract infection","Nothing of concern — it's expected","That the person is improving"], a:1, exp:"Infections, dehydration or pain can cause a sudden, temporary worsening of dementia symptoms — recognising this means the underlying cause can be treated."},
+{unit:"233", code:"2.7", q:"Which group has an increased risk of developing dementia, often at a younger age?", opts:["People with a learning disability, particularly Down's syndrome","Professional athletes","People who exercise regularly","People with no family history of any condition"], a:0, exp:"People with a learning disability, especially those with Down's syndrome, have a higher risk of developing dementia, often earlier in life."},
+{unit:"233", code:"3.1", q:"What is a key benefit of early diagnosis of dementia?", opts:["It has no real benefit","It allows planning for the future while the person can still be involved","It permanently delays all symptoms","It removes the need for any future support"], a:1, exp:"Early diagnosis lets the person access support sooner and be involved in planning for their future while they're still able to express their wishes."},
+{unit:"233", code:"3.3", q:"Which organisation commonly supports people living with dementia in the UK?", opts:["The Alzheimer's Society","A national sports federation","A space agency","Only the local library"], a:0, exp:"The Alzheimer's Society, along with GPs, memory clinics, Admiral Nurses and Age UK, are common sources of support for people living with dementia."},
+{unit:"233", code:"3.4.1", q:"Why is future planning — including palliative and end-of-life care — important after a dementia diagnosis?", opts:["It has no real benefit","It ensures the person's wishes are respected even after they lose capacity to decide","It's relevant only for financial reasons","It's only required for younger patients"], a:1, exp:"Planning ahead while the person can still express their wishes means those wishes can still be honoured later, even after capacity is lost."},
+{unit:"233", code:"4.1", q:"What defines a 'best interest decision' under the Mental Capacity Act?", opts:["A decision made without any input from the individual","A decision made on behalf of someone lacking capacity, considering their known wishes and values","Always the option that's most convenient for staff","A decision made only by the family, without professional input"], a:1, exp:"A best interest decision must consider the person's own wishes, feelings, beliefs and values as far as they are known, involving family and professionals, and choosing the least restrictive option."},
+{unit:"233", code:"4.4", q:"Why might individuals living with dementia be more vulnerable to abuse?", opts:["They are always in hospital","Memory, judgement and communication difficulties can make it harder to recognise, remember or report abuse","They have increased physical strength","They are naturally less trusting of others"], a:1, exp:"Difficulties with memory, judgement and communication can make it harder for someone with dementia to recognise, recall or report abuse, and increased dependence can be exploited."},
+{unit:"233", code:"4.5", q:"What does the 'right to a full and valued life' mean for someone with dementia?", opts:["They should be defined only by their diagnosis","They are entitled to continue meaningful relationships, activities and choices","They should avoid social contact for safety","Their preferences no longer matter once diagnosed"], a:1, exp:"It means the person should be supported to keep enjoying meaningful relationships, activities and choices — treated as a whole person, not just a diagnosis."},
+{unit:"233", code:"4.6", q:"Why might carers sometimes discourage a person with dementia from taking any risks?", opts:["Because risk is always beneficial and encouraged","Overprotective attitudes or fear of accidents/liability","Because it's a legal requirement to prevent all risk","Because the person always prefers no independence"], a:1, exp:"Overprotective attitudes and fear of accidents or liability can lead to someone being stopped from doing things they're still capable of, even when the risk could be managed."},
+{unit:"233", code:"4.8", q:"What is a benefit of positive, well-managed risk-taking for someone with dementia?", opts:["Decreased self-esteem","Boosted independence, confidence and wellbeing","Increased confusion with no benefit","No effect either way"], a:1, exp:"Being supported to try things and make choices, even with some risk, boosts self-esteem, independence and overall wellbeing."},
+{unit:"233", code:"4.9", q:"What does the 'right to walk' refer to in dementia care?", opts:["A person's right to move around freely rather than being restricted","A specific structured walking exercise programme","A legal requirement to walk a set distance daily","A rule restricting all movement outdoors"], a:0, exp:"It refers to a person's right to move and walk around freely — sometimes previously called 'wandering' — rather than being confined or restrained."},
+{unit:"233", code:"4.9", q:"How can the 'right to walk' be supported safely?", opts:["Physically restraining the person at all times","Secure outdoor spaces, agreed safety measures, and reducing environmental hazards","Locking all doors permanently","Preventing any outdoor access whatsoever"], a:1, exp:"Safe support includes secure enclosed spaces, agreed identification/tracking measures with the family, familiar routes, and reducing hazards — not restraint."},
+{unit:"233", code:"4.10", q:"What must care workers consider when sharing information about someone with dementia?", opts:["Share everything with anyone who asks","Confidentiality, consent and data protection rules (e.g. GDPR)","There are no real rules around this","Only share information with the media"], a:1, exp:"Information sharing must follow confidentiality and data protection rules, sharing only what's necessary and with proper consent or legal basis."},
+{unit:"233", code:"2.6.1", q:"Which of these is an example of supporting physical wellbeing in dementia care?", opts:["Ignoring nutrition and hydration needs","Supporting nutrition, mobility, continence, skin care and pain management","Restricting all physical activity","Avoiding oral health care"], a:1, exp:"Physical wellbeing covers areas like nutrition and hydration, safe mobility, continence, skin care, oral health, and recognising and managing pain."},
+{unit:"233", code:"5.6", q:"Why are the 'little things' — like a favourite cup of tea made a certain way — important in dementia care?", opts:["They have no real value to the person","They significantly contribute to a person's quality of life","They waste valuable care time","They should generally be avoided"], a:1, exp:"Small, familiar everyday moments matter hugely to someone's quality of life and shouldn't be overlooked in favour of only big care goals."},
+{unit:"233", code:"5.10", q:"What is a key benefit of short breaks (respite care) for family carers?", opts:["Increased burnout","Time to rest, preventing burnout, while helping maintain positive family relationships","No real benefit to carers","Reduced contact with the individual altogether"], a:1, exp:"Respite gives unpaid carers time to rest and look after their own wellbeing, helping sustain positive relationships with the person they support long-term."},
+{unit:"233", code:"5.11", q:"How does the physical environment affect someone living with dementia?", opts:["It has no meaningful impact","Good design (layout, lighting, signage) can aid orientation and reduce confusion or anxiety","Only furniture style matters, nothing else","The environment cannot be adapted to help"], a:1, exp:"Thoughtful design — clear signage, good lighting, sensible layout and colours — helps someone with dementia navigate safely and feel calmer, while poor design increases confusion and fall risk."},
+{unit:"233", code:"1.8", q:"What should a care worker do if they hear disrespectful or discriminatory language about someone with dementia?", opts:["Ignore it to avoid conflict","Challenge it and model respectful, person-first language","Join in to fit in with colleagues","Report it only if asked to"], a:1, exp:"Care workers should challenge negative language or discrimination when they hear it, and model respectful, person-first communication themselves."},
+{unit:"233", code:"3.2", q:"Which of these is a potential impact of a dementia diagnosis on the individual and family?", opts:["No emotional impact at all","Fear, grief, anxiety, and possible social isolation","Guaranteed improvement in relationships","Immediate resolution of all uncertainty"], a:1, exp:"A diagnosis can bring fear, shock, grief and anxiety, and can lead to social isolation and strain on relationships for both the individual and their family."}
+];
+
+let currentUnit = "ALL";
+let order = [];
+let idx = 0;
+let answers = {}; // qIndex -> selected option index
+let locked = false;
+
+const unitLabels = {ALL:"All 45", "212":"Unit 212", "231":"Unit 231", "233":"Unit 233"};
+
+function buildUnitButtons(){
+  const el = document.getElementById('unitSelect');
+  el.innerHTML = '';
+  Object.keys(unitLabels).forEach(u=>{
+    const b = document.createElement('button');
+    b.className = 'unit-btn' + (u===currentUnit ? ' active':'');
+    b.textContent = unitLabels[u];
+    b.onclick = ()=>{ currentUnit = u; startQuiz(); };
+    el.appendChild(b);
+  });
+}
+
+function startQuiz(){
+  buildUnitButtons();
+  order = QUESTIONS.map((q,i)=>i).filter(i => currentUnit==="ALL" || QUESTIONS[i].unit===currentUnit);
+  idx = 0;
+  answers = {};
+  locked = false;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  locked = false;
+  const card = document.getElementById('quizCard');
+  const total = order.length;
+  const qi = order[idx];
+  const q = QUESTIONS[qi];
+  const answeredCount = Object.keys(answers).filter(k=>order.includes(Number(k))).length;
+
+  card.innerHTML = `
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" style="width:${(idx/total)*100}%"></div></div>
+      <div class="progress-label">${idx+1} / ${total}</div>
+    </div>
+    <div class="qmeta">Unit ${q.unit} &middot; ${q.code}</div>
+    <p class="qtext">${q.q}</p>
+    <div class="options" id="opts"></div>
+    <div class="explain" id="explain"></div>
+    <div class="nav-row">
+      <button class="btn btn-ghost" id="prevBtn" ${idx===0?'disabled':''}>&larr; Previous</button>
+      <span class="score-pill">Score: ${scoreSoFar()} / ${answeredCount}</span>
+      <button class="btn btn-primary" id="nextBtn" disabled>${idx===total-1 ? 'See results' : 'Next'} &rarr;</button>
+    </div>
+  `;
+
+  const optsEl = document.getElementById('opts');
+  q.opts.forEach((optText,oi)=>{
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = `<span class="letter">${String.fromCharCode(65+oi)}</span><span>${optText}</span>`;
+    b.onclick = ()=> selectOption(qi, oi);
+    optsEl.appendChild(b);
+  });
+
+  if(answers.hasOwnProperty(qi)){
+    lockOptions(qi, answers[qi]);
+  }
+
+  document.getElementById('prevBtn').onclick = ()=>{ idx--; renderQuestion(); };
+  document.getElementById('nextBtn').onclick = ()=>{
+    if(idx === total-1){ renderResults(); } else { idx++; renderQuestion(); }
+  };
+}
+
+function selectOption(qi, oi){
+  if(locked) return;
+  answers[qi] = oi;
+  lockOptions(qi, oi);
+}
+
+function lockOptions(qi, chosen){
+  locked = true;
+  const q = QUESTIONS[qi];
+  const optsEl = document.getElementById('opts');
+  [...optsEl.children].forEach((btn, oi)=>{
+    btn.classList.add('locked');
+    if(oi === q.a) btn.classList.add('correct');
+    else if(oi === chosen) btn.classList.add('incorrect');
+  });
+  const exp = document.getElementById('explain');
+  exp.innerHTML = `<b>${chosen===q.a ? "Correct." : "Not quite."}</b> ${q.exp}`;
+  exp.classList.add('show');
+  document.getElementById('nextBtn').disabled = false;
+  // refresh score pill
+  const total = order.length;
+  const answeredCount = Object.keys(answers).filter(k=>order.includes(Number(k))).length;
+  document.querySelector('.score-pill').textContent = `Score: ${scoreSoFar()} / ${answeredCount}`;
+}
+
+function scoreSoFar(){
+  return Object.keys(answers).filter(k=>{
+    k = Number(k);
+    return order.includes(k) && answers[k] === QUESTIONS[k].a;
+  }).length;
+}
+
+function renderResults(){
+  const card = document.getElementById('quizCard');
+  const total = order.length;
+  const score = scoreSoFar();
+  const pct = Math.round((score/total)*100);
+
+  let reviewHtml = '';
+  order.forEach(qi=>{
+    const q = QUESTIONS[qi];
+    const chosen = answers[qi];
+    const right = chosen === q.a;
+    reviewHtml += `
+      <div class="review-item">
+        <span class="tag ${right?'right':'wrong'}">${right?'Correct':'Incorrect'} &middot; ${q.unit} / ${q.code}</span>
+        <div class="q">${q.q}</div>
+        <div class="ans">Your answer: ${q.opts[chosen]}${right?'':`<br>Correct answer: ${q.opts[q.a]}`}</div>
+        <div class="exp">${q.exp}</div>
+      </div>
+    `;
+  });
+
+  card.innerHTML = `
+    <div class="results">
+      <div class="qmeta">Quiz complete</div>
+      <div class="big">${score} / ${total}</div>
+      <div class="sub">${pct}% correct</div>
+      <button class="btn btn-primary" id="retryBtn">Retake this set</button>
+    </div>
+    <div style="margin-top:24px;">${reviewHtml}</div>
+  `;
+  document.getElementById('retryBtn').onclick = startQuiz;
+}
+
+startQuiz();
+</script>
+</body>
+</html>
